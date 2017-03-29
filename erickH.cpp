@@ -64,6 +64,18 @@ void init_opengl(void)
     //Do this to allow fonts
     glEnable(GL_TEXTURE_2D);
     initialize_fonts();
+    
+    bigfootImage = ppm6GetImage("./assets/bigfoot.ppm");
+    glGenTextures(1, &bigfootTexture);
+    int w = bigfootImage->width;
+    int h = bigfootImage->height;
+    glBindTexture(GL_TEXTURE_2D, bigfootTexture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, bigfootImage->data); 
+}
+
 }
 /*
     //Background and Gameover screens for the game. 
