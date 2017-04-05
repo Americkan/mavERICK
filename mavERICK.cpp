@@ -741,15 +741,20 @@ void render(Game *g)
 	r.left = 10;
 	r.center = 0;
 
-
 	Maverick();
 	Maverick2(yres);
 	MaverickBackground();
 	MaverickHealth();
-	MaverickHealthText(yres);
 	MaverickBoost();
-	MaverickBoostText(yres);
+	MaverickShield();
 	MaverickShip();
+
+	MaverickEnemyONE();
+
+
+	MaverickHealthText(yres);
+	MaverickBoostText(yres);
+	MaverickShieldText(yres);
 
 	ggprint8b(&r, 16, 0x00ff0000, "Space mavERICK (Tom Cruise Simulator)");
 	ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g->nbullets);
