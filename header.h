@@ -153,6 +153,14 @@ extern void MaverickShip();
 
 
 //Andrew P's Prototypes
+extern void initSound();
+extern void backGround();
+extern void thrust();
+extern void blaster();
+extern void expl();
+extern void unzip();
+extern void delete_sounds();
+extern void help(int);
 
 
 
@@ -165,13 +173,7 @@ extern void MaverickShip();
 
 
 //Unknown at the moment
-extern void help(int);
 extern void menu( char[], int );
-extern void backGround();
-extern void initSound();
-extern void blaster();
-extern void expl();
-extern void thrust();
   
 void initXWindows(void);
 void init_opengl(void);

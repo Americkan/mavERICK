@@ -86,6 +86,7 @@ Game game;
 
 int main(void)
 {
+    	unzip();	// decompress sound files
 	logOpen();
 	initXWindows();
 	init_opengl();
@@ -121,6 +122,7 @@ int main(void)
 	cleanup_fonts();
 	logClose();
 	backGround();	// recall functions to stop sound and delete sources
+	delete_sounds(); // delete uncompressed sound files
 	return 0;
 }
 

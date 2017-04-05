@@ -24,6 +24,8 @@ void backGround();
 void playBackGround(ALuint);
 void blaster();
 void expl();
+void unzip();
+void delete_sounds();
 
 int music = 0;
 int thr = 0;
@@ -64,10 +66,10 @@ void initSound()
     	alListenerf(AL_GAIN, 1.0f);
 
 
-    	alBuffer[0] = alutCreateBufferFromFile("8BitBack.wav");
-	alBuffer[1] = alutCreateBufferFromFile("blaster.wav");
-	alBuffer[2] = alutCreateBufferFromFile("explosion.wav");
-	alBuffer[3] = alutCreateBufferFromFile("thrusters.wav");
+    	alBuffer[0] = alutCreateBufferFromFile("sounds/8BitBack.wav");
+	alBuffer[1] = alutCreateBufferFromFile("sounds/blaster.wav");
+	alBuffer[2] = alutCreateBufferFromFile("sounds/explosion.wav");
+	alBuffer[3] = alutCreateBufferFromFile("sounds/thrusters.wav");
 
     	alGenSources(4, alSource);
     	alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
@@ -149,5 +151,15 @@ void thrust()
 	thr ^= 1;
     }
 
+}
+
+void unzip()
+{
+    system("unzip sounds.zip");
+}
+
+void delete_sounds()
+{
+    system("rm -R sounds");
 }
 
