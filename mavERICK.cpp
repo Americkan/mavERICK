@@ -86,7 +86,6 @@ Game game;
 
 int main(void)
 {
-    	unzip();	// decompress sound files
 	logOpen();
 	initXWindows();
 	init_opengl();
@@ -94,10 +93,11 @@ int main(void)
 	backGround();	// call function to begin backgound music
 	//Game game;
 	init(&game);
+	getHighScores();
 	srand(time(NULL));
 	clock_gettime(CLOCK_REALTIME, &timePause);
 	clock_gettime(CLOCK_REALTIME, &timeStart);
-    set_mouse_position(100,100);
+    	set_mouse_position(100,100);
 	int done=0;
 	while (!done) {
 		while (XPending(dpy)) {
@@ -410,7 +410,7 @@ int check_keys(XEvent *e)
 		case XK_Escape:
 			return 1;
         case XK_h: {
-            state_help ^= 1;;
+            state_help ^= 1;
             break; }
 		case XK_m:  
             state_menu ^= 1;
@@ -849,6 +849,7 @@ void render(Game *g)
     if (state_help) {
 		glDisable(GL_TEXTURE_2D);
 		help(yres);
+		showHighScores(yres);
     }
 
     if (state_menu) {

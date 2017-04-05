@@ -158,9 +158,11 @@ extern void backGround();
 extern void thrust();
 extern void blaster();
 extern void expl();
-extern void unzip();
+//extern void unzip();
 extern void delete_sounds();
 extern void help(int);
+extern void getHighScores();
+extern void showHighScores(int);
 
 
 
