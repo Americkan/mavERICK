@@ -147,9 +147,13 @@ extern void Maverick2(int);
 extern void MaverickBackground();
 extern void MaverickHealth();
 extern void MaverickBoost();
+extern void MaverickShield();
 extern void MaverickHealthText(int);
 extern void MaverickBoostText(int);
+extern void MaverickShieldText(int);
 extern void MaverickShip();
+
+extern void MaverickEnemyONE();
 
 
 //Andrew P's Prototypes
