@@ -55,7 +55,7 @@ void timeCopy(struct timespec *dest, struct timespec *source) {
 //====== GLOBAL VARIABLES!!
 int xres=1250, yres=900;
 int state_help = 0;
-int state_menu = 0;          //menu is at end of file
+//int state_menu = 0;          //menu is at end of file
 
 
 //constants
@@ -167,7 +167,11 @@ void initXWindows(void)
 	set_title();
 	glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
 	glXMakeCurrent(dpy, win, glc);
-    show_mouse_cursor(0);
+
+    if (game.mouseControl)
+        show_mouse_cursor(0);
+    else
+        show_mouse_cursor(1);
 }
 
 void reshape_window(int width, int height)
@@ -333,42 +337,45 @@ void check_mouse(XEvent *e, Game *g)
 		//std::cout << "savex: " << savex << std::endl << std::flush;
 		//std::cout << "e->xbutton.x: " << e->xbutton.x << std::endl <<
 		//std::flush;
-		if (xdiff > 0) {
-			//std::cout << "xdiff: " << xdiff << std::endl << std::flush;
-			g->ship.angle += 0.05f * (float)xdiff;
-			if (g->ship.angle >= 360.0f)
-				g->ship.angle -= 360.0f;
-		}
-		else if (xdiff < 0) {
-			//std::cout << "xdiff: " << xdiff << std::endl << std::flush;
-			g->ship.angle += 0.05f * (float)xdiff;
-			if (g->ship.angle < 0.0f)
-				g->ship.angle += 360.0f;
-		}
-		if (ydiff > 0) {
-			//apply thrust
-			//convert ship angle to radians
-			Flt rad = ((g->ship.angle+90.0) / 360.0f) * PI * 2.0;
-			//convert angle to a vector
-			Flt xdir = cos(rad);
-			Flt ydir = sin(rad);
-			g->ship.vel[0] += xdir * (float)ydiff * 0.01f;
-			g->ship.vel[1] += ydir * (float)ydiff * 0.01f;
-			Flt speed = sqrt(g->ship.vel[0]*g->ship.vel[0]+
-					g->ship.vel[1]*g->ship.vel[1]);
-			if (speed > 10.0f) {
-				speed = 10.0f;
-				normalize(g->ship.vel);
-				g->ship.vel[0] *= speed;
-				g->ship.vel[1] *= speed;
-			}
-			g->mouseThrustOn = true;
-			clock_gettime(CLOCK_REALTIME, &g->mouseThrustTimer);
-		}
-		set_mouse_position(100,100);
-		savex=100;
-		savey=100;
-	}
+
+        if (g->mouseControl) {
+		    if (xdiff > 0) {
+			    //std::cout << "xdiff: " << xdiff << std::endl << std::flush;
+			    g->ship.angle += 0.05f * (float)xdiff;
+			    if (g->ship.angle >= 360.0f)
+				    g->ship.angle -= 360.0f;
+		    }
+		    else if (xdiff < 0) {
+			    //std::cout << "xdiff: " << xdiff << std::endl << std::flush;
+			    g->ship.angle += 0.05f * (float)xdiff;
+			    if (g->ship.angle < 0.0f)
+				    g->ship.angle += 360.0f;
+		    }
+		    if (ydiff > 0) {
+			    //apply thrust
+			    //convert ship angle to radians
+			    Flt rad = ((g->ship.angle+90.0) / 360.0f) * PI * 2.0;
+			    //convert angle to a vector
+			    Flt xdir = cos(rad);
+			    Flt ydir = sin(rad);
+			    g->ship.vel[0] += xdir * (float)ydiff * 0.01f;
+			    g->ship.vel[1] += ydir * (float)ydiff * 0.01f;
+			    Flt speed = sqrt(g->ship.vel[0]*g->ship.vel[0]+
+					        g->ship.vel[1]*g->ship.vel[1]);
+			    if (speed > 10.0f) {
+				    speed = 10.0f;
+				    normalize(g->ship.vel);
+				    g->ship.vel[0] *= speed;
+				    g->ship.vel[1] *= speed;
+			    }
+			    g->mouseThrustOn = true;
+			    clock_gettime(CLOCK_REALTIME, &g->mouseThrustTimer);
+            }
+		    set_mouse_position(100,100);
+		    savex=100;
+		    savey=100;
+	    }
+    }
 
 }
 
@@ -408,7 +415,7 @@ int check_keys(XEvent *e)
             state_help ^= 1;
             break; }
 		case XK_m:  
-            state_menu ^= 1;
+            game.state_menu ^= 1;
 			break;
         case XK_x:
             strcat(input.text,"x"); //input to text box
@@ -505,7 +512,7 @@ void buildAsteroidFragment(Asteroid *ta, Asteroid *a)
 
 void physics(Game *g)
 {
-    if(!state_menu){
+    if(!game.state_menu){
 	Flt d0,d1,dist;
 	//Update ship position
 	g->ship.pos[0] += g->ship.vel[0];
@@ -864,7 +871,7 @@ void render(Game *g)
 		showHighScores(yres);
     }
 
-    if (state_menu) {
+    if (game.state_menu) {
       glDisable(GL_TEXTURE_2D);
       menu(input.text, input.size);
     }

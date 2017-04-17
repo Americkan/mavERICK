@@ -19,10 +19,10 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
-extern "C"
-{
-#include "fonts.h"
-}
+//extern "C"
+//{
+//#include "fonts.h"
+//}
 
 using namespace std;
 
@@ -123,16 +123,20 @@ struct Game {
 	Bullet *barr;
 	Asteroid *ahead;
 	int nasteroids;
+    int state_menu;
 	int nbullets;
 	struct timespec bulletTimer;
     struct timespec mouseThrustTimer;
     bool mouseThrustOn;
+    bool mouseControl;
 	Game() {
 		ahead = NULL;
 		barr = new Bullet[MAX_BULLETS];
 		nasteroids = 0;
 		nbullets = 0;
+        state_menu = 1;
         mouseThrustOn = false;
+        mouseControl = false;
 	}
     ~Game() {
       delete [] barr;
@@ -182,13 +186,10 @@ extern void showHighScores(int);
 
 
 //Erick T's Prototypes
-
-
-
-
-//Unknown at the moment
 extern void menu( char[], int );
-  
+
+
+
 void initXWindows(void);
 void init_opengl(void);
 void cleanupXWindows(void);
