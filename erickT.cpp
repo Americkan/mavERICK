@@ -3,11 +3,11 @@
 #include <GL/glx.h>
 #include <GL/glu.h>
 
-void menu(char input[], int size) {
+void mainMenu(int xres, int yres) {
   Rect m;
-  int loc[2] = {0};
-  int xres = 1250;
-  int yres = 900;
+ // int loc[2] = {0};
+//  int xres = x;
+//  int yres = y;
 
   int cx = xres / 2;
   int cy = yres / 2;
@@ -36,7 +36,7 @@ void menu(char input[], int size) {
    glVertex2i(cx - 135,   cy + 120);  //left top
    glVertex2i(cx    ,   cy + 120);      //top " ``\,, "
   glEnd();
-//===>Play ]]===
+//===>New game ]]===
   glBegin(GL_POLYGON);
      glVertex2i(cx - 20 , cy + 70);  
      glVertex2i(cx - 40 , cy + 80);  
@@ -116,7 +116,7 @@ void menu(char input[], int size) {
   m.bot = cy + 47;
   m.left = cx-110;
   m.center = 0;
-  ggprint17(&m, 0,  0x0000000, "PLAY");
+  ggprint17(&m, 0,  0x0000000, "NEW");
 
   m.bot = cy + 17;
   m.left = cx-20;
@@ -135,18 +135,28 @@ void menu(char input[], int size) {
   
   glDisable(GL_TEXTURE_2D);
 //======>>End Menu 
+}
+
+void newGame(char input[], int size, int xres, int yres) {
 //=============> INPUT BOX
 
+  Rect m;
+  int loc[2] = {0};
+  //int xres = x;
+  //int yres = y;
+
+  int cx = xres / 2;
+  int cy = yres / 2;
   glColor3f(1.0,1.0,0.0);
 
   cx = loc[0] + cx - 100;
   cy = loc[1] + cy - 40;
 
   glBegin(GL_QUADS);
-    glVertex2i(cx, cy+163);                 //1 lower left corner
+    glVertex2i(cx, cy+163);              //1 lower left corner
     glVertex2i(cx, cy+179);              //2 upper left  "
-    glVertex2i(cx + size*12, cy+179);  //3 upper right "
-    glVertex2i(cx + size*12, cy+163);       //4 lower right "
+    glVertex2i(cx + size*12, cy+179); 	 //3 upper right "
+    glVertex2i(cx + size*12, cy+163);    //4 lower right "
   glEnd();
 
   glEnable(GL_TEXTURE_2D);
@@ -161,4 +171,15 @@ void menu(char input[], int size) {
  // glDisable(GL_BLEND);
 
 }
+void gameSettings(int xres, int yres)
+{
 
+}
+void gameScores(int xres, int yres) 
+{
+
+}
+void gameCredits(int xres, int yres)
+{
+
+}

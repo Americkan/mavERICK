@@ -123,7 +123,7 @@ struct Game {
 	Bullet *barr;
 	Asteroid *ahead;
 	int nasteroids;
-    int state_menu;
+	int state_menu;
 	int nbullets;
 	struct timespec bulletTimer;
     struct timespec mouseThrustTimer;
@@ -186,7 +186,11 @@ extern void showHighScores(int);
 
 
 //Erick T's Prototypes
-extern void menu( char[], int );
+extern void mainMenu( int, int );
+extern void newGame( char[], int, int, int);
+extern void gameSettings( int, int );
+extern void gameScores( int, int );
+extern void gameCredits( int, int );
 
 
 

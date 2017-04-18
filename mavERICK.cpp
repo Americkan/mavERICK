@@ -873,7 +873,13 @@ void render(Game *g)
 
     if (game.state_menu) {
       glDisable(GL_TEXTURE_2D);
-      menu(input.text, input.size);
+      
+      mainMenu(xres, yres);
+      newGame(input.text, input.size, xres, yres);
+      gameSettings(xres, yres);
+      gameScores(xres, yres);
+      gameCredits(xres, yres);
+
     }
 }
 
