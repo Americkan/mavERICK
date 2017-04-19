@@ -72,6 +72,7 @@ struct Ship {
 	Vec dir;
 	Vec pos;
 	Vec vel;
+	Flt radius;
 	float angle;
 	float color[3];
 	Ship() {
@@ -84,6 +85,7 @@ struct Ship {
 		color[0] = 1.0;
 		color[1] = 1.0;
 		color[2] = 1.0;
+		radius = 40.0f;
 	}
 };
 
@@ -215,6 +217,7 @@ extern void delete_sounds();
 extern void help(int);
 extern void getHighScores();
 extern void showHighScores(int);
+extern void shipCollision(Game *);
 
 
 

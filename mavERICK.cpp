@@ -570,6 +570,7 @@ void physics(Game *g)
 		}
 		//b = b->next;
 	}
+	shipCollision(&game);
 	//
 	//Update asteroid positions
 	Asteroid *a = g->ahead;

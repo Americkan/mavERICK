@@ -14,6 +14,7 @@
 #include </usr/include/AL/alut.h>
 #include <GL/glx.h>
 #include "fonts.h"
+#include "header.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ void delete_sounds();
 void getHighScores();
 //void updateHighScores();
 void showHighScores(int);
+void shipCollision(Game);
 
 int music = 0;
 int thr = 0;
@@ -40,8 +42,8 @@ ALuint alSource[4];
 void help(int yres)
 {
     char text[3][60] = {"Use space to shoot.", 
-	                    "Use up arrow key for thrust.",
-                        "Use left and right arrow keys to change direction."};
+	"Use up arrow key for thrust.",
+	"Use left and right arrow keys to change direction."};
 
     Rect re;
     glEnable(GL_TEXTURE_2D);
@@ -51,8 +53,8 @@ void help(int yres)
     re.center = 0;
 
     for (int i = 0; i < 3; i++) {
-	    ggprint16 (&re, 0, 0x00aaff00, text[i]);
-	    re.bot = re.bot - 30;
+	ggprint16 (&re, 0, 0x00aaff00, text[i]);
+	re.bot = re.bot - 30;
     }
 }
 
@@ -82,23 +84,23 @@ void initSound()
     alSourcei(alSource[1], AL_BUFFER, alBuffer[1]);
     alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
     alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
-    
+
     alSourcef(alSource[0], AL_GAIN, 1.0f);
     alSourcef(alSource[0], AL_PITCH, 1.0f);
     alSourcef(alSource[0], AL_LOOPING, AL_TRUE);
-    
+
     alSourcef(alSource[1], AL_GAIN, 1.0f);
     alSourcef(alSource[1], AL_PITCH, 1.0f);
     alSourcef(alSource[1], AL_LOOPING, AL_FALSE);
-    
+
     alSourcef(alSource[2], AL_GAIN, 1.0f);
     alSourcef(alSource[2], AL_PITCH, 1.0f);
     alSourcef(alSource[2], AL_LOOPING, AL_FALSE);
-    	
+
     alSourcef(alSource[3], AL_GAIN, 1.0f);
     alSourcef(alSource[3], AL_PITCH, 1.0f);
     alSourcef(alSource[3], AL_LOOPING, AL_FALSE);
-	
+
     if (alGetError() != AL_NO_ERROR) {
 	cout << "ERROR: setting source\n";
 	return;
@@ -108,26 +110,26 @@ void backGround()
 {
     if (music == 0) {
 	music ^= 1;
-    	playBackGround(alSource[0]);
+	playBackGround(alSource[0]);
     } else {
-    alDeleteSources(1, &alSource[0]);
-    alDeleteSources(1, &alSource[1]);
-    alDeleteSources(1, &alSource[2]);
-    alDeleteSources(1, &alSource[3]);
-    alDeleteBuffers(1, &alBuffer[0]);
-    alDeleteBuffers(1, &alBuffer[1]);
-    alDeleteBuffers(1, &alBuffer[2]);
-    alDeleteBuffers(1, &alBuffer[3]);
-	
-    ALCcontext *Context = alcGetCurrentContext();
-    ALCdevice *Device = alcGetContextsDevice(Context);
-    alcMakeContextCurrent(NULL);
-    alcDestroyContext(Context);
-    alcCloseDevice(Device);
-    return;
+	alDeleteSources(1, &alSource[0]);
+	alDeleteSources(1, &alSource[1]);
+	alDeleteSources(1, &alSource[2]);
+	alDeleteSources(1, &alSource[3]);
+	alDeleteBuffers(1, &alBuffer[0]);
+	alDeleteBuffers(1, &alBuffer[1]);
+	alDeleteBuffers(1, &alBuffer[2]);
+	alDeleteBuffers(1, &alBuffer[3]);
+
+	ALCcontext *Context = alcGetCurrentContext();
+	ALCdevice *Device = alcGetContextsDevice(Context);
+	alcMakeContextCurrent(NULL);
+	alcDestroyContext(Context);
+	alcCloseDevice(Device);
+	return;
     }
 }
-	
+
 void playBackGround(ALuint source)
 {
     for (int i=0; i < 15; i++) {
@@ -152,7 +154,7 @@ void expl()
 void thrust()
 {
     if (thr == 0) {
-    	alSourcePlay(alSource[3]);
+	alSourcePlay(alSource[3]);
 	thr ^= 1;
     } else { 
 	alSourceStop(alSource[3]);
@@ -180,8 +182,8 @@ void getHighScores()
     ifstream fin;
     fin.open("scores.txt");
     while (!fin.eof()) {
-    	fin.getline(scoresC[i],50);
-    	i++;
+	fin.getline(scoresC[i],50);
+	i++;
 	sc = i;
     }
     for (int j = 0; j < i; j++) {
@@ -201,8 +203,44 @@ void showHighScores(int yres)
     re.center = 0;
 
     for (int i = 0; i < sc; i++) {
-	    ggprint16 (&re, 0, 0x00ffffff, scoresC[i]);
-	    re.bot = re.bot - 30;
+	ggprint16 (&re, 0, 0x00ffffff, scoresC[i]);
+	re.bot = re.bot - 30;
+    }
+    return;
+}
+
+void shipCollision(Game *g)
+{
+    Flt d0,d1,dist;
+    //cout << "in collision" << endl;
+    t_AlienEnemy *a = g->alienFalling;
+    while (a) {
+	cout << "in collision" << endl;
+	d0 = a->pos[0] - g->ship.pos[0];
+	d1 = a->pos[1] - g->ship.pos[1];
+	dist = (d0*d0 + d1*d1);
+	if (dist < (g->ship.radius*g->ship.radius)) {
+	    cout << "in if statement" << endl;
+	    if (a->prev == NULL) {
+		if (a->next == NULL) {
+		    g->alienFalling = NULL;
+		} else {
+		    a->next->prev = NULL;
+		    g->alienFalling = a->next;
+		}
+	    } else {
+		if (a->next == NULL) {
+		    a->prev->next = NULL;
+		} else {
+		    a->prev->next = a->next;
+		    a->next->prev = a->prev;
+		}
+	    }
+	    //delete a;
+	    //a = NULL;
+	    cout << "ship hit" << endl;
+	}
+	a = a->next;
     }
     return;
 }
