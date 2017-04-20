@@ -8,9 +8,9 @@
 //lines is the true count for me. 
 //
 //Total Lines: 804 lines
-//Total Lines w/out spaces:
+//Total Lines w/out spaces: 720 lines
 //Total Lines Omitted: 141 lines
-//Total Code: 
+//Total Code counted: 579 lines 
 //*********************************************************
 
 #include <iostream>
