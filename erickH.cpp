@@ -4,8 +4,13 @@
 //*********************************************************
 //			NOTE
 //The "init_opengl" void function code is omitted from the
-//line count. So whatever the total line count is minus 165
+//line count. So whatever the total line count is minus 141
 //lines is the true count for me. 
+//
+//Total Lines: 804 lines
+//Total Lines w/out spaces:
+//Total Lines Omitted: 141 lines
+//Total Code: 
 //*********************************************************
 
 #include <iostream>
