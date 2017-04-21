@@ -263,6 +263,7 @@ void shipCollision(Game *g)
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
 			cout << "in if statement" << endl;
+			MaverickUpdate();
 			if (a->prev == NULL) {
 				if (a->next == NULL) {
 					g->alienFalling = NULL;
