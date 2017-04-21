@@ -569,7 +569,8 @@ void MaverickCreateAliens(Game *g, const int n) //Taken from bigfoot framework
 	    Log("error allocating node.\n");
 	    exit(EXIT_FAILURE);
 	}
-	
+	    
+	node->radius = 30.0f;
 	node->prev = NULL;
 	node->next = NULL;
 	node->sound=0;
