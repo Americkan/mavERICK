@@ -191,6 +191,7 @@ extern void MaverickBoostFill();
 extern void MaverickBoostFillActual();
 extern void MaverickShieldFill();
 extern void MaverickShieldFillActual();
+extern void MaverickUpdate();
 
 extern void MaverickEnemyONE();
 extern void MaverickMoveAlien();
