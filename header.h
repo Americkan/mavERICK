@@ -134,6 +134,7 @@ typedef struct t_AlienEnemy {
 	Vec vel;
 	Vec maxvel;
 	Vec force;
+	Flt radius;
 	float length;
 	struct t_AlienEnemy *prev;
 	struct t_AlienEnemy *next;
@@ -207,17 +208,20 @@ extern void MaverickPopulateEnemies();
 
 
 //Andrew P's Prototypes
+#ifdef USE_OPENAL_SOUND
 extern void initSound();
 extern void backGround();
 extern void thrust();
 extern void blaster();
 extern void expl();
-//extern void unzip();
+extern void unzip();
+#endif
 extern void delete_sounds();
 extern void help(int);
 extern void getHighScores();
 extern void showHighScores(int);
 extern void shipCollision(Game *);
+extern void bulletToFallAlien(Game *);
 
 
 

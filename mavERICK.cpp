@@ -86,8 +86,10 @@ int main(void)
 	logOpen();
 	initXWindows();
 	init_opengl();
+#ifdef USE_OPENAL_SOUND
 	initSound();	// initialize all sound
 	backGround();	// call function to begin backgound music
+#endif
 	//Game game;
 	init(&game);
 	getHighScores();
@@ -118,8 +120,10 @@ int main(void)
 	cleanupXWindows();
 	cleanup_fonts();
 	logClose();
+#ifdef USE_OPENAL_SOUND
 	backGround();	// recall functions to stop sound and delete sources
 	delete_sounds(); // delete uncompressed sound files
+#endif
 	return 0;
 }
 
@@ -393,7 +397,9 @@ int check_keys(XEvent *e)
 	if (e->type == KeyRelease) {
 		keys[key]=0;
 		if (key == XK_Up)	// check for up arrow key release
+#ifdef USE_OPENAL_SOUND
 		    thrust();		// call thrust SFX function
+#endif
 		if (key == XK_Shift_L || key == XK_Shift_R)
 			shift=0;
 		return 0;
@@ -401,7 +407,9 @@ int check_keys(XEvent *e)
 	if (e->type == KeyPress) {
 		keys[key]=1;
 		if (key == XK_Up)	// check for up arrow key press
+#ifdef USE_OPENAL_SOUND
 		    thrust();		// call thrust SFX function
+#endif
 		if (key == XK_Shift_L || key == XK_Shift_R) {
 			shift=1;
 			return 0;
@@ -593,6 +601,7 @@ void physics(Game *g)
 		a->angle += a->rotate;
 		a = a->next;
 	}
+	bulletToFallAlien(&game);
 	//
 	//Asteroid collision with bullets?
 	//If collision detected:
@@ -613,7 +622,7 @@ void physics(Game *g)
 				if (a->radius > MINIMUM_ASTEROID_SIZE) {
 					//break it into pieces.
 					Asteroid *ta = a;
-					expl();
+					//expl();
 					buildAsteroidFragment(ta, a);
 					int r = rand() % 10 + 5;
 					for (int k=0; k<r; k++) {
@@ -634,7 +643,7 @@ void physics(Game *g)
 					//asteroid is too small to break up
 					//delete the asteroid and bullet
 					Asteroid *savea = a->next;
-					expl();
+					//expl();
 					deleteAsteroid(g, a);
 					a = savea;
 					g->nasteroids--;
@@ -711,7 +720,9 @@ void physics(Game *g)
 			b->pos[1] = g->ship.pos[1];
 			b->vel[0] = g->ship.vel[0];
 			b->vel[1] = g->ship.vel[1];
+#ifdef USE_OPENAL_SOUND
 			blaster();	// call function to create sound
+#endif
 			//convert ship angle to radians
 			Flt rad = ((g->ship.angle+90.0f) / 360.0f) * PI * 2.0f;
 			//convert angle to a vector
