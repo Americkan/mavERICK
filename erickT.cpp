@@ -2,8 +2,10 @@
 #include "fonts.h"
 #include <GL/glx.h>
 #include <GL/glu.h>
+#include "header.h"
 
-void mainMenu(int xres, int yres) {
+
+void mainMenu(int xres, int yres, Game *g) {
   Rect m;
  // int loc[2] = {0};
 //  int xres = x;
@@ -12,11 +14,10 @@ void mainMenu(int xres, int yres) {
   int cx = xres / 2;
   int cy = yres / 2;
 
-  glEnable(GL_BLEND);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glEnable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-  //glLineWidth(1);
   
 /*======>> Buttons <<======*/
   //glColor3f(0.0,0.0,1.0); 
@@ -37,6 +38,8 @@ void mainMenu(int xres, int yres) {
    glVertex2i(cx    ,   cy + 120);      //top " ``\,, "
   glEnd();
 //===>New game ]]===
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
   glBegin(GL_POLYGON);
      glVertex2i(cx - 20 , cy + 70);  
      glVertex2i(cx - 40 , cy + 80);  
@@ -48,6 +51,24 @@ void mainMenu(int xres, int yres) {
      glVertex2i(cx + 115, cy + 60);  
      glVertex2i(cx + 115, cy + 70);  
   glEnd();
+  
+  if (g->button[0].over == 1){
+  glLineWidth(2);
+    glColor3f(0.1, 0.0, 0.8); 
+    glBegin(GL_POLYGON);
+     glVertex2i(cx - 20 -2, cy + 70+2);  
+     glVertex2i(cx - 40 -2, cy + 80+2);  
+     glVertex2i(cx - 130-2, cy + 80+2); //left up
+     glVertex2i(cx - 130-2, cy + 60+2); //left down  
+     glVertex2i(cx - 120-2, cy + 50+2); //left down  
+     glVertex2i(cx - 40 -2, cy + 50+2);  
+     glVertex2i(cx - 20 -2, cy + 60+2);  
+     glVertex2i(cx + 115+2, cy + 60+2);  
+     glVertex2i(cx + 115+2, cy + 70+2);  
+  glEnd();
+  glLineWidth(1);
+   glColor3f(0.0, 0.1, 0.7); 
+}
 
 //===>Settings ===[[
   glBegin(GL_POLYGON);
@@ -62,6 +83,21 @@ void mainMenu(int xres, int yres) {
      glVertex2i(cx - 130, cy + 40);  
   glEnd();
 
+  if (g->button[1].over == 1){
+    glColor3f(0.0, 0.0, 0.8); 
+    glBegin(GL_POLYGON);
+     glVertex2i(cx - 40-2 , cy + 40+2);  
+     glVertex2i(cx - 20-2 , cy + 50+2);  
+     glVertex2i(cx + 115+2, cy + 50+2); //right-up 
+     glVertex2i(cx + 115+2, cy + 30+2); //right-down
+     glVertex2i(cx + 105+2, cy + 20+2);  
+     glVertex2i(cx - 20-2 , cy + 20+2);  
+     glVertex2i(cx - 40-2 , cy + 30+2);  
+     glVertex2i(cx - 130-2, cy + 30+2);  
+     glVertex2i(cx - 130-2, cy + 40+2);  
+    glEnd();
+   glColor3f(0.0, 0.1, 0.7); 
+    }
 //===>High Scores ]]===
   glBegin(GL_POLYGON);
      glVertex2i(cx - 20 , cy + 10);  
@@ -75,6 +111,21 @@ void mainMenu(int xres, int yres) {
      glVertex2i(cx + 115, cy + 10);  
   glEnd();
 
+  if (g->button[2].over == 1){
+    glColor3f(0.0, 0.0, 0.8); 
+  glBegin(GL_POLYGON);
+     glVertex2i(cx - 20-2 , cy + 10+2);  
+     glVertex2i(cx - 40-2 , cy + 20+2);  
+     glVertex2i(cx - 130-2, cy + 20+2); //left up
+     glVertex2i(cx - 130-2, cy + 0+2); //left down  
+     glVertex2i(cx - 120-2, cy - 10-2); //left down  
+     glVertex2i(cx - 40-2, cy - 10-2);  
+     glVertex2i(cx - 20-2 , cy + 0+2);  
+     glVertex2i(cx + 115+2, cy + 0+2);  
+     glVertex2i(cx + 115+2, cy + 10+2);  
+  glEnd();
+   glColor3f(0.0, 0.1, 0.7); 
+  }
 //===>Credits ===[[
   glBegin(GL_POLYGON);
      glVertex2i(cx - 40 , cy - 20);  
@@ -126,7 +177,8 @@ void mainMenu(int xres, int yres) {
   m.bot = cy - 13;
   m.left = cx-121;
   m.center = 0;
-  ggprint17(&m, 0,  0x0000000, "SCORES");
+  //ggprint17(&m, 0,  0x0000000, "SCORES");
+  ggprint17(&m, 0,  0x0000000, ":EXIT:");
   
   m.bot = cy - 43;
   m.left = cx-20;
@@ -135,6 +187,31 @@ void mainMenu(int xres, int yres) {
   
   glDisable(GL_TEXTURE_2D);
 //======>>End Menu 
+}
+
+int init_ButtonsMain(Game *g){
+  int buttons = 0;
+  //size and positions of every clickable button
+  //new
+  g->button[buttons].r.left = 497;
+  g->button[buttons].r.right = 600;
+  g->button[buttons].r.bot = 477;
+  g->button[buttons].r.top = 504;
+  buttons++;
+ //settings
+  g->button[buttons].r.left = 600;
+  g->button[buttons].r.right = 740;
+  g->button[buttons].r.bot = 447;
+  g->button[buttons].r.top = 475;
+  buttons++;
+ //scores
+  g->button[buttons].r.left = 497;
+  g->button[buttons].r.right = 600;
+  g->button[buttons].r.bot = 418;
+  g->button[buttons].r.top = 443;
+  buttons++;
+ 
+  return buttons;
 }
 
 void newGame(char input[], int size, int xres, int yres) {
@@ -173,13 +250,16 @@ void newGame(char input[], int size, int xres, int yres) {
 }
 void gameSettings(int xres, int yres)
 {
-
+  int sum = xres + yres;
+  if(sum){}
 }
 void gameScores(int xres, int yres) 
 {
-
+  int sum = xres + yres;
+  if(sum){}
 }
 void gameCredits(int xres, int yres)
 {
-
+  int sum = xres + yres;
+  if(sum){}
 }

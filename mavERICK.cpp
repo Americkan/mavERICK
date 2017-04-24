@@ -77,9 +77,10 @@ class Input {                //input at end of file
     }
 }input;
 
+
 int keys[65536];
 Game game;
-
+//int nbuttons = 0;
 
 int main(void)
 {
@@ -103,8 +104,9 @@ int main(void)
 			XEvent e;
 			XNextEvent(dpy, &e);
 			check_resize(&e);
-			check_mouse(&e, &game);
-			done = check_keys(&e);
+			done = check_mouse(&e, &game);
+			//done = check_keys(&e);
+			check_keys(&e);
 		}
 		clock_gettime(CLOCK_REALTIME, &timeCurrent);
 		timeSpan = timeDiff(&timeStart, &timeCurrent);
@@ -165,7 +167,8 @@ void initXWindows(void)
 	} 
 	Colormap cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
 	swa.colormap = cmap;
-	swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask |
+	swa.event_mask = ExposureMask | ButtonPress | ButtonRelease |
+        KeyPressMask | KeyReleaseMask |
 		PointerMotionMask | StructureNotifyMask;// | SubstructureNotifyMask;
 	win = XCreateWindow(dpy, root, 0, 0, xres, yres, 0,
 			vi->depth, InputOutput, vi->visual,
@@ -206,6 +209,8 @@ void check_resize(XEvent *e)
 }
 
 void init(Game *g) {
+    //g->nbuttons = init_ButtonsMain(g);
+    cout << "\t\t\tbuttons: " << g->nbuttons << endl;
 	//build 10 asteroids...
 	for (int j=0; j<10; j++) {
 		Asteroid *a = new Asteroid;
@@ -284,53 +289,66 @@ void show_mouse_cursor(const int onoff)
 	//(thus do only use ONCE XDefineCursor and then XUndefineCursor):
 }
 
-void check_mouse(XEvent *e, Game *g)
+int check_mouse(XEvent *e, Game *g)
 {
 	//Did the mouse move?
 	//Was a mouse button clicked?
 	static int savex = 0;
 	static int savey = 0;
-	//
+
+    //-menu
+    int i, x, y;
+    int lbutton = 0;
+    int rbutton = 0;
+    //-
 	static int ct=0;
 	//std::cout << "m" << std::endl << std::flush;
 	if (e->type == ButtonRelease) {
-		return;
+		return 0;
 	}
 	if (e->type == ButtonPress) {
 		if (e->xbutton.button==1) {
 			//Left button is down
-			//a little time between each bullet
-			struct timespec bt;
-			clock_gettime(CLOCK_REALTIME, &bt);
-			double ts = timeDiff(&g->bulletTimer, &bt);
-			if (ts > 0.1) {
-				timeCopy(&g->bulletTimer, &bt);
-				//shoot a bullet...
-				if (g->nbullets < MAX_BULLETS) {
-					Bullet *b = &g->barr[g->nbullets];
-					timeCopy(&b->time, &bt);
-					b->pos[0] = g->ship.pos[0];
-					b->pos[1] = g->ship.pos[1];
-					b->vel[0] = g->ship.vel[0];
-					b->vel[1] = g->ship.vel[1];
-					//convert ship angle to radians
-					Flt rad = ((g->ship.angle+90.0) / 360.0f) * PI * 2.0;
-					//convert angle to a vector
-					Flt xdir = cos(rad);
-					Flt ydir = sin(rad);
-					b->pos[0] += xdir*20.0f;
-					b->pos[1] += ydir*20.0f;
-					b->vel[0] += xdir*6.0f + rnd()*0.1;
-					b->vel[1] += ydir*6.0f + rnd()*0.1;
-					b->color[0] = 1.0f;
-					b->color[1] = 1.0f;
-					b->color[2] = 1.0f;
-					g->nbullets++;
-				}
-			}
-		}
+            //-menu
+            lbutton = 1;
+            //a little time between each bullet
+          if (g->mouseControl) {
+            struct timespec bt;
+            clock_gettime(CLOCK_REALTIME, &bt);
+            double ts = timeDiff(&g->bulletTimer, &bt);
+            if (ts > 0.1) {
+              timeCopy(&g->bulletTimer, &bt);
+              //shoot a bullet...
+              if (g->nbullets < MAX_BULLETS) {
+                Bullet *b = &g->barr[g->nbullets];
+                timeCopy(&b->time, &bt);
+                b->pos[0] = g->ship.pos[0];
+                b->pos[1] = g->ship.pos[1];
+                b->vel[0] = g->ship.vel[0];
+                b->vel[1] = g->ship.vel[1];
+                //convert ship angle to radians
+                Flt rad = ((g->ship.angle+90.0) / 360.0f) * PI * 2.0;
+                //convert angle to a vector
+                Flt xdir = cos(rad);
+                Flt ydir = sin(rad);
+                b->pos[0] += xdir*20.0f;
+                b->pos[1] += ydir*20.0f;
+                b->vel[0] += xdir*6.0f + rnd()*0.1;
+                b->vel[1] += ydir*6.0f + rnd()*0.1;
+                b->color[0] = 1.0f;
+                b->color[1] = 1.0f;
+                b->color[2] = 1.0f;
+                g->nbullets++;
+              }
+            }
+          }
+        }
 		if (e->xbutton.button==3) {
 			//Right button is down
+            //-game
+            rbutton = 1;
+            if(rbutton){}
+            //-
 		}
 	}
 	//keys[XK_Up] = 0;
@@ -339,7 +357,7 @@ void check_mouse(XEvent *e, Game *g)
 		int xdiff = savex - e->xbutton.x;
 		int ydiff = savey - e->xbutton.y;
 		if (++ct < 10)
-			return;		
+			return 0;		
 		//std::cout << "savex: " << savex << std::endl << std::flush;
 		//std::cout << "e->xbutton.x: " << e->xbutton.x << std::endl <<
 		//std::flush;
@@ -382,50 +400,92 @@ void check_mouse(XEvent *e, Game *g)
 		    savey=100;
 	    }
     }
-
+    //-game
+    x = e->xbutton.x;
+    y = e->xbutton.y;
+    y = yres - y;
+    g->nbuttons = init_ButtonsMain(g);
+    for(i=0; i < g->nbuttons; i++) {
+      g->button[i].over=0;
+      if(x >= g->button[i].r.left && //left
+         x <= g->button[i].r.right && //right
+         y >= g->button[i].r.bot && //bot
+         y <= g->button[i].r.top) { //top
+        g->button[i].over = 1;
+        if(g->button[i].over){
+          if (lbutton) {
+            switch (i) {
+              case 0:
+                //newgame();
+                cout << "NEW()\n";
+                game.state_menu = 0;
+                break;
+              case 1:
+                //settings();
+                cout << "SETT()\n";
+                break;
+              case 2:
+                cout << "SCORES()\n";
+                return 1;
+                //scores();
+                break;
+              case 3:
+                //credits();
+                break;
+              case 4:
+                //exit();
+                break;
+            }
+          }
+        }
+      }
+    }
+    //-
+    return 0;
 }
 
 
 
-int check_keys(XEvent *e)
+void check_keys(XEvent *e)
 {
 	//keyboard input?
 	static int shift=0;
 	int key = XLookupKeysym(&e->xkey, 0);
-    cout << key << endl;
+    //cout << key << endl;
 	//This code maintains an array of key status values.
 	if (e->type == KeyRelease) {
 		keys[key]=0;
 		if (key == XK_Up)	// check for up arrow key release
-#ifdef USE_OPENAL_SOUND
+            #ifdef USE_OPENAL_SOUND
 		    thrust();		// call thrust SFX function
-#endif
+            #endif
 		if (key == XK_Shift_L || key == XK_Shift_R)
 			shift=0;
-		return 0;
+		return;
 	}
 	if (e->type == KeyPress) {
 		keys[key]=1;
 		if (key == XK_Up)	// check for up arrow key press
-#ifdef USE_OPENAL_SOUND
+            #ifdef USE_OPENAL_SOUND
 		    thrust();		// call thrust SFX function
-#endif
+            #endif
 		if (key == XK_Shift_L || key == XK_Shift_R) {
 			shift=1;
-			return 0;
+			return;
 		}
 	} else {
-		return 0;
+		return;
 	}
 	if (shift){}
 	switch(key) {
 		case XK_Escape:
-			return 1;
+			//return 1;
+            game.state_menu ^= 1;
+            break;
         case XK_h: {
             state_help ^= 1;
             break; }
 		case XK_m:  
-            game.state_menu ^= 1;
 			break;
         case XK_x:
             strcat(input.text,"x"); //input to text box
@@ -440,8 +500,9 @@ int check_keys(XEvent *e)
 			break;
 		case XK_minus:
 			break;
+           
 	}
-	return 0;
+	return;
 }
 
 void deleteAsteroid(Game *g, Asteroid *node)
@@ -905,11 +966,11 @@ void render(Game *g)
     if (game.state_menu) {
       glDisable(GL_TEXTURE_2D);
       
-      mainMenu(xres, yres);
-      newGame(input.text, input.size, xres, yres);
-      gameSettings(xres, yres);
-      gameScores(xres, yres);
-      gameCredits(xres, yres);
+      mainMenu(xres, yres, g);
+      //newGame(input.text, input.size, xres, yres);
+      //gameSettings(xres, yres);
+      //gameScores(xres, yres);
+      //gameCredits(xres, yres);
 
     }
 }

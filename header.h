@@ -46,6 +46,7 @@ typedef Flt	Matrix[4][4];
 
 #define PI 3.141592653589793
 #define ALPHA 1
+#define MAXBUTTONS 4
 
 //X Windows variables
 extern Display *dpy;
@@ -140,6 +141,13 @@ typedef struct t_AlienEnemy {
 	struct t_AlienEnemy *next;
 } AlienEnemy;
 
+typedef struct t_button {
+  Rect r;
+  int over;
+  int down;
+  int click;
+  float dcolor[3];
+}Button;
  
 struct Game {
 	Ship ship;
@@ -147,6 +155,8 @@ struct Game {
 	Asteroid *ahead;
 	t_alien *alienShip;
 	t_AlienEnemy *alienFalling;
+    Button button[MAXBUTTONS];
+    int nbuttons;
 	int nasteroids;
 	int state_menu;
 	int nbullets;
@@ -162,6 +172,7 @@ struct Game {
 		nasteroids = 0;
 		nbullets = 0;
         state_menu = 1;
+        nbuttons = 0;
         mouseThrustOn = false;
         mouseControl = false;
 	}
@@ -227,7 +238,8 @@ extern void bulletToFallAlien(Game *);
 
 
 //Erick T's Prototypes
-extern void mainMenu( int, int );
+extern void mainMenu( int, int, Game*);
+extern int init_ButtonsMain(Game*);
 extern void newGame( char[], int, int, int);
 extern void gameSettings( int, int );
 extern void gameScores( int, int );
@@ -239,8 +251,8 @@ void initXWindows(void);
 void init_opengl(void);
 void cleanupXWindows(void);
 void check_resize(XEvent *e);
-void check_mouse(XEvent *e, Game *game);
-int check_keys(XEvent *e);
+int check_mouse(XEvent *e, Game *game);
+void check_keys(XEvent *e);
 void init(Game *g);
 void init_sounds(void);
 void physics(Game *game);
