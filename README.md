@@ -1,12 +1,15 @@
 
-#Space mavERICK
+Space mavERICK
 ==============
 
 Tom Cruise Simulator
 
-Group #6: Ericks++: 
+Group #6: 
 
-Erick H, Andrew P., Erick T.
+Ericks++: 
+* Erick H.
+* Andrew P.
+* Erick T.
 
 Erick H.
 --------------
