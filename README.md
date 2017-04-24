@@ -3,30 +3,32 @@
 ==============
 
 Tom Cruise Simulator
- Ericks++: Erick T, Erick H, Andrew P
- 
- please modify (syntax included) as needed to make the project design clearer)
- 
+Group #6: Ericks++: Erick H, Andrew P., Andrew P
 
--So far what we need to do-
+Erick H.
+--------------
+Images:
+Defining
+Implemntation 
 
-GRAPHIC:	
-		Images / Sound / Menu
+UI:
+Health Bar
+Boost Bar
+Sheidls Bar
 
-ENEMIES:
-		Change asteroid shape into enemy’s shape.
-		Physics of ship destruction:
-		  - how long will the enemy ship survive [how many collisions allowed]
-		  - Positioning of ships: how to make enemy spawn and surround ship
+Additional:
+Functionality that supports and works with Andrew's collision functions. 
+I.E Updating Health/Shields on enemy contact. 
 
-RANDOM IDEAS:
-- Player: have power ups
+Andrew P.
+--------------
+Sound:
+Implementation
 
-- Enemy ship: surround player using gravity towards player && force towards x
-		
-- Levels: 1st to 2nd level→ 1 ring of enemies ?
-	   3rd level 	→ 3 rings of enemies ? 
+Collision/Physics:
 
-- Game: have a radar on lower right corner
+Erick T.
+--------------
+Menu
 
 The one TRUE Tom Cruise simulator
