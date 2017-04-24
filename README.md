@@ -30,6 +30,8 @@ Additional:
 * Update Health/Shields on enemy contact.
 * Progress Level Forward
 * Boss Level
+* Score System
+* Update Score as needed
 
 Andrew P.
 --------------
