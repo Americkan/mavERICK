@@ -3,27 +3,28 @@
 ==============
 
 Tom Cruise Simulator
-Group #6: Ericks++: Erick H, Andrew P., Andrew P
+
+Group #6: Ericks++: Erick H, Andrew P., Erick T.
 
 Erick H.
 --------------
 Images:
-Defining
+*Defining
 Implemntation 
 
 UI:
-Health Bar
+*Health Bar
 Boost Bar
 Sheidls Bar
 
 Additional:
-Functionality that supports and works with Andrew's collision functions. 
+*Functionality that supports and works with Andrew's collision functions. 
 I.E Updating Health/Shields on enemy contact. 
 
 Andrew P.
 --------------
 Sound:
-Implementation
+*Implementation
 
 Collision/Physics:
 
