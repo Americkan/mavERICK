@@ -8,7 +8,7 @@
 //lines is the true count for me. 
 //
 //Total Lines: 1108 lines
-//Total Lines w/out spaces: 720 lines
+//Total Lines w/out spaces: 978 lines
 //Total Lines Omitted: 194 lines
 //Total Code counted: 784 lines 
 //*********************************************************
