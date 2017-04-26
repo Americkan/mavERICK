@@ -321,8 +321,15 @@ extern void delete_sounds();
 extern void help(int);
 extern void getHighScores();
 extern void showHighScores(int);
+
 extern void shipCollision(Game *);
-extern void bulletToFallAlien(Game *);
+extern void shipCollisionGold(Game *);
+extern void shipCollisionTert(Game *);
+extern void shipCollisionShields(Game *);
+extern void shipCollisionBoost(Game *);
+extern void bulletToAlien(Game *);
+extern void bulletToTert(Game *);
+extern void bulletToGold(Game *);
 
 
 
