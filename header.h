@@ -288,7 +288,7 @@ extern void MaverickShieldFillActual();
 extern void MaverickUpdate();
 
 extern void MaverickEnemyONE();
-extern void MaverickMoveAlien();
+extern void MaverickMoveAlien(Game *g);
 
 extern void MaverickCreateAliens(Game *g, int);
 extern void MaverickDrawAliens(Game *g);
