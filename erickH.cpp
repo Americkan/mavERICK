@@ -482,19 +482,6 @@ void MaverickDangerText(bool danger)
     }
 }
 
-void MaverickScoreText () 
-{
-    char name[20] = {"Score:"};
-
-    Rect maverick;
-    glEnable(GL_TEXTURE_2D);
-
-    maverick.bot = 70;
-    maverick.left = 630;
-    maverick.center = 0;
-    ggprint16(&maverick, 0, 0xffff00, name);
-}
-
 void MaverickHealthFill() 
 {
     glPushMatrix();

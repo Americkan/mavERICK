@@ -5,6 +5,7 @@
 //
 #include <iostream>
 #include <cstdlib>
+#include <stdio.h>
 #include <cstring>
 #include <unistd.h>
 #include <time.h>
@@ -30,6 +31,7 @@ void help(int);
 void delete_sounds();
 void getHighScores();
 //void updateHighScores();
+void showScores();
 void showHighScores(int);
 void shipCollisionAlien(Game);
 void shipCollisionGold(Game);
@@ -203,6 +205,25 @@ void getHighScores()
 	return;
 }
 
+void showScores()
+{
+    char name[20] = {"Score:"};
+    char scor[30];
+
+    Rect scores;
+    glEnable(GL_TEXTURE_2D);
+
+    scores.bot = 70;
+    scores.left = 630;
+    scores.center = 0;
+    ggprint16(&scores, 0, 0xffff00, name);
+    scores.left = 690;
+    sprintf(scor, "%d", score);
+    ggprint16(&scores, 0, 0xffff00, scor);
+
+    return;
+}
+
 void showHighScores(int yres)
 {
 	Rect re;
@@ -247,12 +268,12 @@ void bulletToAlien(Game *g)
 					}
 				delete a;
 				g->barr[i] = g->barr[--g->nbullets];
+				score += 1000;
 			}
 			//a = a->next;
 		}
 		a = a->next;
 	}
-	score += 1000;
 	return;
 }
 void bulletToTert(Game *g)
@@ -285,12 +306,12 @@ void bulletToTert(Game *g)
 					}
 				delete ta;
 				g->barr[i] = g->barr[--g->nbullets];
+				score += 500;
 			}
 			//a = a->next;
 		}
 		ta = ta->next;
 	}
-	score += 500;
 	return;
 }
 
@@ -323,12 +344,12 @@ void bulletToGold(Game *g)
 					}
 				delete ga;
 				g->barr[i] = g->barr[--g->nbullets];
+				score += 10000;
 			}
 			//a = a->next;
 		}
 		ga = ga->next;
 	}
-	score += 10000;
 	return;
 }
 
@@ -359,11 +380,11 @@ void shipCollisionAlien(Game *g)
 					}
 				}
 			delete a;
+			score += 1000;
 			//a = NULL;
 		}
 		a = a->next;
 	}
-	score += 1000;
 	return;
 }
 
@@ -394,11 +415,11 @@ void shipCollisionTert(Game *g)
 					}
 				}
 			delete ta;
+			score += 500;
 			//ta = NULL;
 		}
 		ta = ta->next;
 	}
-	score += 500;
 	return;
 }
 
@@ -429,11 +450,11 @@ void shipCollisionGold(Game *g)
 					}
 				}
 			delete ga;
+			score += 10000;
 			//ga = NULL;
 		}
 		ga = ga->next;
 	}
-	score += 10000;
 	return;
 }
 
@@ -447,7 +468,7 @@ void shipCollisionShields(Game *g)
 		d1 = s->pos[1] - g->ship.pos[1];
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
-			MaverickUpdate();
+			//MaverickUpdate();
 			if (s->prev == NULL) {
 				if (s->next == NULL) {
 					g->shieldsFalling = NULL;
@@ -481,7 +502,7 @@ void shipCollisionBoost(Game *g)
 		d1 = b->pos[1] - g->ship.pos[1];
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
-			MaverickUpdate();
+			//MaverickUpdate();
 			if (b->prev == NULL) {
 				if (b->next == NULL) {
 					g->boostFalling = NULL;

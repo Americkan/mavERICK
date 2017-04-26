@@ -674,6 +674,7 @@ void physics(Game *g)
 	bulletToAlien(&game);
 	bulletToGold(&game);
 	bulletToTert(&game);
+	//showScores();
 	//
 	//Asteroid collision with bullets?
 	//If collision detected:
@@ -884,7 +885,8 @@ void render(Game *g)
 	MaverickBoostText(yres);
 	MaverickShieldText(yres);
 	MaverickDangerText(danger);
-	MaverickScoreText();
+	//MaverickScoreText();
+	showScores();
 
 
 	ggprint8b(&r, 16, 0x00ff0000, "Space mavERICK (Tom Cruise Simulator)");

@@ -316,13 +316,15 @@ extern void thrust();
 extern void blaster();
 extern void expl();
 extern void unzip();
-#endif
 extern void delete_sounds();
+#endif
+
 extern void help(int);
 extern void getHighScores();
 extern void showHighScores(int);
+extern void showScores();
 
-extern void shipCollision(Game *);
+extern void shipCollisionAlien(Game *);
 extern void shipCollisionGold(Game *);
 extern void shipCollisionTert(Game *);
 extern void shipCollisionShields(Game *);
