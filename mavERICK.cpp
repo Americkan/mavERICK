@@ -644,7 +644,11 @@ void physics(Game *g)
 		}
 		//b = b->next;
 	}
-	shipCollision(&game);
+	shipCollisionAlien(&game);
+	shipCollisionGold(&game);
+	shipCollisionTert(&game);
+	shipCollisionShields(&game);
+	shipCollisionBoost(&game);
 	//
 	//Update asteroid positions
 	Asteroid *a = g->ahead;
@@ -667,7 +671,9 @@ void physics(Game *g)
 		a->angle += a->rotate;
 		a = a->next;
 	}
-	bulletToFallAlien(&game);
+	bulletToAlien(&game);
+	bulletToGold(&game);
+	bulletToTert(&game);
 	//
 	//Asteroid collision with bullets?
 	//If collision detected:
