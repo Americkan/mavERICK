@@ -92,7 +92,7 @@ void MaverickScoreText();
 void MaverickUpdate();
 
 void MaverickShip();
-void MaverickMoveAlien();
+void MaverickMoveAlien(Game *g);
 void MaverickEnemyONE();
 void MaverickCreateAliens(Game *g, int);
 void MaverickDrawAliens(Game *g);
@@ -693,7 +693,7 @@ void MaverickShip()
     }
 }
 
-void MaverickMoveAlien() 
+void MaverickMoveAlien(Game *g) 
 {
     //int addgrav = 1;
     alien.pos[0] += alien.vel[0] - rnd() * 5;
@@ -723,6 +723,7 @@ void MaverickMoveAlien()
     //if (addgrav) {
     //	alien.vel[1] -= 0.75;
     //}
+    g->alienShip = &alien;
 }
 
 void MaverickCreateAliens(Game *g, const int n) //Taken from bigfoot framework
