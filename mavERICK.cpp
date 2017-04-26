@@ -607,7 +607,7 @@ void physics(Game *g)
 		g->ship.pos[1] -= (float)yres;
 	}
 
-	MaverickMoveAlien();
+	MaverickMoveAlien(g);
 
 	//
 	//
