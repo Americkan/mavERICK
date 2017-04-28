@@ -340,11 +340,13 @@ extern void showHighScores(int);
 extern void showScores();
 
 extern void shipCollisionAlien(Game *);
+extern void shipCollisionMoving(Game *);
 extern void shipCollisionGold(Game *);
 extern void shipCollisionTert(Game *);
 extern void shipCollisionShields(Game *);
 extern void shipCollisionBoost(Game *);
 extern void bulletToAlien(Game *);
+extern void bulletToMoving(Game *);
 extern void bulletToTert(Game *);
 extern void bulletToGold(Game *);
 

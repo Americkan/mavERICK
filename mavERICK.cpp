@@ -646,6 +646,7 @@ void physics(Game *g)
 		//b = b->next;
 	}
 	shipCollisionAlien(&game);
+	shipCollisionMoving(&game);
 	shipCollisionGold(&game);
 	shipCollisionTert(&game);
 	shipCollisionShields(&game);
@@ -673,6 +674,7 @@ void physics(Game *g)
 		a = a->next;
 	}
 	bulletToAlien(&game);
+	bulletToMoving(&game);
 	bulletToGold(&game);
 	bulletToTert(&game);
 	//showScores();

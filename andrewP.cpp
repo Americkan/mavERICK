@@ -36,9 +36,13 @@ void showHighScores(int);
 void shipCollisionAlien(Game);
 void shipCollisionGold(Game);
 void shipCollisionTert(Game);
+void shipCollisionMoving(Game);
 void shipCollisionShields(Game);
 void shipCollisionBoost(Game);
 void bulletToAlien(Game);
+void bulletToMoving(Game);
+void bulletToGold(Game);
+void bulletToTert(Game);
 
 int music = 0;
 int thr = 0;
@@ -276,7 +280,8 @@ void bulletToAlien(Game *g)
 					g->barr[i] = g->barr[--g->nbullets];
 					score += 1000;
 					break;
-				} else if (a->prev != NULL && a->next != NULL) {
+				} else if (a->prev != NULL 
+					&& a->next != NULL) {
 					a->prev->next = a->next;
 					a->next->prev = a->prev;
 					delete a;
@@ -296,6 +301,66 @@ void bulletToAlien(Game *g)
 	}
 	return;
 }
+
+void bulletToMoving(Game *g)
+{
+	Flt d0, d1, dist;
+	
+	t_alien *ma = g->alienShip;
+	//t_GoldAlienEnemy *save = ga->next;
+	while (ma) {
+		t_alien *save = ma->next;
+		for (int i = 0; i < g->nbullets; i++) {
+			Bullet *b = &g->barr[i];
+			d0 = b->pos[0] - ma->pos[0];
+			d1 = b->pos[1] - ma->pos[1];
+			dist = (d0*d0 + d1*d1);
+			if (dist < (ma->radius*ma->radius)) {
+				if (ma->prev == NULL && ma->next == NULL) {
+					g->alienShip = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->prev == NULL) {
+					g->alienShip = ma->next;
+					ma->next->prev = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->next == NULL) {
+					ma->prev->next = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->prev != NULL 
+					&& ma->next != NULL) {
+					ma->prev->next = ma->next;
+					ma->next->prev = ma->prev;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				}
+				//delete ga;
+				//ga = NULL;
+				//g->barr[i] = g->barr[--g->nbullets];
+				//score += 10000;
+			}
+			//a = a->next;
+			//ga = savea;
+		}
+		ma = save;
+	}
+	return;
+}
+
 void bulletToTert(Game *g)
 {
 	Flt d0, d1, dist;
@@ -333,7 +398,8 @@ void bulletToTert(Game *g)
 					g->barr[i] = g->barr[--g->nbullets];
 					score += 500;
 					break;
-				} else if (ta->prev != NULL && ta->next != NULL) {
+				} else if (ta->prev != NULL 
+					&& ta->next != NULL) {
 					ta->prev->next = ta->next;
 					ta->next->prev = ta->prev;
 					delete ta;
@@ -393,7 +459,8 @@ void bulletToGold(Game *g)
 					g->barr[i] = g->barr[--g->nbullets];
 					score += 10000;
 					break;
-				} else if (ga->prev != NULL && ga->next != NULL) {
+				} else if (ga->prev != NULL 
+					&& ga->next != NULL) {
 					ga->prev->next = ga->next;
 					ga->next->prev = ga->prev;
 					delete ga;
@@ -404,8 +471,8 @@ void bulletToGold(Game *g)
 				}
 				//delete ga;
 				//ga = NULL;
-				g->barr[i] = g->barr[--g->nbullets];
-				score += 10000;
+				//g->barr[i] = g->barr[--g->nbullets];
+				//score += 10000;
 			}
 			//a = a->next;
 			//ga = savea;
@@ -537,6 +604,48 @@ void shipCollisionGold(Game *g)
 			score += 10000;
 		}
 		ga = save;
+	}
+	return;
+}
+
+void shipCollisionMoving(Game *g)
+{
+	Flt d0, d1, dist;
+
+	t_alien *ma = g->alienShip;
+	//t_GoldAlienEnemy *save = ga->next;
+	while (ma) {
+		t_alien *save = ma->next;
+		d0 = ma->pos[0] - g->ship.pos[0];
+		d1 = ma->pos[1] - g->ship.pos[1];
+		dist = (d0*d0 + d1*d1);
+		if (dist < (g->ship.radius*g->ship.radius)) {
+			MaverickUpdate();
+			if (ma->prev == NULL && ma->next == NULL) {
+				g->alienShip = NULL;
+				delete ma;
+				//ga = NULL;
+			} else if (ma->prev == NULL) {
+				//ga->next->prev = NULL;
+				g->alienShip = ma->next;
+				ma->next->prev = NULL;
+				delete ma;
+				//ga = NULL;
+			} else if (ma->next == NULL) {
+				ma->prev->next = NULL;
+				delete ma;
+				//ga = NULL;
+			} else if (ma->next != NULL && ma->prev != NULL) {
+				ma->prev->next = ma->next;
+				ma->next->prev = ma->prev;
+				delete ma;
+				//ga = NULL;
+			}
+			//delete a;
+			//ga = NULL;
+			score += 3000;
+		}
+		ma = save;
 	}
 	return;
 }
