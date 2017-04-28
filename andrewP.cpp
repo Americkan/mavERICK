@@ -551,7 +551,7 @@ void shipCollisionShields(Game *g)
 		d1 = s->pos[1] - g->ship.pos[1];
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
-			//MaverickUpdate();
+			MaverickUpdateShields();
 			if (s->prev == NULL) {
 				if (s->next == NULL) {
 					g->shieldsFalling = NULL;
@@ -585,7 +585,7 @@ void shipCollisionBoost(Game *g)
 		d1 = b->pos[1] - g->ship.pos[1];
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
-			//MaverickUpdate();
+			MaverickUpdateBoost();
 			if (b->prev == NULL) {
 				if (b->next == NULL) {
 					g->boostFalling = NULL;
