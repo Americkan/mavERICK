@@ -123,8 +123,18 @@ struct Asteroid {
 };
 
 typedef struct t_alien {
-    Vec pos;
-    Vec vel;
+	int type;
+	int linewidth;
+	int sound;
+	Vec pos;
+	Vec lastpos;
+	Vec vel;
+	Vec maxvel;
+	Vec force;
+	Flt radius;
+	float length;
+	struct t_alien *prev;
+	struct t_alien *next;
 } Alien;
 //Alien alien;
 
