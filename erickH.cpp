@@ -96,8 +96,14 @@ void MaverickDecreaseBoost();
 
 void MaverickShip();
 void MaverickMoveAlien(Game *g);
-void MaverickMakeEnemyONE(Game *g, int);
+
+void MaverickMakeEnemyONE(Game *g);
 void MaverickEnemyONE(Game *g);
+void MaverickMakeEnemyTWO(Game *g);
+void MaverickEnemyTWO(Game *g);
+void MaverickMakeEnemyTHREE(Game *g);
+void MaverickEnemyTHREE(Game *g);
+
 void MaverickCreateAliens(Game *g, int);
 void MaverickDrawAliens(Game *g);
 void MaverickDeleteAliens(AlienEnemy *node, Game *g);
@@ -113,6 +119,8 @@ void MaverickDeleteShields(Shields *node, Game *g);
 void MaverickPopulateEnemies();
 unsigned char *buildAlphaData(Ppmimage *img);
 Alien alien;
+Alien2 alien2;
+Alien3 alien3;
 AlienEnemy *alienhead = NULL;
 GoldAlienEnemy *goldalienhead = NULL;
 AlienTertiary *alientertiary = NULL;
@@ -412,10 +420,10 @@ void MaverickShield()
     }
 }
 
-void MaverickMakeEnemyONE(Game *g, int amount) 
+void MaverickMakeEnemyONE(Game *g) 
 {
     int i;
-    for (i = 0; i < amount; i++) {
+    for (i = 0; i < 1; i++) {
 	Alien *node = new Alien; //(Shields *)malloc(sizeof(Shields));
 	if (node == NULL) {
 	    Log("error allocating node.\n");
@@ -442,8 +450,9 @@ void MaverickMakeEnemyONE(Game *g, int amount)
 	}
 	
 	g->alienShip = node;
+    }
 }
-}
+
 void MaverickEnemyONE(Game *g) 
 {
     if (enemy1) {
@@ -452,6 +461,116 @@ void MaverickEnemyONE(Game *g)
         glPushMatrix();
         //glTranslatef(xres - 100, yres - 400, 0.0f);
 	glTranslatef(g->alienShip[0].pos[0], g->alienShip[0].pos[1], 0.0f);
+        glBindTexture(GL_TEXTURE_2D, silhouetteAlienSecondary);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid, -wid);
+        glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, wid);
+        glTexCoord2f(1.0f, 0.0f); glVertex2i(wid, wid);
+        glTexCoord2f(1.0f, 1.0f); glVertex2i(wid, -wid);
+        glEnd();
+	glDisable(GL_ALPHA_TEST);
+        glPopMatrix();
+    }
+}
+
+void MaverickMakeEnemyTWO(Game *g) 
+{
+    int i;
+    for (i = 0; i < 1; i++) {
+	Alien2 *node = new Alien2; //(Shields *)malloc(sizeof(Shields));
+	if (node == NULL) {
+	    Log("error allocating node.\n");
+	    exit(EXIT_FAILURE);
+	}
+	
+	node->radius = 30.0f;
+	node->prev = NULL;
+	node->next = NULL;
+	node->sound=0;
+	node->pos[0] = xres - 200;
+	node->pos[1] = yres - 500;
+	VecCopy(node->pos, node->lastpos);
+	node->vel[0] = 5;
+	node->vel[1] = 10;
+	node->linewidth = enemyImage->width;
+	//larger linewidth = faster speed
+	node->maxvel[1] = (float) (node->linewidth*16);
+	node->length = node->maxvel[1] * 0.2f;
+	//put raindrop into linked list
+	node->next = g->alienShip2;
+	if (g->alienShip2 != NULL) {
+	    g->alienShip2->prev = node;
+	}
+	
+	g->alienShip2 = node;
+    }
+}
+
+void MaverickEnemyTWO(Game *g) 
+{
+    if (enemy1) {
+	//35.0
+        float wid = 60.0f;
+        glPushMatrix();
+        //glTranslatef(xres - 100, yres - 400, 0.0f);
+	glTranslatef(g->alienShip2[0].pos[0], g->alienShip2[0].pos[1], 0.0f);
+        glBindTexture(GL_TEXTURE_2D, silhouetteAlienSecondary);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid, -wid);
+        glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, wid);
+        glTexCoord2f(1.0f, 0.0f); glVertex2i(wid, wid);
+        glTexCoord2f(1.0f, 1.0f); glVertex2i(wid, -wid);
+        glEnd();
+	glDisable(GL_ALPHA_TEST);
+        glPopMatrix();
+    }
+}
+
+void MaverickMakeEnemyTHREE(Game *g) 
+{
+    int i;
+    for (i = 0; i < 1; i++) {
+	Alien3 *node = new Alien3; //(Shields *)malloc(sizeof(Shields));
+	if (node == NULL) {
+	    Log("error allocating node.\n");
+	    exit(EXIT_FAILURE);
+	}
+	
+	node->radius = 30.0f;
+	node->prev = NULL;
+	node->next = NULL;
+	node->sound=0;
+	node->pos[0] = xres - 300;
+	node->pos[1] = yres - 600;
+	VecCopy(node->pos, node->lastpos);
+	node->vel[0] = 5;
+	node->vel[1] = 10;
+	node->linewidth = enemyImage->width;
+	//larger linewidth = faster speed
+	node->maxvel[1] = (float) (node->linewidth*16);
+	node->length = node->maxvel[1] * 0.2f;
+	//put raindrop into linked list
+	node->next = g->alienShip3;
+	if (g->alienShip3 != NULL) {
+	    g->alienShip3->prev = node;
+	}
+	
+	g->alienShip3 = node;
+    }
+}
+
+void MaverickEnemyTHREE(Game *g) 
+{
+    if (enemy1) {
+	//35.0
+        float wid = 60.0f;
+        glPushMatrix();
+        //glTranslatef(xres - 100, yres - 400, 0.0f);
+	glTranslatef(g->alienShip3[0].pos[0], g->alienShip3[0].pos[1], 0.0f);
         glBindTexture(GL_TEXTURE_2D, silhouetteAlienSecondary);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.0f);
