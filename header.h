@@ -165,7 +165,7 @@ typedef struct t_alien3 {
 	Flt radius;
 	float length;
 	struct t_alien3 *prev;
-	struct t_alien2 *next;
+	struct t_alien3 *next;
 } Alien3;
 
 typedef struct t_AlienEnemy {
@@ -333,8 +333,13 @@ extern void MaverickUpdateShields();
 extern void MaverickUpdateBoost();
 extern void MaverickDecreaseBoost();
 
-extern void MaverickMakeEnemyONE(Game *g, int);
+extern void MaverickMakeEnemyONE(Game *g);
 extern void MaverickEnemyONE(Game *g);
+extern void MaverickMakeEnemyTWO(Game *g);
+extern void MaverickEnemyTWO(Game *g);
+extern void MaverickMakeEnemyTHREE(Game *g);
+extern void MaverickEnemyTHREE(Game *g);
+
 extern void MaverickMoveAlien(Game *g);
 
 extern void MaverickCreateAliens(Game *g, int);
