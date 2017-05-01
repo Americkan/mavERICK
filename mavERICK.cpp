@@ -609,6 +609,8 @@ void physics(Game *g)
 	}
 
 	MaverickMoveAlien(g);
+	MaverickMoveAlien2(g);
+	MaverickMoveAlien3(g);
 
 	//
 	//
