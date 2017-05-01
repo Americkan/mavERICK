@@ -341,6 +341,11 @@ extern void MaverickMakeEnemyTHREE(Game *g);
 extern void MaverickEnemyTHREE(Game *g);
 
 extern void MaverickMoveAlien(Game *g);
+extern void MaverickMoveAlien2(Game *g);
+extern void MaverickMoveAlien3(Game *g); 
+extern void MaverickDeleteAlien(Alien *node, Game *g);
+extern void MaverickDeleteAlien2(Alien2 *node, Game *g);
+extern void MaverickDeleleAlien3(Alien3 *node, Game *g);
 
 extern void MaverickCreateAliens(Game *g, int);
 extern void MaverickDrawAliens(Game *g);
