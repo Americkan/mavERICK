@@ -881,10 +881,14 @@ void render(Game *g)
 	//MaverickShield();
 	//MaverickShip();
 	if (something == 1) {
-	    MaverickMakeEnemyONE(g, 2);
+	    MaverickMakeEnemyONE(g);
+	    MaverickMakeEnemyTWO(g);
+	    MaverickMakeEnemyTHREE(g);
 	    something = 0;
 	}
 	MaverickEnemyONE(g);
+	MaverickEnemyTWO(g);
+	MaverickEnemyTHREE(g);
 	//MaverickPopulateEnemies();
 	if (x % 100 == 0) {
 	    MaverickCreateAliens(g, 10);
