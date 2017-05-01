@@ -96,6 +96,8 @@ void MaverickDecreaseBoost();
 
 void MaverickShip();
 void MaverickMoveAlien(Game *g);
+void MaverickMoveAlien2(Game *g);
+void MaverickMoveAlien3(Game *g);
 
 void MaverickMakeEnemyONE(Game *g);
 void MaverickEnemyONE(Game *g);
@@ -103,6 +105,10 @@ void MaverickMakeEnemyTWO(Game *g);
 void MaverickEnemyTWO(Game *g);
 void MaverickMakeEnemyTHREE(Game *g);
 void MaverickEnemyTHREE(Game *g);
+
+void MaverickDeleteEnemyONE(Alien *node, Game *g);
+void MaverickDeleteEnemyTWO(Alien2 *node, Game *g);
+void MaverickDeleteEnemyTHREE(Alien3 *node, Game *g);
 
 void MaverickCreateAliens(Game *g, int);
 void MaverickDrawAliens(Game *g);
@@ -865,6 +871,138 @@ void MaverickMoveAlien(Game *g)
     //	alien.vel[1] -= 0.75;
     //}
     //g->alienShip[0] = &alien;
+}
+
+void MaverickMoveAlien2(Game *g) 
+{
+    //int addgrav = 1;
+    g->alienShip2[0].pos[0] += g->alienShip2[0].vel[0] - rnd() * 5;
+    g->alienShip2[0].pos[1] += g->alienShip2[0].vel[1] - rnd() * 5;
+    if ((g->alienShip2[0].pos[0] < 5) ||
+	    (g->alienShip2[0].pos[0] > (float)xres+10.0)) {
+	if(g->alienShip2[0].pos[0] < 5) {
+	    g->alienShip2[0].pos[0] = 6;
+	}
+	else if(g->alienShip2[0].pos[0] > (float)xres+14.0) {
+	    g->alienShip2[0].pos[0] = (float)xres+13.0;
+	}
+	g->alienShip2[0].vel[0] = -g->alienShip2[0].vel[0];
+	//addgrav = 0;
+    }
+    if ((g->alienShip2[0].pos[1] < 5) || 
+	    (g->alienShip2[0].pos[1] >= (float)yres)) {
+	if(g->alienShip2[0].pos[1] < 5) {
+	    g->alienShip2[0].pos[1] =6;
+	}
+	else if(g->alienShip2[0].pos[1] > (float)yres) {
+	    g->alienShip2[0].pos[1] = (float)yres - 130.0;
+	}
+	g->alienShip2[0].vel[1] = -g->alienShip2[0].vel[1];
+	//addgrav = 0; 
+    }
+    //if (addgrav) {
+    //	alien.vel[1] -= 0.75;
+    //}
+    //g->alienShip[0] = &alien;
+}
+
+void MaverickMoveAlien3(Game *g) 
+{
+    //int addgrav = 1;
+    g->alienShip3[0].pos[0] += g->alienShip3[0].vel[0] - rnd() * 5;
+    g->alienShip3[0].pos[1] += g->alienShip3[0].vel[1] - rnd() * 5;
+    if ((g->alienShip3[0].pos[0] < 5) ||
+	    (g->alienShip3[0].pos[0] > (float)xres+10.0)) {
+	if(g->alienShip3[0].pos[0] < 5) {
+	    g->alienShip3[0].pos[0] = 6;
+	}
+	else if(g->alienShip3[0].pos[0] > (float)xres+14.0) {
+	    g->alienShip3[0].pos[0] = (float)xres+13.0;
+	}
+	g->alienShip3[0].vel[0] = -g->alienShip3[0].vel[0];
+	//addgrav = 0;
+    }
+    if ((g->alienShip3[0].pos[1] < 5) || 
+	    (g->alienShip3[0].pos[1] >= (float)yres)) {
+	if(g->alienShip3[0].pos[1] < 5) {
+	    g->alienShip3[0].pos[1] =6;
+	}
+	else if(g->alienShip3[0].pos[1] > (float)yres) {
+	    g->alienShip3[0].pos[1] = (float)yres - 130.0;
+	}
+	g->alienShip3[0].vel[1] = -g->alienShip3[0].vel[1];
+	//addgrav = 0; 
+    }
+    //if (addgrav) {
+    //	alien.vel[1] -= 0.75;
+    //}
+    //g->alienShip[0] = &alien;
+}
+
+void MaverickDeleteEnemyONE(Alien *node, Game *g)
+{
+	if (node->prev == NULL && node->next == NULL) {
+	    g->alienShip = NULL;
+	}
+	else if (node->prev == NULL) {
+	    g->alienShip = node->next;
+	    node->next->prev = NULL;
+	}
+	else if (node->next == NULL) {
+	    node->prev->next = NULL;
+	}
+
+	else {
+	    node->next->prev = node->prev;
+	    node->prev->next = node->next;
+	}
+
+	delete node;
+	node = NULL;
+}
+
+void MaverickDeleteEnemyTWO(Alien2 *node, Game *g)
+{
+	if (node->prev == NULL && node->next == NULL) {
+	    g->alien2Ship = NULL;
+	}
+	else if (node->prev == NULL) {
+	    g->alienShip2 = node->next;
+	    node->next->prev = NULL;
+	}
+	else if (node->next == NULL) {
+	    node->prev->next = NULL;
+	}
+
+	else {
+	    node->next->prev = node->prev;
+	    node->prev->next = node->next;
+	}
+
+	delete node;
+	node = NULL;
+}
+
+void MaverickDeleteEnemyTHREE(Alien3 *node, Game *g)
+{
+	if (node->prev == NULL && node->next == NULL) {
+	    g->alienShip3 = NULL;
+	}
+	else if (node->prev == NULL) {
+	    g->alienShip3 = node->next;
+	    node->next->prev = NULL;
+	}
+	else if (node->next == NULL) {
+	    node->prev->next = NULL;
+	}
+
+	else {
+	    node->next->prev = node->prev;
+	    node->prev->next = node->next;
+	}
+
+	delete node;
+	node = NULL;
 }
 
 void MaverickCreateAliens(Game *g, const int n) //Taken from bigfoot framework
