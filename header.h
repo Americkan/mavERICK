@@ -138,6 +138,36 @@ typedef struct t_alien {
 } Alien;
 //Alien alien;
 
+typedef struct t_alien2 {
+	int type;
+	int linewidth;
+	int sound;
+	Vec pos;
+	Vec lastpos;
+	Vec vel;
+	Vec maxvel;
+	Vec force;
+	Flt radius;
+	float length;
+	struct t_alien2 *prev;
+	struct t_alien2 *next;
+} Alien2;
+
+typedef struct t_alien3 {
+	int type;
+	int linewidth;
+	int sound;
+	Vec pos;
+	Vec lastpos;
+	Vec vel;
+	Vec maxvel;
+	Vec force;
+	Flt radius;
+	float length;
+	struct t_alien3 *prev;
+	struct t_alien2 *next;
+} Alien3;
+
 typedef struct t_AlienEnemy {
 	int type;
 	int linewidth;
@@ -241,6 +271,8 @@ struct Game {
 	Bullet *barr;
 	Asteroid *ahead;
 	t_alien *alienShip;
+	t_alien2 *alienShip2;
+	t_alien3 *alienShip3;
 	t_AlienEnemy *alienFalling;
 	t_GoldAlienEnemy *goldalienFalling;
 	t_AlienTertiary *alientertiaryFalling;
