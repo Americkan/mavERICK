@@ -959,7 +959,7 @@ void MaverickDeleteEnemyONE(Alien *node, Game *g)
 void MaverickDeleteEnemyTWO(Alien2 *node, Game *g)
 {
 	if (node->prev == NULL && node->next == NULL) {
-	    g->alien2Ship = NULL;
+	    g->alienShip2 = NULL;
 	}
 	else if (node->prev == NULL) {
 	    g->alienShip2 = node->next;
