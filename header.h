@@ -283,6 +283,7 @@ struct Game {
     int nbuttons;
 	int nasteroids;
 	int state_menu;
+    int state_newG;
 	int nbullets;
 	struct timespec bulletTimer;
     struct timespec mouseThrustTimer;
@@ -296,6 +297,7 @@ struct Game {
 		nasteroids = 0;
 		nbullets = 0;
         state_menu = 1;
+        state_newG = 0;
         nbuttons = 0;
         mouseThrustOn = false;
         mouseControl = false;
@@ -397,10 +399,12 @@ extern void bulletToGold(Game *);
 //Erick T's Prototypes
 extern void mainMenu( int, int, Game*);
 extern int init_ButtonsMain(Game*);
-extern void newGame( char[], int, int, int);
+extern void newGame(int, int);
+extern int userName(int);
 extern void gameSettings( int, int );
 extern void gameScores( int, int );
 extern void gameCredits( int, int );
+extern int check_MainButtons(XEvent*, Game*, int, int ,int);
 
 
 //Unknown

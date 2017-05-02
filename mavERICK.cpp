@@ -73,7 +73,7 @@ const Flt MINIMUM_ASTEROID_SIZE = 60.0;
 const int MAX_BULLETS = 1000;
 
 
-class Input {                //input at end of file
+/*class Input {                //input at end of file
   public:
     char text[100];
     int size;
@@ -81,7 +81,7 @@ class Input {                //input at end of file
       text[0] = '\0';
       size = 12;
     }
-}input;
+}input;*/
 
 
 int keys[65536];
@@ -103,7 +103,7 @@ int main(void)
 	srand(time(NULL));
 	clock_gettime(CLOCK_REALTIME, &timePause);
 	clock_gettime(CLOCK_REALTIME, &timeStart);
-    	set_mouse_position(100,100);
+    set_mouse_position(100,100);
 	int done=0;
 	while (!done) {
 		while (XPending(dpy)) {
@@ -111,7 +111,6 @@ int main(void)
 			XNextEvent(dpy, &e);
 			check_resize(&e);
 			done = check_mouse(&e, &game);
-			//done = check_keys(&e);
 			check_keys(&e);
 		}
 		clock_gettime(CLOCK_REALTIME, &timeCurrent);
@@ -216,7 +215,7 @@ void check_resize(XEvent *e)
 
 void init(Game *g) {
     //g->nbuttons = init_ButtonsMain(g);
-    cout << "\t\t\tbuttons: " << g->nbuttons << endl;
+    //cout << "\t\t\tbuttons: " << g->nbuttons << endl;
 	//build 10 asteroids...
 	for (int j=0; j<10; j++) {
 		Asteroid *a = new Asteroid;
@@ -303,7 +302,7 @@ int check_mouse(XEvent *e, Game *g)
 	static int savey = 0;
 
     //-menu
-    int i, x, y;
+    //int i, x, y;
     int lbutton = 0;
     int rbutton = 0;
     //-
@@ -406,8 +405,10 @@ int check_mouse(XEvent *e, Game *g)
 		    savey=100;
 	    }
     }
+    int done = check_MainButtons(e, g, xres, yres, lbutton);
+    return done?done:0;
     //-game
-    x = e->xbutton.x;
+/*    x = e->xbutton.x;
     y = e->xbutton.y;
     y = yres - y;
     g->nbuttons = init_ButtonsMain(g);
@@ -446,8 +447,7 @@ int check_mouse(XEvent *e, Game *g)
         }
       }
     }
-    //-
-    return 0;
+    //-*/
 }
 
 
@@ -483,6 +483,9 @@ void check_keys(XEvent *e)
 		return;
 	}
 	if (shift){}
+    if (game.state_newG) {
+        game.state_newG = userName(key);
+    } else {
 	switch(key) {
 		case XK_Escape:
 			//return 1;
@@ -494,7 +497,7 @@ void check_keys(XEvent *e)
 		case XK_m:  
 			break;
         case XK_x:
-            strcat(input.text,"x"); //input to text box
+           // strcat(input.text,"x"); //input to text box
             break;
 		case XK_f:
 			break;
@@ -507,7 +510,7 @@ void check_keys(XEvent *e)
 		case XK_minus:
 			break;
            
-	}
+	}}
 	return;
 }
 
@@ -1024,14 +1027,15 @@ void render(Game *g)
 		glEnd();
 	}
 
+	glDisable(GL_TEXTURE_2D);
     if (state_help) {
-		glDisable(GL_TEXTURE_2D);
+	//	glDisable(GL_TEXTURE_2D);
 		help(yres);
 		showHighScores(yres);
     }
 
     if (game.state_menu) {
-      glDisable(GL_TEXTURE_2D);
+   //   glDisable(GL_TEXTURE_2D);
       
       mainMenu(xres, yres, g);
       //newGame(input.text, input.size, xres, yres);
@@ -1039,6 +1043,9 @@ void render(Game *g)
       //gameScores(xres, yres);
       //gameCredits(xres, yres);
 
+    }
+    if (game.state_newG) {
+        newGame(xres, yres);
     }
 }
 
