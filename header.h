@@ -285,6 +285,7 @@ struct Game {
 	int nasteroids;
 	int state_menu;
     int state_newG;
+    int state_sett;
 	int nbullets;
 	struct timespec bulletTimer;
     struct timespec mouseThrustTimer;
@@ -299,6 +300,7 @@ struct Game {
 		nbullets = 0;
         state_menu = 1;
         state_newG = 0;
+        state_sett = 0;
         nbuttons = 0;
         mouseThrustOn = false;
         mouseControl = false;

@@ -322,8 +322,6 @@ void newGame(int xres, int yres)
     int cx = xres / 2;
     int cy = yres / 2;
 
-
-
     glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -469,8 +467,35 @@ void drawShipsOptions(int xres, int yres)
 }
 void gameSettings(int xres, int yres)
 {
-  int sum = xres + yres;
-  if(sum){}
+    Rect m;
+    int cx = xres / 2;
+    int cy = yres / 2;
+
+    glEnable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+    glColor3f(0.0, 0.1, 0.7); 
+    glBegin(GL_POLYGON);
+    glVertex2i(cx - 40 , cy + 40); //-
+    glVertex2i(cx - 20 , cy + 50); //- 
+    glVertex2i(cx + 115, cy + 50); //right-up 
+    glVertex2i(cx + 115, cy - 110); 
+    glVertex2i(cx + 105, cy - 120);  
+    glVertex2i(cx - 20 , cy - 120);  
+    glVertex2i(cx - 40 , cy - 110);  
+    glVertex2i(cx - 130, cy - 110);  
+    glVertex2i(cx - 130, cy + 40); //-
+    glEnd();
+    
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_BLEND);
+    
+    glEnable(GL_TEXTURE_2D);
+    m.bot = cy + 17;
+    m.left = cx-20;
+    m.center = 0;
+    ggprint17(&m, 0,  0x0000000, "SETTINGS");
 }
 void gameScores(int xres, int yres) 
 {
@@ -504,12 +529,13 @@ int check_MainButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
           if (lbutton) {
             switch (i) {
               case 0:
-                cout << "NEW()\n";
+                //cout << "NEW()\n";
                 g->state_newG = 1;
                 g->state_menu = 0;
                 break;
               case 1:
-                cout << "SETT()\n";
+                g->state_sett = 1;
+                //cout << "SETT()\n";
                 break;
               case 2:
                 cout << "SCORES()\n";
@@ -553,22 +579,22 @@ void check_NewGButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
                 system(" cp ./assets/ship11.ppm ./assets/ship.ppm");
                 g->state_newG = 0;
                 //g->state_menu = 0;
-              //  return 0;
+                //return 1;
                 break;
               case 1:
                 system("convert ./assets/ship2.png ./assets/ship.ppm");
                 g->state_newG = 0;
-              //  return 1;
+                //return 0;
                 break;
               case 2:
                 system("convert ./assets/ship3.png ./assets/ship.ppm");
                 g->state_newG = 0;
-               // return 2;
+                //return 0;
                 break;
             }
           }
         }
       }
     }
-//    return 0;
+    //return 0;
 }

@@ -366,8 +366,8 @@ int check_mouse(XEvent *e, Game *g)
 			return 0;		
 		//std::cout << "savex: " << savex << std::endl << std::flush;
 		//std::cout << e->xbutton.x << "-" << e->xbutton.y << std::endl;
-        cout << "This is Erick T: ERICK H call or text 661 3764277" << endl;
-        cout << "I made changes to your MaverickShip function" << endl;
+        //cout << "This is Erick T: ERICK H call or text 661 3764277" << endl;
+        //cout << "I made changes to your MaverickShip function" << endl;
 		//std::flush;
 
         if (g->mouseControl) {
@@ -454,16 +454,18 @@ void check_keys(XEvent *e)
 		case XK_Escape:
 			//return 1;
             game.state_menu ^= 1;
+            game.state_newG = 0;
+            game.state_sett = 0;
             break;
         case XK_h:
-	    state_help ^= 1;
+	        state_help ^= 1;
             break;
-	case XK_g:
-	    gmode ^= 1;
-	    break;
-	case XK_p:
-	    pierce ^= 1;
-	    break;
+	    case XK_g:
+	        gmode ^= 1;
+	        break;
+	    case XK_p:
+	        pierce ^= 1;
+	        break;
         case XK_x:
            // strcat(input.text,"x"); //input to text box
             break;
@@ -1054,9 +1056,10 @@ void render(Game *g)
         game.state_menu = 0;
         newGame(xres, yres);
         drawShipsOptions(xres, yres);
-
-//        int ship = check_MainButtons(e, g, xres, yres, lbutton);
-//        cout << "\t" << ship << endl;;
+    }
+    if (game.state_sett) {
+        game.state_menu = 0;
+        gameSettings(xres, yres);
     }
 }
 
