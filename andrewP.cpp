@@ -1,6 +1,6 @@
 //Andrew Parker
 //March 2, 2017
-//Group 6 - Lab 5
+//Group 6
 //
 //
 #include <iostream>
@@ -41,6 +41,8 @@ void shipCollisionShields(Game);
 void shipCollisionBoost(Game);
 void bulletToAlien(Game);
 void bulletToMoving(Game);
+void bulletToMoving2(Game);
+void bulletToMoving3(Game);
 void bulletToGold(Game);
 void bulletToTert(Game);
 
@@ -187,7 +189,11 @@ void unzip()
 
 void delete_sounds()
 {
-	system("rm -R sounds");
+	remove("sounds/8BitBack.wav");
+	remove("sounds/blaster.wav");
+	remove("sounds/explosion.wav");
+	remove("sounds/thrusters.wav");
+	remove("sounds");
 	return;
 }
 #endif
@@ -248,7 +254,6 @@ void bulletToAlien(Game *g)
 {
 	Flt d0, d1, dist;
 	t_AlienEnemy *a = g->alienFalling;
-	//t_AlienEnemy *save = a->next;
 	while (a) {
 		t_AlienEnemy *save = a->next;
 		for (int i = 0; i < g->nbullets; i++) {
@@ -307,16 +312,21 @@ void bulletToMoving(Game *g)
 	Flt d0, d1, dist;
 	
 	t_alien *ma = g->alienShip;
-	//t_GoldAlienEnemy *save = ga->next;
-	while (ma) {
-		t_alien *save = ma->next;
+	//while (ma) {
+	//	t_alien *save = ma->next;
 		for (int i = 0; i < g->nbullets; i++) {
 			Bullet *b = &g->barr[i];
 			d0 = b->pos[0] - ma->pos[0];
 			d1 = b->pos[1] - ma->pos[1];
 			dist = (d0*d0 + d1*d1);
 			if (dist < (ma->radius*ma->radius)) {
-				if (ma->prev == NULL && ma->next == NULL) {
+			    if (ma != NULL) {
+			    	MaverickDeleteEnemyONE(ma, g);
+				g->barr[i] = g->barr[--g->nbullets];
+				score += 3000;
+				break;
+			    }
+				/*if (ma->prev == NULL && ma->next == NULL) {
 					g->alienShip = NULL;
 					delete ma;
 					//ga = NULL;
@@ -347,17 +357,139 @@ void bulletToMoving(Game *g)
 					g->barr[i] = g->barr[--g->nbullets];
 					score += 3000;
 					break;
-				}
+				}*/
 				//delete ga;
 				//ga = NULL;
 				//g->barr[i] = g->barr[--g->nbullets];
 				//score += 10000;
+
 			}
 			//a = a->next;
 			//ga = savea;
 		}
-		ma = save;
-	}
+	//	ma = save;
+	//}
+	return;
+}
+
+void bulletToMoving2(Game *g)
+{
+	Flt d0, d1, dist;
+	
+	t_alien2 *ma2 = g->alienShip2;
+	//while (ma2) {
+		//t_alien2 *save = ma2->next;
+		for (int i = 0; i < g->nbullets; i++) {
+			Bullet *b = &g->barr[i];
+			d0 = b->pos[0] - ma2->pos[0];
+			d1 = b->pos[1] - ma2->pos[1];
+			dist = (d0*d0 + d1*d1);
+			if (dist < (ma2->radius*ma2->radius)) {
+			    MaverickDeleteEnemyTWO(ma2, g);
+				/*if (ma->prev == NULL && ma->next == NULL) {
+					g->alienShip = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->prev == NULL) {
+					g->alienShip = ma->next;
+					ma->next->prev = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->next == NULL) {
+					ma->prev->next = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->prev != NULL 
+					&& ma->next != NULL) {
+					ma->prev->next = ma->next;
+					ma->next->prev = ma->prev;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				}*/
+				//delete ga;
+				//ga = NULL;
+				//g->barr[i] = g->barr[--g->nbullets];
+				//score += 10000;
+
+			}
+			//a = a->next;
+			//ga = savea;
+		}
+		//ma2 = save;
+	//}
+	return;
+}
+
+void bulletToMoving3(Game *g)
+{
+	Flt d0, d1, dist;
+	
+	t_alien3 *ma3 = g->alienShip3;
+	//t_GoldAlienEnemy *save = ga->next;
+	//while (ma3) {
+		//t_alien3 *save = ma3->next;
+		for (int i = 0; i < g->nbullets; i++) {
+			Bullet *b = &g->barr[i];
+			d0 = b->pos[0] - ma3->pos[0];
+			d1 = b->pos[1] - ma3->pos[1];
+			dist = (d0*d0 + d1*d1);
+			if (dist < (ma3->radius*ma3->radius)) {
+			    MaverickDeleteEnemyTHREE(ma3, g);
+				/*if (ma->prev == NULL && ma->next == NULL) {
+					g->alienShip = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->prev == NULL) {
+					g->alienShip = ma->next;
+					ma->next->prev = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->next == NULL) {
+					ma->prev->next = NULL;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				} else if (ma->prev != NULL 
+					&& ma->next != NULL) {
+					ma->prev->next = ma->next;
+					ma->next->prev = ma->prev;
+					delete ma;
+					//ga = NULL;
+					g->barr[i] = g->barr[--g->nbullets];
+					score += 3000;
+					break;
+				}*/
+				//delete ga;
+				//ga = NULL;
+				//g->barr[i] = g->barr[--g->nbullets];
+				//score += 10000;
+
+			}
+			//a = a->next;
+			//ga = savea;
+		}
+		//ma3 = save;
+	//}
 	return;
 }
 

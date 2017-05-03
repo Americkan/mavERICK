@@ -345,9 +345,9 @@ extern void MaverickEnemyTHREE(Game *g);
 extern void MaverickMoveAlien(Game *g);
 extern void MaverickMoveAlien2(Game *g);
 extern void MaverickMoveAlien3(Game *g); 
-extern void MaverickDeleteAlien(Alien *node, Game *g);
-extern void MaverickDeleteAlien2(Alien2 *node, Game *g);
-extern void MaverickDeleleAlien3(Alien3 *node, Game *g);
+extern void MaverickDeleteEnemyONE(Alien *node, Game *g);
+extern void MaverickDeleteEnemyTWO(Alien2 *node, Game *g);
+extern void MaverickDeleteEnemyTHREE(Alien3 *node, Game *g);
 
 extern void MaverickCreateAliens(Game *g, int);
 extern void MaverickDrawAliens(Game *g);
@@ -391,6 +391,8 @@ extern void shipCollisionShields(Game *);
 extern void shipCollisionBoost(Game *);
 extern void bulletToAlien(Game *);
 extern void bulletToMoving(Game *);
+extern void bulletToMoving2(Game *);
+extern void bulletToMoving3(Game *);
 extern void bulletToTert(Game *);
 extern void bulletToGold(Game *);
 

@@ -468,11 +468,11 @@ void MaverickMakeEnemyTWO(Game *g)
 	node->prev = NULL;
 	node->next = NULL;
 	node->sound=0;
-	node->pos[0] = xres - 200;
-	node->pos[1] = yres - 500;
+	node->pos[0] = xres - 500;
+	node->pos[1] = yres - 100;
 	VecCopy(node->pos, node->lastpos);
 	node->vel[0] = 5;
-	node->vel[1] = 10;
+	node->vel[1] = -10;
 	node->linewidth = enemyImage->width;
 	//larger linewidth = faster speed
 	node->maxvel[1] = (float) (node->linewidth*16);
@@ -523,11 +523,11 @@ void MaverickMakeEnemyTHREE(Game *g)
 	node->prev = NULL;
 	node->next = NULL;
 	node->sound=0;
-	node->pos[0] = xres - 300;
-	node->pos[1] = yres - 600;
+	node->pos[0] = xres - 1100;
+	node->pos[1] = yres - 300;
 	VecCopy(node->pos, node->lastpos);
-	node->vel[0] = 5;
-	node->vel[1] = 10;
+	node->vel[0] = -5;
+	node->vel[1] = -10;
 	node->linewidth = enemyImage->width;
 	//larger linewidth = faster speed
 	node->maxvel[1] = (float) (node->linewidth*16);
@@ -992,12 +992,12 @@ void MaverickCreateAliens(Game *g, const int n) //Taken from bigfoot framework
 	    exit(EXIT_FAILURE);
 	}
 	    
-	node->radius = 30.0f;
+	node->radius = 25.0f;
 	node->prev = NULL;
 	node->next = NULL;
 	node->sound=0;
 	node->pos[0] = rnd() * (float)xres;
-	node->pos[1] = rnd() * 100.0f + (float) yres;
+	node->pos[1] = rnd() * 500.0f + (float) yres;
 	VecCopy(node->pos, node->lastpos);
 	node->vel[0] = node->vel[1] = 0.0f;
 	node->linewidth = enemyImage->width;
@@ -1021,7 +1021,7 @@ void MaverickDrawAliens(Game *g)
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glPushMatrix();
 	glTranslatef(node->pos[0],node->pos[1],node->pos[2]);
-	node->pos[1] -=5;
+	node->pos[1] -=10;
         if(node->pos[1] <= -10) {
 		MaverickDeleteAliens(node, g);
 	}		
@@ -1103,7 +1103,7 @@ void MaverickDrawGoldAliens(Game *g)
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glPushMatrix();
 	glTranslatef(node->pos[0],node->pos[1],node->pos[2]);
-	node->pos[1] -=5; 
+	node->pos[1] -=15; 
 	if (node->pos[1] <= -10) {
 	    MaverickDeleteGoldAliens(node, g);
 	} 
@@ -1158,7 +1158,7 @@ void MaverickCreateTertiaryAliens(Game *g, const int n)
 	    exit(EXIT_FAILURE);
 	}
 	
-	node->radius = 30.0f;
+	node->radius = 20.0f;
 	node->prev = NULL;
 	node->next = NULL;
 	node->sound=0;
@@ -1166,7 +1166,7 @@ void MaverickCreateTertiaryAliens(Game *g, const int n)
 	node->pos[1] = rnd() * 100.0f + (float) yres;
 	VecCopy(node->pos, node->lastpos);
 	node->vel[0] = node->vel[1] = 0.0f;
-	node->linewidth = enemyImage->width;
+	node->linewidth = enemyImage->width*16;
 	//larger linewidth = faster speed
 	node->maxvel[1] = (float) (node->linewidth*16);
 	node->length = node->maxvel[1] * 0.2f;

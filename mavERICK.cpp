@@ -217,9 +217,9 @@ void init(Game *g) {
     //g->nbuttons = init_ButtonsMain(g);
     //cout << "\t\t\tbuttons: " << g->nbuttons << endl;
 	//build 10 asteroids...
-	for (int j=0; j<10; j++) {
+	for (int j=0; j<0; j++) {
 		Asteroid *a = new Asteroid;
-		a->nverts = 8;
+		a->nverts = 0;
 		a->radius = rnd()*80.0f + 40.0f;
 		Flt r2 = a->radius / 2.0f;
 		Flt angle = 0.0f;
@@ -536,7 +536,7 @@ void deleteAsteroid(Game *g, Asteroid *node)
 void buildAsteroidFragment(Asteroid *ta, Asteroid *a)
 {
 	//build ta from a
-	ta->nverts = 8;
+	ta->nverts = 0;
 	ta->radius = a->radius / 2.0f;
 	Flt r2 = ta->radius / 2.0f;
 	Flt angle = 0.0f;
@@ -621,7 +621,7 @@ void physics(Game *g)
 		//b = b->next;
 	}
 	shipCollisionAlien(&game);
-	shipCollisionMoving(&game);
+	//shipCollisionMoving(&game);
 	shipCollisionGold(&game);
 	shipCollisionTert(&game);
 	shipCollisionShields(&game);
@@ -649,7 +649,7 @@ void physics(Game *g)
 		a = a->next;
 	}
 	bulletToAlien(&game);
-	bulletToMoving(&game);
+	//bulletToMoving(&game);
 	bulletToGold(&game);
 	bulletToTert(&game);
 	//showScores();
