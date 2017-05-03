@@ -365,7 +365,8 @@ int check_mouse(XEvent *e, Game *g)
 		if (++ct < 10)
 			return 0;		
 		//std::cout << "savex: " << savex << std::endl << std::flush;
-		std::cout << e->xbutton.x << "-" << e->xbutton.y << std::endl;
+		//std::cout << e->xbutton.x << "-" << e->xbutton.y << std::endl;
+        cout << "This is Erick T: ERICK H call or text 661 3764277" << endl;
 		//std::flush;
 
         if (g->mouseControl) {
