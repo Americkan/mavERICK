@@ -237,6 +237,7 @@ void init_opengl(void)
     free(silhouetteData);
     //---------------------Basic Ship-------------------------------------------
     //system("convert ./assets/ship.png ./assets/ship.ppm");
+/*
     glGenTextures(1, &silhouetteShip);
     glGenTextures(1, &shipTexture);
     shipImage = ppm6GetImage("./assets/ship.ppm");
@@ -249,7 +250,7 @@ void init_opengl(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, shipW, shipH, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
     free(silhouetteData);
-
+*/
     //---------------------EnemyONE Ship-------------------------------------------
     system("convert ./assets/alienSecondary.png ./assets/alienSecondary.ppm");
     glGenTextures(1, &silhouetteAlienSecondary);
@@ -929,6 +930,18 @@ void MaverickFifthRound()
 void MaverickShip() 
 {
     if (ship) {
+    glGenTextures(1, &silhouetteShip);
+    glGenTextures(1, &shipTexture);
+    shipImage = ppm6GetImage("./assets/ship.ppm");
+    unsigned char *silhouetteData = buildAlphaData(shipImage);
+    int shipW = shipImage->width;
+    int shipH = shipImage->height;
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, shipW, shipH, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
+    free(silhouetteData);
         float wid = 35.0f;
         //glPushMatrix();
         glTranslatef(0, 0, 0);

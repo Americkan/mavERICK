@@ -367,6 +367,7 @@ int check_mouse(XEvent *e, Game *g)
 		//std::cout << "savex: " << savex << std::endl << std::flush;
 		//std::cout << e->xbutton.x << "-" << e->xbutton.y << std::endl;
         cout << "This is Erick T: ERICK H call or text 661 3764277" << endl;
+        cout << "I made changes to your MaverickShip function" << endl;
 		//std::flush;
 
         if (g->mouseControl) {
@@ -408,14 +409,12 @@ int check_mouse(XEvent *e, Game *g)
 	    }
     }
     int done = 0;
-    int ship;
     if (game.state_menu) {
         done = check_MainButtons(e, g, xres, yres, lbutton);
     }
     if (game.state_newG) {
         newGame(xres, yres);
-        //ship = check_NewGButtons(e, g, xres, yres, lbutton);
-        cout << "\t" << ship << endl;;
+        check_NewGButtons(e, g, xres, yres, lbutton);
     }
 
     return done?done:0;
@@ -1054,7 +1053,7 @@ void render(Game *g)
     if (game.state_newG) {
         game.state_menu = 0;
         newGame(xres, yres);
-        //drawShipsOptions(xres, yres);
+        drawShipsOptions(xres, yres);
 
 //        int ship = check_MainButtons(e, g, xres, yres, lbutton);
 //        cout << "\t" << ship << endl;;

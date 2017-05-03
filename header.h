@@ -423,7 +423,7 @@ extern void gameSettings( int, int );
 extern void gameScores( int, int );
 extern void gameCredits( int, int );
 extern int check_MainButtons(XEvent*, Game*, int, int ,int);
-//extern int check_NewGButtons(XEvent*, Game*, int, int, int);
+extern void check_NewGButtons(XEvent*, Game*, int, int, int);
 extern void drawShipsOptions(int xres, int yres);
 
 //Unknown

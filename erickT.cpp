@@ -371,7 +371,6 @@ void newGame(int xres, int yres)
     ggprint13(&m, 0,  0x0000000, " -Choose ship to start playing- ");
 }
 
-/*
 void drawShipsOptions(int xres, int yres)
 {
     glEnable(GL_TEXTURE_2D);
@@ -468,8 +467,6 @@ void drawShipsOptions(int xres, int yres)
     glDisable(GL_ALPHA_TEST);
     glDisable(GL_TEXTURE_2D);
 }
-
-*/
 void gameSettings(int xres, int yres)
 {
   int sum = xres + yres;
@@ -531,7 +528,7 @@ int check_MainButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
     }
     return 0;
 }
-/*
+
 void check_NewGButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
 {
     int x, y, i;
@@ -575,4 +572,3 @@ void check_NewGButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
     }
 //    return 0;
 }
-*/
