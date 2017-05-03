@@ -375,6 +375,13 @@ extern void backGround();
 extern void thrust();
 extern void blaster();
 extern void expl();
+extern void bossMusic();
+extern void deathSound();
+extern void shieldUp();
+extern void score100();
+extern void score250();
+extern void score500();
+extern void score1M();
 extern void unzip();
 extern void delete_sounds();
 #endif

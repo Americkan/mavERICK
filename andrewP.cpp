@@ -21,14 +21,21 @@ using namespace std;
 
 #ifdef USE_OPENAL_SOUND
 void initSound();
-#endif
 void backGround();
 void playBackGround(ALuint);
 void blaster();
-void expl();
+void explosion();
+void bossMusic();
+void deathSound();
+void shieldUp();
+void score100();
+void score250();
+void score500();
+void score1M();
 void unzip();
-void help(int);
 void delete_sounds();
+#endif
+void help(int);
 void getHighScores();
 //void updateHighScores();
 void showScores();
@@ -54,8 +61,8 @@ int sc = 0;
 int score = 0;
 int scoresI[10];
 char scoresC[10][50];
-ALuint alBuffer[4];
-ALuint alSource[4];
+ALuint alBuffer[10];
+ALuint alSource[10];
 
 void help(int yres)
 {
@@ -96,13 +103,25 @@ void initSound()
 	alBuffer[0] = alutCreateBufferFromFile("sounds/8BitBack.wav");
 	alBuffer[1] = alutCreateBufferFromFile("sounds/blaster.wav");
 	alBuffer[2] = alutCreateBufferFromFile("sounds/explosion.wav");
-	alBuffer[3] = alutCreateBufferFromFile("sounds/thrusters.wav");
+	alBuffer[3] = alutCreateBufferFromFile("sounds/BossMusic.wav");
+	alBuffer[4] = alutCreateBufferFromFile("sounds/DeathSound.WAV");
+	alBuffer[5] = alutCreateBufferFromFile("sounds/ShieldPickUp.WAV");
+	alBuffer[6] = alutCreateBufferFromFile("sounds/250KSound.WAV");
+	alBuffer[7] = alutCreateBufferFromFile("sounds/100KSound.WAV");
+	alBuffer[8] = alutCreateBufferFromFile("sounds/500KSound.WAV");
+	alBuffer[9] = alutCreateBufferFromFile("sounds/1MSound.WAV");
 
-	alGenSources(4, alSource);
+	alGenSources(10, alSource);
 	alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
 	alSourcei(alSource[1], AL_BUFFER, alBuffer[1]);
 	alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
 	alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
+	alSourcei(alSource[4], AL_BUFFER, alBuffer[4]);
+	alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
+	alSourcei(alSource[6], AL_BUFFER, alBuffer[6]);
+	alSourcei(alSource[7], AL_BUFFER, alBuffer[7]);
+	alSourcei(alSource[8], AL_BUFFER, alBuffer[8]);
+	alSourcei(alSource[9], AL_BUFFER, alBuffer[9]);
 
 	alSourcef(alSource[0], AL_GAIN, 1.0f);
 	alSourcef(alSource[0], AL_PITCH, 1.0f);
@@ -112,13 +131,37 @@ void initSound()
 	alSourcef(alSource[1], AL_PITCH, 1.0f);
 	alSourcef(alSource[1], AL_LOOPING, AL_FALSE);
 
-	alSourcef(alSource[2], AL_GAIN, 1.0f);
+	alSourcef(alSource[2], AL_GAIN, 0.7f);
 	alSourcef(alSource[2], AL_PITCH, 1.0f);
 	alSourcef(alSource[2], AL_LOOPING, AL_FALSE);
 
 	alSourcef(alSource[3], AL_GAIN, 1.0f);
 	alSourcef(alSource[3], AL_PITCH, 1.0f);
 	alSourcef(alSource[3], AL_LOOPING, AL_FALSE);
+	
+	alSourcef(alSource[4], AL_GAIN, 1.0f);
+	alSourcef(alSource[4], AL_PITCH, 1.0f);
+	alSourcef(alSource[4], AL_LOOPING, AL_FALSE);
+	
+	alSourcef(alSource[5], AL_GAIN, 1.0f);
+	alSourcef(alSource[5], AL_PITCH, 1.0f);
+	alSourcef(alSource[5], AL_LOOPING, AL_FALSE);
+	
+	alSourcef(alSource[6], AL_GAIN, 1.0f);
+	alSourcef(alSource[6], AL_PITCH, 1.0f);
+	alSourcef(alSource[6], AL_LOOPING, AL_FALSE);
+	
+	alSourcef(alSource[7], AL_GAIN, 1.0f);
+	alSourcef(alSource[7], AL_PITCH, 1.0f);
+	alSourcef(alSource[7], AL_LOOPING, AL_FALSE);
+	
+	alSourcef(alSource[8], AL_GAIN, 1.0f);
+	alSourcef(alSource[8], AL_PITCH, 1.0f);
+	alSourcef(alSource[8], AL_LOOPING, AL_FALSE);
+	
+	alSourcef(alSource[9], AL_GAIN, 1.0f);
+	alSourcef(alSource[9], AL_PITCH, 1.0f);
+	alSourcef(alSource[9], AL_LOOPING, AL_FALSE);
 
 	if (alGetError() != AL_NO_ERROR) {
 		cout << "ERROR: setting source\n";
@@ -131,14 +174,28 @@ void backGround()
 		music ^= 1;
 		playBackGround(alSource[0]);
 	} else {
-		alDeleteSources(1, &alSource[0]);
+		
+	    	alDeleteSources(1, &alSource[0]);
 		alDeleteSources(1, &alSource[1]);
 		alDeleteSources(1, &alSource[2]);
 		alDeleteSources(1, &alSource[3]);
+	    	alDeleteSources(1, &alSource[4]);
+		alDeleteSources(1, &alSource[5]);
+		alDeleteSources(1, &alSource[6]);
+		alDeleteSources(1, &alSource[7]);
+		alDeleteSources(1, &alSource[8]);
+		alDeleteSources(1, &alSource[9]);
+		
 		alDeleteBuffers(1, &alBuffer[0]);
 		alDeleteBuffers(1, &alBuffer[1]);
 		alDeleteBuffers(1, &alBuffer[2]);
 		alDeleteBuffers(1, &alBuffer[3]);
+		alDeleteBuffers(1, &alBuffer[4]);
+		alDeleteBuffers(1, &alBuffer[5]);
+		alDeleteBuffers(1, &alBuffer[6]);
+		alDeleteBuffers(1, &alBuffer[7]);
+		alDeleteBuffers(1, &alBuffer[8]);
+		alDeleteBuffers(1, &alBuffer[9]);
 
 		ALCcontext *Context = alcGetCurrentContext();
 		ALCdevice *Device = alcGetContextsDevice(Context);
@@ -164,24 +221,54 @@ void blaster()
 	return;
 }
 
-void expl()
+void explosion()
 {
 	alSourcePlay(alSource[2]);
 	return;
 }
 
-void thrust()
+void bossMusic()
 {
-	if (thr == 0) {
-		alSourcePlay(alSource[3]);
-		thr ^= 1;
-	} else { 
-		alSourceStop(alSource[3]);
-		thr ^= 1;
-	}
+	alSourcePlay(alSource[3]);
 	return;
-
 }
+
+void deathSound()
+{
+	alSourcePlay(alSource[4]);
+	return;
+}
+
+void shieldUp()
+{
+	alSourcePlay(alSource[5]);
+	return;
+}
+
+void score100()
+{
+	alSourcePlay(alSource[6]);
+	return;
+}
+
+void score250()
+{
+	alSourcePlay(alSource[7]);
+	return;
+}
+
+void score500()
+{
+	alSourcePlay(alSource[8]);
+	return;
+}
+
+void score1M()
+{
+	alSourcePlay(alSource[9]);
+	return;
+}
+
 
 void unzip()
 {
@@ -194,7 +281,14 @@ void delete_sounds()
 	remove("sounds/8BitBack.wav");
 	remove("sounds/blaster.wav");
 	remove("sounds/explosion.wav");
-	remove("sounds/thrusters.wav");
+	remove("sounds/BossMusic.wav");
+	remove("sounds/DeathSound.WAV");
+	remove("sounds/ShieldPickUp.WAV");
+	remove("sounds/100KSound.WAV");
+	remove("sounds/250KSound.WAV");
+	remove("sounds/500KSound.WAV");
+	remove("sounds/1MSound.WAV");
+	remove("sounds/DangerSound.wav");
 	remove("sounds");
 	return;
 }
@@ -264,6 +358,9 @@ void bulletToAlien(Game *g)
 			d1 = b->pos[1] - a->pos[1];
 			dist = (d0*d0 + d1*d1);
 			if (dist < (a->radius*a->radius)) {
+#ifdef USE_OPENAL_SOUND
+			    	explosion();
+#endif
 				if (a->prev == NULL && a->next == NULL) {
 					g->alienFalling = NULL;
 					delete a;
@@ -521,6 +618,9 @@ void bulletToTert(Game *g)
 			d1 = b->pos[1] - ta->pos[1];
 			dist = (d0*d0 + d1*d1);
 			if (dist < (ta->radius*ta->radius)) {
+#ifdef USE_OPENAL_SOUND
+			    	explosion();
+#endif
 				if (ta->prev == NULL && ta->next == NULL) {
 					g->alientertiaryFalling = NULL;
 					delete ta;
@@ -594,6 +694,9 @@ void bulletToGold(Game *g)
 			d1 = b->pos[1] - ga->pos[1];
 			dist = (d0*d0 + d1*d1);
 			if (dist < (ga->radius*ga->radius)) {
+#ifdef USE_OPENAL_SOUND
+			    	explosion();
+#endif
 				if (ga->prev == NULL && ga->next == NULL) {
 					g->goldalienFalling = NULL;
 					delete ga;
@@ -839,6 +942,9 @@ void shipCollisionShields(Game *g)
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
 			MaverickUpdateShields();
+#ifdef USE_OPENAL_SOUND
+			shieldUp();
+#endif
 			if (s->prev == NULL) {
 				if (s->next == NULL) {
 					g->shieldsFalling = NULL;

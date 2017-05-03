@@ -431,9 +431,6 @@ void check_keys(XEvent *e)
 	if (e->type == KeyRelease) {
 		keys[key]=0;
 		if (key == XK_Up)	// check for up arrow key release
-            #ifdef USE_OPENAL_SOUND
-		    thrust();		// call thrust SFX function
-            #endif
 		if (key == XK_Shift_L || key == XK_Shift_R)
 			shift=0;
 		return;
@@ -441,9 +438,6 @@ void check_keys(XEvent *e)
 	if (e->type == KeyPress) {
 		keys[key]=1;
 		if (key == XK_Up)	// check for up arrow key press
-            #ifdef USE_OPENAL_SOUND
-		    thrust();		// call thrust SFX function
-            #endif
 		if (key == XK_Shift_L || key == XK_Shift_R) {
 			shift=1;
 			return;
@@ -630,6 +624,20 @@ void physics(Game *g)
 	shipCollisionTert(&game);
 	shipCollisionShields(&game);
 	shipCollisionBoost(&game);
+#ifdef USE_OPENAL_SOUND
+	if (score == 100000) {
+	    score100();
+	}
+	else if (score == 250000) {
+	    score250();
+	}
+	else if (score == 500000 || score == 1500000 || score == 2500000) {
+	    score500();
+	}
+	else if (score == 1000000 || score == 2000000 || score == 3000000) {
+	    score1M();
+	}
+#endif
 	//
 	//Update asteroid positions
 	Asteroid *a = g->ahead;
