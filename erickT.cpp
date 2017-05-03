@@ -21,6 +21,19 @@ class Input {
     }
 }input;
 
+//ship1
+Ppmimage *shipImage1 = NULL;
+GLuint shipTexture1;
+GLuint silhouetteShip1;
+//ship2
+Ppmimage *shipImage2 = NULL;
+GLuint shipTexture2;
+GLuint silhouetteShip2;
+//ship3
+Ppmimage *shipImage3 = NULL;
+GLuint shipTexture3;
+GLuint silhouetteShip3;
+
 void mainMenu(int xres, int yres, Game *g)
 {
     Rect m;
@@ -260,29 +273,24 @@ int init_ButtonsMain(Game *g){
 
 int init_ButtonsNewG(Game *g){
   int buttons = 0;
-  //size and positions of every clickable button
   //ship1
-  g->button[buttons].r.left = 497;
-  g->button[buttons].r.right = 600;
-  g->button[buttons].r.bot = 477;
-  g->button[buttons].r.top = 504;
-/*  g->button[buttons].r.left = 503;
+  g->button[buttons].r.left = 503;
   g->button[buttons].r.right = 568;
-  g->button[buttons].r.bot = 500;
-  g->button[buttons].r.top = 436;*/
+  g->button[buttons].r.bot = 355;
+  g->button[buttons].r.top = 418;
  //ship2
   buttons++;
- /* g->button[buttons].r.left = 600;
-  g->button[buttons].r.right = 740;
-  g->button[buttons].r.bot = 447;
-  g->button[buttons].r.top = 475;
+  g->button[buttons].r.left = 582;
+  g->button[buttons].r.right = 647;
+  g->button[buttons].r.bot = 355;
+  g->button[buttons].r.top = 418;
  //ship3
   buttons++;
-  g->button[buttons].r.left = 497;
-  g->button[buttons].r.right = 600;
-  g->button[buttons].r.bot = 418;
-  g->button[buttons].r.top = 443;
-  buttons++;*/
+  g->button[buttons].r.left = 664;
+  g->button[buttons].r.right = 727;
+  g->button[buttons].r.bot = 355;
+  g->button[buttons].r.top = 418;
+  buttons++;
   return buttons;
 }
 int userName (int key){
@@ -369,27 +377,15 @@ void drawShipsOptions(int xres, int yres)
     int cx = xres / 2;
     int cy = yres / 2;
     //ship option
-    //ship1
-    Ppmimage *shipImage = NULL;
-    GLuint shipTexture;
-    GLuint silhouetteShip;
-    //ship2
-    Ppmimage *shipImage2 = NULL;
-    GLuint shipTexture2;
-    GLuint silhouetteShip2;
-    //ship3
-    Ppmimage *shipImage3 = NULL;
-    GLuint shipTexture3;
-    GLuint silhouetteShip3;
 
     //ship1
-    glGenTextures(1, &silhouetteShip);
-    glGenTextures(1, &shipTexture);
-    shipImage = ppm6GetImage("./assets/ship.ppm");
-    unsigned char *silhouetteData = buildAlphaData(shipImage);
-    int shipW = shipImage->width;
-    int shipH = shipImage->height;
-    glBindTexture(GL_TEXTURE_2D, silhouetteShip);
+    glGenTextures(1, &silhouetteShip1);
+    glGenTextures(1, &shipTexture1);
+    shipImage1 = ppm6GetImage("./assets/ship11.ppm");
+    unsigned char *silhouetteData = buildAlphaData(shipImage1);
+    int shipW = shipImage1->width;
+    int shipH = shipImage1->height;
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip1);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -431,7 +427,7 @@ void drawShipsOptions(int xres, int yres)
     float wid = 35.0f;
     glPushMatrix();
     glTranslatef(cx-90, cy-40, 0.0f);
-    glBindTexture(GL_TEXTURE_2D, silhouetteShip);
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip1);
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.0f);
     glBegin(GL_QUADS);
@@ -533,7 +529,7 @@ int check_MainButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
     return 0;
 }
 
-int check_NewGButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
+void check_NewGButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
 {
     int x, y, i;
     x = e->xbutton.x;
@@ -554,28 +550,25 @@ int check_NewGButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
           if (lbutton) {
             switch (i) {
               case 0:
-                cout << "Ship1()\n";
-                //g->state_newG = 1;
+                system(" cp ./assets/ship11.ppm ./assets/ship.ppm");
+                g->state_newG = 0;
                 //g->state_menu = 0;
-                return 1;
+              //  return 0;
                 break;
               case 1:
-                cout << "SETT()\n";
+                system("convert ./assets/ship2.png ./assets/ship.ppm");
+                g->state_newG = 0;
+              //  return 1;
                 break;
               case 2:
-                cout << "SCORES()\n";
-                break;
-              case 3:
-                cout << "CREDITS()\n";
-                return 1;
-                break;
-              case 4:
-                cout << "EXIT\n";
+                system("convert ./assets/ship3.png ./assets/ship.ppm");
+                g->state_newG = 0;
+               // return 2;
                 break;
             }
           }
         }
       }
     }
-    return 0;
+//    return 0;
 }
