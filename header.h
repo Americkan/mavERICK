@@ -58,8 +58,9 @@ extern int yres;
 extern bool danger;
 extern const int MAX_BULLETS;
 extern int position3;
-
-
+extern int gmode;
+extern int pierce;
+extern int score;
 
 extern const double physicsRate;
 extern const double oobillion;

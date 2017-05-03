@@ -48,6 +48,8 @@ void bulletToTert(Game);
 
 int music = 0;
 int thr = 0;
+int gmode = 0;
+int pierce = 0;
 int sc = 0;
 int score = 0;
 int scoresI[10];
@@ -266,7 +268,10 @@ void bulletToAlien(Game *g)
 					g->alienFalling = NULL;
 					delete a;
 					//a = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 1000;
 					break;
 				} else if (a->prev == NULL) {
@@ -275,14 +280,20 @@ void bulletToAlien(Game *g)
 					a->next->prev = NULL;
 					delete a;
 					//a = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 1000;
 					break;
 				} else if (a->next == NULL) {
 					a->prev->next = NULL;
 					delete a;
 					//a = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 1000;
 					break;
 				} else if (a->prev != NULL 
@@ -291,7 +302,10 @@ void bulletToAlien(Game *g)
 					a->next->prev = a->prev;
 					delete a;
 					//a = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 1000;
 					break;
 				}
@@ -511,7 +525,10 @@ void bulletToTert(Game *g)
 					g->alientertiaryFalling = NULL;
 					delete ta;
 					//ta = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 500;
 					break;
 				} else if (ta->prev == NULL) {
@@ -520,14 +537,20 @@ void bulletToTert(Game *g)
 					ta->next->prev = NULL;
 					delete ta;
 					//ta = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 500;
 					break;
 				} else if (ta->next == NULL) {
 					ta->prev->next = NULL;
 					delete ta;
 					//ta = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 500;
 					break;
 				} else if (ta->prev != NULL 
@@ -536,7 +559,10 @@ void bulletToTert(Game *g)
 					ta->next->prev = ta->prev;
 					delete ta;
 					//ta = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 500;
 					break;
 				}
@@ -572,7 +598,10 @@ void bulletToGold(Game *g)
 					g->goldalienFalling = NULL;
 					delete ga;
 					//ga = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 10000;
 					break;
 				} else if (ga->prev == NULL) {
@@ -581,14 +610,20 @@ void bulletToGold(Game *g)
 					ga->next->prev = NULL;
 					delete ga;
 					//ga = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 10000;
 					break;
 				} else if (ga->next == NULL) {
 					ga->prev->next = NULL;
 					delete ga;
 					//ga = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 10000;
 					break;
 				} else if (ga->prev != NULL 
@@ -597,7 +632,10 @@ void bulletToGold(Game *g)
 					ga->next->prev = ga->prev;
 					delete ga;
 					//ga = NULL;
-					g->barr[i] = g->barr[--g->nbullets];
+					if (pierce == 0) {
+						g->barr[i] = 
+						    g->barr[--g->nbullets];
+					}
 					score += 10000;
 					break;
 				}
@@ -626,7 +664,9 @@ void shipCollisionAlien(Game *g)
 		d1 = a->pos[1] - g->ship.pos[1];
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
-			MaverickUpdate();
+		    	if (gmode == 0) {
+				MaverickUpdate();
+		    	}
 			if (a->prev == NULL && a->next == NULL) {
 				g->alienFalling = NULL;
 				delete a;
@@ -668,7 +708,9 @@ void shipCollisionTert(Game *g)
 		d1 = ta->pos[1] - g->ship.pos[1];
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
-			MaverickUpdate();
+		    	if (gmode == 0) {
+				MaverickUpdate();
+		    	}
 			if (ta->prev == NULL && ta->next == NULL) {
 				g->alientertiaryFalling = NULL;
 				delete ta;
@@ -710,7 +752,9 @@ void shipCollisionGold(Game *g)
 		d1 = ga->pos[1] - g->ship.pos[1];
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
-			MaverickUpdate();
+		    	if (gmode == 0) {
+				MaverickUpdate();
+			}
 			if (ga->prev == NULL && ga->next == NULL) {
 				g->goldalienFalling = NULL;
 				delete ga;
@@ -752,7 +796,9 @@ void shipCollisionMoving(Game *g)
 		d1 = ma->pos[1] - g->ship.pos[1];
 		dist = (d0*d0 + d1*d1);
 		if (dist < (g->ship.radius*g->ship.radius)) {
-			MaverickUpdate();
+		    	if (gmode == 0) {
+				MaverickUpdate();
+			}
 			if (ma->prev == NULL && ma->next == NULL) {
 				g->alienShip = NULL;
 				delete ma;

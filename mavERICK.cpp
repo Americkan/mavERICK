@@ -460,11 +460,15 @@ void check_keys(XEvent *e)
 			//return 1;
             game.state_menu ^= 1;
             break;
-        case XK_h: {
-            state_help ^= 1;
-            break; }
-		case XK_m:  
-			break;
+        case XK_h:
+	    state_help ^= 1;
+            break;
+	case XK_g:
+	    gmode ^= 1;
+	    break;
+	case XK_p:
+	    pierce ^= 1;
+	    break;
         case XK_x:
            // strcat(input.text,"x"); //input to text box
             break;
