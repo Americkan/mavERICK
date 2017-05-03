@@ -364,7 +364,7 @@ int check_mouse(XEvent *e, Game *g)
 		if (++ct < 10)
 			return 0;		
 		//std::cout << "savex: " << savex << std::endl << std::flush;
-		//std::cout << "e->xbutton.x: " << e->xbutton.x << std::endl <<
+		std::cout << e->xbutton.x << "-" << e->xbutton.y << std::endl;
 		//std::flush;
 
         if (g->mouseControl) {
@@ -405,49 +405,18 @@ int check_mouse(XEvent *e, Game *g)
 		    savey=100;
 	    }
     }
-    int done = check_MainButtons(e, g, xres, yres, lbutton);
-    return done?done:0;
-    //-game
-/*    x = e->xbutton.x;
-    y = e->xbutton.y;
-    y = yres - y;
-    g->nbuttons = init_ButtonsMain(g);
-    for(i=0; i < g->nbuttons; i++) {
-      g->button[i].over=0;
-      if(x >= g->button[i].r.left && //left
-         x <= g->button[i].r.right && //right
-         y >= g->button[i].r.bot && //bot
-         y <= g->button[i].r.top) { //top
-        g->button[i].over = 1;
-        if(g->button[i].over){
-          if (lbutton) {
-            switch (i) {
-              case 0:
-                //newgame();
-                cout << "NEW()\n";
-                game.state_menu = 0;
-                break;
-              case 1:
-                //settings();
-                cout << "SETT()\n";
-                break;
-              case 2:
-                cout << "SCORES()\n";
-                return 1;
-                //scores();
-                break;
-              case 3:
-                //credits();
-                break;
-              case 4:
-                //exit();
-                break;
-            }
-          }
-        }
-      }
+    int done = 0;
+    int ship;
+    if (game.state_menu) {
+        done = check_MainButtons(e, g, xres, yres, lbutton);
     }
-    //-*/
+    if (game.state_newG) {
+        newGame(xres, yres);
+        ship = check_NewGButtons(e, g, xres, yres, lbutton);
+        cout << "\t" << ship << endl;;
+    }
+
+    return done?done:0;
 }
 
 
@@ -592,7 +561,8 @@ void buildAsteroidFragment(Asteroid *ta, Asteroid *a)
 
 void physics(Game *g)
 {
-    if(!game.state_menu){
+    if(!game.state_menu && !game.state_newG){
+    //if(!game.state_menu){
 	Flt d0,d1,dist;
 	//Update ship position
 	g->ship.pos[0] += g->ship.vel[0];
@@ -1038,14 +1008,15 @@ void render(Game *g)
    //   glDisable(GL_TEXTURE_2D);
       
       mainMenu(xres, yres, g);
-      //newGame(input.text, input.size, xres, yres);
-      //gameSettings(xres, yres);
-      //gameScores(xres, yres);
-      //gameCredits(xres, yres);
 
     }
     if (game.state_newG) {
+        game.state_menu = 0;
         newGame(xres, yres);
+        drawShipsOptions(xres, yres);
+
+//        int ship = check_MainButtons(e, g, xres, yres, lbutton);
+//        cout << "\t" << ship << endl;;
     }
 }
 

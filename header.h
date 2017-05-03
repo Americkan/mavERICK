@@ -399,13 +399,15 @@ extern void bulletToGold(Game *);
 //Erick T's Prototypes
 extern void mainMenu( int, int, Game*);
 extern int init_ButtonsMain(Game*);
+extern int init_ButtonsNewG(Game*);
 extern void newGame(int, int);
 extern int userName(int);
 extern void gameSettings( int, int );
 extern void gameScores( int, int );
 extern void gameCredits( int, int );
 extern int check_MainButtons(XEvent*, Game*, int, int ,int);
-
+extern int check_NewGButtons(XEvent*, Game*, int, int, int);
+extern void drawShipsOptions(int xres, int yres);
 
 //Unknown
 void initXWindows(void);

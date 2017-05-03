@@ -1,30 +1,31 @@
-//needs: xres, yres
 #include "fonts.h"
 #include <GL/glx.h>
 #include <GL/glu.h>
 #include <X11/keysym.h>
 #include "header.h"
 
+//#include <iostream>
+//#include <unistd.h>
+//#include "ppm.cpp"
+//#include <X11/Xlib.h>
+
+extern unsigned char *buildAlphaData(Ppmimage *img);
+extern Ppmimage *ppm6GetImage(const char *filename);
 class Input {
   public:
     char text[100];
     int size;
     Input() {
       text[0] = '\0';
-      size = 12;
+      size = 8;
     }
 }input;
 
-int keys1[65536];
-
-void mainMenu(int xres, int yres, Game *g) {
-  Rect m;
- // int loc[2] = {0};
-//  int xres = x;
-//  int yres = y;
-
-  int cx = xres / 2;
-  int cy = yres / 2;
+void mainMenu(int xres, int yres, Game *g)
+{
+    Rect m;
+    int cx = xres / 2;
+    int cy = yres / 2;
 
     glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -257,6 +258,33 @@ int init_ButtonsMain(Game *g){
   return buttons;
 }
 
+int init_ButtonsNewG(Game *g){
+  int buttons = 0;
+  //size and positions of every clickable button
+  //ship1
+  g->button[buttons].r.left = 497;
+  g->button[buttons].r.right = 600;
+  g->button[buttons].r.bot = 477;
+  g->button[buttons].r.top = 504;
+/*  g->button[buttons].r.left = 503;
+  g->button[buttons].r.right = 568;
+  g->button[buttons].r.bot = 500;
+  g->button[buttons].r.top = 436;*/
+ //ship2
+  buttons++;
+ /* g->button[buttons].r.left = 600;
+  g->button[buttons].r.right = 740;
+  g->button[buttons].r.bot = 447;
+  g->button[buttons].r.top = 475;
+ //ship3
+  buttons++;
+  g->button[buttons].r.left = 497;
+  g->button[buttons].r.right = 600;
+  g->button[buttons].r.bot = 418;
+  g->button[buttons].r.top = 443;
+  buttons++;*/
+  return buttons;
+}
 int userName (int key){
 
     if ((key >= XK_a && key <= XK_z) || key == XK_space) {
@@ -264,6 +292,7 @@ int userName (int key){
         k[0] = key;
         k[1] = '\0';
         strcat(input.text, k);
+        input.text[0] = toupper(input.text[0]);
         return 1;
     }
     if (key == XK_BackSpace) {
@@ -279,30 +308,168 @@ int userName (int key){
 }
 
 
-void newGame(int xres, int yres) {
-  Rect m;
-  int loc[2] = {0};
-  int cx = xres / 2;
-  int cy = yres / 2;
-  glColor3f(1.0,1.0,0.0);
+void newGame(int xres, int yres)
+{
+    Rect m;
+    int cx = xres / 2;
+    int cy = yres / 2;
+
+
+
+    glEnable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+    glColor3f(0.0, 0.1, 0.7); 
+    glBegin(GL_POLYGON);
+    glVertex2i(cx - 20 , cy + 70); // 
+    glVertex2i(cx - 40 , cy + 80); // 
+    glVertex2i(cx - 130, cy + 80); //left up
+    glVertex2i(cx - 130, cy - 80);   
+    glVertex2i(cx - 120, cy - 90);   
+    glVertex2i(cx - 40 , cy - 90);  
+    glVertex2i(cx - 20 , cy - 80);  
+    glVertex2i(cx + 115, cy - 80);  
+    glVertex2i(cx + 115, cy + 70);  //right up
+    glEnd();
   
-  cx = loc[0] + cx - 100;
-  cy = loc[1] + cy - 40;
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_BLEND);
+  
+  //input box
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2i(cx-10, cy+47);              //1 lower left corner
+    glVertex2i(cx-10, cy+63);              //2 upper left  "
+    glVertex2i(cx + input.size*12-10, cy+63); 	 //3 upper right "
+    glVertex2i(cx + input.size*12-10, cy+47);    //4 lower right "
+    glEnd();
 
-  glBegin(GL_QUADS);
-    glVertex2i(cx, cy+163);              //1 lower left corner
-    glVertex2i(cx, cy+179);              //2 upper left  "
-    glVertex2i(cx + input.size*12, cy+179); 	 //3 upper right "
-    glVertex2i(cx + input.size*12, cy+163);    //4 lower right "
-  glEnd();
+    glEnable(GL_TEXTURE_2D);
+    m.bot = cy + 47;
+    m.left = cx-110;
+    m.center = 0;
+    ggprint17(&m, 0,  0x0000000, "Name:");
 
-  glEnable(GL_TEXTURE_2D);
-  m.bot = cy+163;
-  m.left = cx;
-  m.center = 0;
-  ggprint8b(&m, 16,  0x00000000, input.text);
-  glDisable(GL_TEXTURE_2D);
+    m.bot = cy+45;
+    m.left = cx-9;
+    m.center = 0;
+    ggprint13(&m, 16,  0x00000000, input.text);
 
+    glEnable(GL_TEXTURE_2D);
+    m.bot = cy + 7;
+    m.left = cx-120;
+    m.center = 0;
+    ggprint13(&m, 0,  0x0000000, " -Choose ship to start playing- ");
+}
+
+void drawShipsOptions(int xres, int yres)
+{
+    glEnable(GL_TEXTURE_2D);
+    int cx = xres / 2;
+    int cy = yres / 2;
+    //ship option
+    //ship1
+    Ppmimage *shipImage = NULL;
+    GLuint shipTexture;
+    GLuint silhouetteShip;
+    //ship2
+    Ppmimage *shipImage2 = NULL;
+    GLuint shipTexture2;
+    GLuint silhouetteShip2;
+    //ship3
+    Ppmimage *shipImage3 = NULL;
+    GLuint shipTexture3;
+    GLuint silhouetteShip3;
+
+    //ship1
+    glGenTextures(1, &silhouetteShip);
+    glGenTextures(1, &shipTexture);
+    shipImage = ppm6GetImage("./assets/ship.ppm");
+    unsigned char *silhouetteData = buildAlphaData(shipImage);
+    int shipW = shipImage->width;
+    int shipH = shipImage->height;
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, shipW, shipH, 0, GL_RGBA,\
+                GL_UNSIGNED_BYTE, silhouetteData);
+    free(silhouetteData);
+    
+    //ship2
+    glGenTextures(1, &silhouetteShip2);
+    glGenTextures(1, &shipTexture2);
+    shipImage2 = ppm6GetImage("./assets/ship2.ppm");
+    silhouetteData = buildAlphaData(shipImage2);
+    int shipW2 = shipImage2->width;
+    int shipH2 = shipImage2->height;
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, shipW2, shipH2, 0, GL_RGBA,\
+                GL_UNSIGNED_BYTE, silhouetteData);
+    free(silhouetteData);
+
+    //ship3
+    glGenTextures(1, &silhouetteShip3);
+    glGenTextures(1, &shipTexture3);
+    shipImage3 = ppm6GetImage("./assets/ship3.ppm");
+    silhouetteData = buildAlphaData(shipImage3);
+    int shipW3 = shipImage3->width;
+    int shipH3 = shipImage3->height;
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip3);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, shipW3, shipH3, 0, GL_RGBA,\
+                GL_UNSIGNED_BYTE, silhouetteData);
+    free(silhouetteData);
+    
+    //ship1
+    float wid = 35.0f;
+    glPushMatrix();
+    glTranslatef(cx-90, cy-40, 0.0f);
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid, -wid);
+    glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, wid);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i(wid, wid);
+    glTexCoord2f(1.0f, 1.0f); glVertex2i(wid, -wid);
+    glEnd();
+    glPopMatrix();
+    //ship2
+    glPushMatrix();
+    glTranslatef(cx-10, cy-40, 0.0f);
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip2);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid, -wid);
+    glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, wid);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i(wid, wid);
+    glTexCoord2f(1.0f, 1.0f); glVertex2i(wid, -wid);
+    glEnd();
+    glPopMatrix();
+    //ship3
+    glPushMatrix();
+    glTranslatef(cx+70, cy-40, 0.0f);
+    glBindTexture(GL_TEXTURE_2D, silhouetteShip3);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid, -wid);
+    glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, wid);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i(wid, wid);
+    glTexCoord2f(1.0f, 1.0f); glVertex2i(wid, -wid);
+    glEnd();
+    glPopMatrix();
+
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_TEXTURE_2D);
 }
 void gameSettings(int xres, int yres)
 {
@@ -366,3 +533,49 @@ int check_MainButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
     return 0;
 }
 
+int check_NewGButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
+{
+    int x, y, i;
+    x = e->xbutton.x;
+    y = e->xbutton.y;
+    y = yres - y;
+    if (xres){}
+
+    g->nbuttons = init_ButtonsNewG(g);
+
+    for(i=0; i < g->nbuttons; i++) {
+      g->button[i].over=0;
+      if(x >= g->button[i].r.left && //left
+         x <= g->button[i].r.right && //right
+         y >= g->button[i].r.bot && //bot
+         y <= g->button[i].r.top) { //top
+        g->button[i].over = 1;
+        if(g->button[i].over) {
+          if (lbutton) {
+            switch (i) {
+              case 0:
+                cout << "Ship1()\n";
+                //g->state_newG = 1;
+                //g->state_menu = 0;
+                return 1;
+                break;
+              case 1:
+                cout << "SETT()\n";
+                break;
+              case 2:
+                cout << "SCORES()\n";
+                break;
+              case 3:
+                cout << "CREDITS()\n";
+                return 1;
+                break;
+              case 4:
+                cout << "EXIT\n";
+                break;
+            }
+          }
+        }
+      }
+    }
+    return 0;
+}
