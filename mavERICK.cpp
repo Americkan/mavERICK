@@ -364,10 +364,8 @@ int check_mouse(XEvent *e, Game *g)
 		int ydiff = savey - e->xbutton.y;
 		if (++ct < 10)
 			return 0;		
-		//std::cout << "savex: " << savex << std::endl << std::flush;
-		//std::cout << e->xbutton.x << "-" << e->xbutton.y << std::endl;
+		//std::cout << e->xbutton.x << "-" << yres-e->xbutton.y << std::endl;
         //cout << "This is Erick T: ERICK H call or text 661 3764277" << endl;
-        //cout << "I made changes to your MaverickShip function" << endl;
 		//std::flush;
 
         if (g->mouseControl) {
@@ -409,12 +407,16 @@ int check_mouse(XEvent *e, Game *g)
 	    }
     }
     int done = 0;
+
     if (game.state_menu) {
         done = check_MainButtons(e, g, xres, yres, lbutton);
     }
     if (game.state_newG) {
         newGame(xres, yres);
         check_NewGButtons(e, g, xres, yres, lbutton);
+    }
+    if (game.state_sett) {
+        check_SettButtons(e, g, xres, yres, lbutton);
     }
 
     return done?done:0;
@@ -452,10 +454,12 @@ void check_keys(XEvent *e)
     } else {
 	switch(key) {
 		case XK_Escape:
-			//return 1;
             game.state_menu ^= 1;
             game.state_newG = 0;
             game.state_sett = 0;
+            game.state_cred = 0;
+            if (game.mouseControl)
+                game.mouseControl ^= 1;
             break;
         case XK_h:
 	        state_help ^= 1;
@@ -467,7 +471,6 @@ void check_keys(XEvent *e)
 	        pierce ^= 1;
 	        break;
         case XK_x:
-           // strcat(input.text,"x"); //input to text box
             break;
 		case XK_f:
 			break;
@@ -562,7 +565,8 @@ void buildAsteroidFragment(Asteroid *ta, Asteroid *a)
 
 void physics(Game *g)
 {
-    if(!game.state_menu && !game.state_newG){
+    if(!game.state_menu && !game.state_newG && !game.state_sett &&
+       !game.state_cred) {
     //if(!game.state_menu){
 	Flt d0,d1,dist;
 	//Update ship position
@@ -1046,6 +1050,15 @@ void render(Game *g)
 		showHighScores(yres);
     }
 
+    if (game.state_menu || game.state_newG || game.state_sett ||
+        game.state_cred)
+        game.frame = 1;
+    else
+        game.frame = 0;
+
+    if (game.frame)
+        frameMenu();
+
     if (game.state_menu) {
    //   glDisable(GL_TEXTURE_2D);
       
@@ -1059,7 +1072,11 @@ void render(Game *g)
     }
     if (game.state_sett) {
         game.state_menu = 0;
-        gameSettings(xres, yres);
+        gameSettings(xres, yres, g);
+    }
+    if (game.state_cred) {
+        game.state_menu = 0;
+        gameCredits(xres, yres);
     }
 }
 

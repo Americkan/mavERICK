@@ -46,7 +46,7 @@ typedef Flt	Matrix[4][4];
 
 #define PI 3.141592653589793
 #define ALPHA 1
-#define MAXBUTTONS 4
+#define MAXBUTTONS 8
 
 //X Windows variables
 extern Display *dpy;
@@ -286,6 +286,8 @@ struct Game {
 	int state_menu;
     int state_newG;
     int state_sett;
+    int state_cred;
+    int frame;
 	int nbullets;
 	struct timespec bulletTimer;
     struct timespec mouseThrustTimer;
@@ -301,6 +303,8 @@ struct Game {
         state_menu = 1;
         state_newG = 0;
         state_sett = 0;
+        state_cred = 0;
+        frame = 0;
         nbuttons = 0;
         mouseThrustOn = false;
         mouseControl = false;
@@ -416,17 +420,22 @@ extern void bulletToGold(Game *);
 
 
 //Erick T's Prototypes
+extern void frameMenu();
 extern void mainMenu( int, int, Game*);
 extern int init_ButtonsMain(Game*);
 extern int init_ButtonsNewG(Game*);
+extern int init_ButtonsSett(Game*);
 extern void newGame(int, int);
 extern int userName(int);
-extern void gameSettings( int, int );
+extern void gameSettings( int, int, Game*);
 extern void gameScores( int, int );
 extern void gameCredits( int, int );
 extern int check_MainButtons(XEvent*, Game*, int, int ,int);
 extern void check_NewGButtons(XEvent*, Game*, int, int, int);
+extern void check_SettButtons(XEvent*, Game*, int, int, int);
 extern void drawShipsOptions(int xres, int yres);
+void set_mouse_position(int x, int y);
+void show_mouse_cursor(const int onoff);
 
 //Unknown
 void initXWindows(void);
@@ -439,8 +448,6 @@ void init(Game *g);
 void init_sounds(void);
 void physics(Game *game);
 void render(Game *game);
-void set_mouse_position(int x, int y);
-void show_mouse_cursor(const int onoff);
 
 #endif
 
