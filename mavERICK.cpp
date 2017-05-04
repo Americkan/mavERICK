@@ -875,6 +875,10 @@ void render(Game *g)
 	//MaverickShield();
 	//MaverickShip();
 	if(score < 100000){
+
+        if (game.state_menu || game.state_sett ||
+        game.state_cred){}
+	else { 
 	if (something == 1) {
 	    MaverickMakeEnemyONE(g);
 	    MaverickMakeEnemyTWO(g);
@@ -944,7 +948,7 @@ void render(Game *g)
 	MaverickDangerText(danger);
 	MaverickShieldFillActual();
 
-
+	}
 
 
 	ggprint8b(&r, 16, 0x00ff0000, "Space mavERICK (Tom Cruise Simulator)");
