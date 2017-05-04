@@ -359,6 +359,7 @@ extern void MaverickMoveAlien3(Game *g);
 extern void MaverickDeleteEnemyONE(Alien *node, Game *g);
 extern void MaverickDeleteEnemyTWO(Alien2 *node, Game *g);
 extern void MaverickDeleteEnemyTHREE(Alien3 *node, Game *g);
+extern void MaverickDeleteBoss(Boss *node, Game *g);
 extern void MaverickBoss(Game *g);
 extern void MaverickMakeBoss(Game *g);
 extern void MaverickMoveBoss(Game *g);
