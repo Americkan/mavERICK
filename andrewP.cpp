@@ -539,7 +539,9 @@ void bulletToMoving2(Game *g)
 	if (dist < (ma2->radius*ma2->radius)) {
 	    if (ma2 != NULL) {
 		MaverickUpdateAlienTWO();
-		g->barr[i] = g->barr[--g->nbullets];
+		if (pierce == 0) {
+		    g->barr[i] = g->barr[--g->nbullets];
+		}
 		if (alienTWOHealth == 70) {
 		    delete ma2;
 		    mov2 = false;	//variable indicating the death
@@ -568,7 +570,9 @@ void bulletToBoss(Game *g)
 	if (dist < (ba->radius*ba->radius)) {
 	    if (ba != NULL) {
 		MaverickUpdateBossHealth();
-		g->barr[i] = g->barr[--g->nbullets];
+		if (pierce == 0) {
+		    g->barr[i] = g->barr[--g->nbullets];
+		}
 		if (position4 == 630) {
 		    delete ba;
 		    won = 1;
@@ -600,7 +604,9 @@ void bulletToMoving3(Game *g)
 	if (dist < (ma3->radius*ma3->radius)) {
 	    if (ma3 != NULL) {
 		MaverickUpdateAlienTHREE();
-		g->barr[i] = g->barr[--g->nbullets];
+		if (pierce == 0) {
+		    g->barr[i] = g->barr[--g->nbullets];
+		}
 		if (alienTHREEHealth == 70) {
 		    delete ma3;
 		    mov3 = false;	//variable used to indicate
@@ -621,7 +627,6 @@ void bulletToTert(Game *g)
     Flt d0, d1, dist;
 
     t_AlienTertiary *ta = g->alientertiaryFalling;
-    //t_AlienTertiary *save = ta->next;
     while (ta) {
 	t_AlienTertiary *save = ta->next;
 	for (int i = 0; i < g->nbullets; i++) {
