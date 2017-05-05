@@ -100,7 +100,7 @@ int main(void)
 #endif
 	//Game game;
 	init(&game);
-	getHighScores();
+	//getHighScores();
 	srand(time(NULL));
 	clock_gettime(CLOCK_REALTIME, &timePause);
 	clock_gettime(CLOCK_REALTIME, &timeStart);
@@ -631,6 +631,7 @@ void physics(Game *g)
 		//b = b->next;
 	}
 	if (deadbaws == false) {
+	    if (baws == false) {
 		shipCollisionAlien(&game);
 		if (mov1 == true) {
 			shipCollisionMoving(&game);
@@ -641,13 +642,15 @@ void physics(Game *g)
 		if (mov3 == true) {
 			shipCollisionMoving3(&game);
 		}
-		if (baws == true) {
-			shipCollisionBoss(&game);
-		}
+
 		shipCollisionGold(&game);
 		shipCollisionTert(&game);
 		shipCollisionShields(&game);
 		shipCollisionBoost(&game);
+	    }
+		if (baws == true) {
+			shipCollisionBoss(&game);
+		}
 	}
 #ifdef USE_OPENAL_SOUND
 	if (score == 100000) {
@@ -686,10 +689,8 @@ void physics(Game *g)
 		a = a->next;
 	}
 	if (deadbaws == false) {
+	    if (baws == false) {
 		bulletToAlien(&game);
-		if (baws == true) {
-			bulletToBoss(&game);
-		}
 		if (mov1 == true) {
 			bulletToMoving(&game);
 		}
@@ -701,6 +702,10 @@ void physics(Game *g)
 		}
 		bulletToGold(&game);
 		bulletToTert(&game);
+	    }
+		if (baws == true) {
+			bulletToBoss(&game);
+		}
 	}
 	//showScores();
 	//
@@ -952,9 +957,10 @@ void render(Game *g)
 		MaverickMakeBoss(g);
 		something2 += 1;
 	    }
-	    
-	    MaverickBoss(g);
-	    MaverickMoveBoss(g);
+	    if (deadbaws == false) {
+	    	MaverickBoss(g);
+	    	MaverickMoveBoss(g);
+	    }
 	    //y = y+3;
 	    //z = z+3;
 	}
@@ -983,6 +989,12 @@ void render(Game *g)
 	MaverickShieldText(yres);
 	MaverickDangerText(danger);
 	MaverickShieldFillActual();
+	if (won == 1) {
+	    winG();
+	}
+	if (dth == 1) {
+	    death();
+	}
 
 
 
@@ -1086,8 +1098,8 @@ void render(Game *g)
 	glDisable(GL_TEXTURE_2D);
     if (state_help) {
 	//	glDisable(GL_TEXTURE_2D);
-		help(yres);
-		showHighScores(yres);
+		//help(yres);
+		//showHighScores(yres);
     }
 
     if (game.state_menu || game.state_newG || game.state_sett ||

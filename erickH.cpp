@@ -465,7 +465,7 @@ void MaverickMakeEnemyTWO(Game *g)
 	}
 	mov2 = true;
 	
-	node->radius = 30.0f;
+	node->radius = 60.0f;
 	node->sound=0;
 	node->pos[0] = xres - 500;
 	node->pos[1] = yres - 100;
@@ -510,7 +510,7 @@ void MaverickMakeEnemyTHREE(Game *g)
 	}
 	mov3 = true;
 	
-	node->radius = 30.0f;
+	node->radius = 60.0f;
 	node->sound=0;
 	node->pos[0] = xres - 1100;
 	node->pos[1] = yres - 300;
@@ -546,6 +546,10 @@ void MaverickEnemyTHREE(Game *g)
 
 void MaverickMakeBoss(Game *g) 
 {
+#ifdef USE_OPENAL_SOUND
+    stopBackGround();
+    bossMusic();
+#endif
     int i;
     for (i = 0; i < 1; i++) {
 	Boss *node = new Boss; //(Shields *)malloc(sizeof(Shields));
@@ -555,7 +559,7 @@ void MaverickMakeBoss(Game *g)
 	}
 	baws = true;
 	
-	node->radius = 200.0f;
+	node->radius = 400.0f;
 	node->sound=0;
 	node->pos[0] = xres - 500;
 	node->pos[1] = yres - 400;
@@ -571,10 +575,6 @@ void MaverickMakeBoss(Game *g)
 
 void MaverickBoss(Game *g) 
 {
-#ifdef USE_OPENAL_SOUND
-    stopBackGround();
-    bossMusic();
-#endif
     if (enemy1 && deadbaws == false) {
         float wid = 250.0f;
         glPushMatrix();
@@ -767,6 +767,11 @@ void MaverickBossIncomingUpdate()
     if(position5 >= 632) {
 	position5 = position5 - 2;
     }
+#ifdef USE_OPENAL_SOUND
+    if(position5 <= 830 && dang == 0) {
+	dangerS();
+    }
+#endif
 }
 
 

@@ -34,14 +34,16 @@ void score100();
 void score250();
 void score500();
 void score1M();
+void dangerS();
 void unzip();
 void delete_sounds();
 #endif
-void help(int);
-void getHighScores();
+//void death();
+//void winG();
+//void getHighScores();
 //void updateHighScores();
-void showScores();
-void showHighScores(int);
+//void showScores();
+//void showHighScores(int);
 void shipCollisionAlien(Game);
 void shipCollisionMoving(Game);
 void shipCollisionMoving2(Game);
@@ -63,193 +65,233 @@ void bulletToTert(Game);
 int music = 0;
 int thr = 0;
 int gmode = 0;
+int dth = 0;
+int won = 0;
+int dang = 0;
 int pierce = 0;
 int sc = 0;
 int score = 0;
 int scoresI[10];
 char scoresC[10][50];
-ALuint alBuffer[10];
-ALuint alSource[10];
+ALuint alBuffer[11];
+ALuint alSource[11];
 
-void help(int yres)
+void death()
 {
-	char text[3][60] = {"Use space to shoot.", 
-		"Use B for schockwave.",
-		"Use arrow keys to change direction."};
+    char text[3][60] = {"GAME OVER.", 
+	"You have died.",
+	"Press ESC to end."};
 
-	Rect re;
-	glEnable(GL_TEXTURE_2D);
+    Rect re;
+    glEnable(GL_TEXTURE_2D);
 
-	re.bot = yres / 11;
-	re.left = 10;
-	re.center = 0;
+    re.bot = yres/2+20;
+    re.left = xres/2-80;
+    re.center = 0;
 
-	for (int i = 0; i < 3; i++) {
-		ggprint16 (&re, 0, 0x00aaff00, text[i]);
-		re.bot = re.bot - 30;
-	}
+    for (int i = 0; i < 3; i++) {
+	ggprint16 (&re, 0, 0xff0000, text[i]);
+	re.bot = re.bot - 30;
+    }
+    //glDisable(GL_TEXTURE_2D);
+}
+
+void winG()
+{
+    char text[3][60] = {"BOSS DEFEATED.", 
+	"You have won.",
+	"Press ESC to end."};
+
+    Rect re;
+    glEnable(GL_TEXTURE_2D);
+
+    re.bot = yres/2+20;
+    re.left = xres/2-80;
+    re.center = 0;
+
+    for (int i = 0; i < 3; i++) {
+	ggprint16 (&re, 0, 0xffffff, text[i]);
+	re.bot = re.bot - 30;
+    }
+    //glDisable(GL_TEXTURE_2D);
 }
 
 #ifdef USE_OPENAL_SOUND
 void initSound()
 {
-	unzip();
-	alutInit(0, NULL);
-	if (alGetError() != AL_NO_ERROR) {
-		cout << "ERROR: alutInit()\n";
-		return;
-	}
-	alGetError();
+    unzip();
+    alutInit(0, NULL);
+    if (alGetError() != AL_NO_ERROR) {
+	cout << "ERROR: alutInit()\n";
+	return;
+    }
+    alGetError();
 
-	float vec[6] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
-	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
-	alListenerfv(AL_ORIENTATION, vec);
-	alListenerf(AL_GAIN, 1.0f);
+    float vec[6] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
+    alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
+    alListenerfv(AL_ORIENTATION, vec);
+    alListenerf(AL_GAIN, 1.0f);
 
 
-	alBuffer[0] = alutCreateBufferFromFile("sounds/8BitBack.wav");
-	alBuffer[1] = alutCreateBufferFromFile("sounds/blaster.wav");
-	alBuffer[2] = alutCreateBufferFromFile("sounds/explosion.wav");
-	alBuffer[3] = alutCreateBufferFromFile("sounds/BossMusic.wav");
-	alBuffer[4] = alutCreateBufferFromFile("sounds/DeathSound.WAV");
-	alBuffer[5] = alutCreateBufferFromFile("sounds/ShieldPickUp.WAV");
-	alBuffer[6] = alutCreateBufferFromFile("sounds/250KSound.WAV");
-	alBuffer[7] = alutCreateBufferFromFile("sounds/100KSound.WAV");
-	alBuffer[8] = alutCreateBufferFromFile("sounds/500KSound.WAV");
-	alBuffer[9] = alutCreateBufferFromFile("sounds/1MSound.WAV");
+    alBuffer[0] = alutCreateBufferFromFile("sounds/8BitBack.wav");
+    alBuffer[1] = alutCreateBufferFromFile("sounds/blaster.wav");
+    alBuffer[2] = alutCreateBufferFromFile("sounds/explosion.wav");
+    alBuffer[3] = alutCreateBufferFromFile("sounds/BossMusic.wav");
+    alBuffer[4] = alutCreateBufferFromFile("sounds/DeathSound.WAV");
+    alBuffer[5] = alutCreateBufferFromFile("sounds/ShieldPickUp.WAV");
+    alBuffer[6] = alutCreateBufferFromFile("sounds/250KSound.WAV");
+    alBuffer[7] = alutCreateBufferFromFile("sounds/100KSound.WAV");
+    alBuffer[8] = alutCreateBufferFromFile("sounds/500KSound.WAV");
+    alBuffer[9] = alutCreateBufferFromFile("sounds/1MSound.WAV");
+    alBuffer[10] = alutCreateBufferFromFile("sounds/DangerSound.wav");
 
-	alGenSources(10, alSource);
-	alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
-	alSourcei(alSource[1], AL_BUFFER, alBuffer[1]);
-	alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
-	alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
-	alSourcei(alSource[4], AL_BUFFER, alBuffer[4]);
-	alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
-	alSourcei(alSource[6], AL_BUFFER, alBuffer[6]);
-	alSourcei(alSource[7], AL_BUFFER, alBuffer[7]);
-	alSourcei(alSource[8], AL_BUFFER, alBuffer[8]);
-	alSourcei(alSource[9], AL_BUFFER, alBuffer[9]);
+    alGenSources(11, alSource);
+    alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
+    alSourcei(alSource[1], AL_BUFFER, alBuffer[1]);
+    alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
+    alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
+    alSourcei(alSource[4], AL_BUFFER, alBuffer[4]);
+    alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
+    alSourcei(alSource[6], AL_BUFFER, alBuffer[6]);
+    alSourcei(alSource[7], AL_BUFFER, alBuffer[7]);
+    alSourcei(alSource[8], AL_BUFFER, alBuffer[8]);
+    alSourcei(alSource[9], AL_BUFFER, alBuffer[9]);
+    alSourcei(alSource[10], AL_BUFFER, alBuffer[9]);
 
-	alSourcef(alSource[0], AL_GAIN, 1.0f);
-	alSourcef(alSource[0], AL_PITCH, 1.0f);
-	alSourcef(alSource[0], AL_LOOPING, AL_TRUE);
+    alSourcef(alSource[0], AL_GAIN, 1.0f);
+    alSourcef(alSource[0], AL_PITCH, 1.0f);
+    alSourcef(alSource[0], AL_LOOPING, AL_TRUE);
 
-	alSourcef(alSource[1], AL_GAIN, 1.0f);
-	alSourcef(alSource[1], AL_PITCH, 1.0f);
-	alSourcef(alSource[1], AL_LOOPING, AL_FALSE);
+    alSourcef(alSource[1], AL_GAIN, 1.0f);
+    alSourcef(alSource[1], AL_PITCH, 1.0f);
+    alSourcef(alSource[1], AL_LOOPING, AL_FALSE);
 
-	alSourcef(alSource[2], AL_GAIN, 0.7f);
-	alSourcef(alSource[2], AL_PITCH, 1.0f);
-	alSourcef(alSource[2], AL_LOOPING, AL_FALSE);
+    alSourcef(alSource[2], AL_GAIN, 0.7f);
+    alSourcef(alSource[2], AL_PITCH, 1.0f);
+    alSourcef(alSource[2], AL_LOOPING, AL_FALSE);
 
-	alSourcef(alSource[3], AL_GAIN, 1.0f);
-	alSourcef(alSource[3], AL_PITCH, 1.0f);
-	alSourcef(alSource[3], AL_LOOPING, AL_TRUE);
-	
-	alSourcef(alSource[4], AL_GAIN, 1.0f);
-	alSourcef(alSource[4], AL_PITCH, 1.0f);
-	alSourcef(alSource[4], AL_LOOPING, AL_FALSE);
-	
-	alSourcef(alSource[5], AL_GAIN, 1.0f);
-	alSourcef(alSource[5], AL_PITCH, 1.0f);
-	alSourcef(alSource[5], AL_LOOPING, AL_FALSE);
-	
-	alSourcef(alSource[6], AL_GAIN, 1.0f);
-	alSourcef(alSource[6], AL_PITCH, 1.0f);
-	alSourcef(alSource[6], AL_LOOPING, AL_FALSE);
-	
-	alSourcef(alSource[7], AL_GAIN, 1.0f);
-	alSourcef(alSource[7], AL_PITCH, 1.0f);
-	alSourcef(alSource[7], AL_LOOPING, AL_FALSE);
-	
-	alSourcef(alSource[8], AL_GAIN, 1.0f);
-	alSourcef(alSource[8], AL_PITCH, 1.0f);
-	alSourcef(alSource[8], AL_LOOPING, AL_FALSE);
-	
-	alSourcef(alSource[9], AL_GAIN, 1.0f);
-	alSourcef(alSource[9], AL_PITCH, 1.0f);
-	alSourcef(alSource[9], AL_LOOPING, AL_FALSE);
+    alSourcef(alSource[3], AL_GAIN, 1.0f);
+    alSourcef(alSource[3], AL_PITCH, 1.0f);
+    alSourcef(alSource[3], AL_LOOPING, AL_TRUE);
 
-	if (alGetError() != AL_NO_ERROR) {
-		cout << "ERROR: setting source\n";
-		return;
-	}
+    alSourcef(alSource[4], AL_GAIN, 1.0f);
+    alSourcef(alSource[4], AL_PITCH, 1.0f);
+    alSourcef(alSource[4], AL_LOOPING, AL_FALSE);
+
+    alSourcef(alSource[5], AL_GAIN, 1.0f);
+    alSourcef(alSource[5], AL_PITCH, 1.0f);
+    alSourcef(alSource[5], AL_LOOPING, AL_FALSE);
+
+    alSourcef(alSource[6], AL_GAIN, 1.0f);
+    alSourcef(alSource[6], AL_PITCH, 1.0f);
+    alSourcef(alSource[6], AL_LOOPING, AL_FALSE);
+
+    alSourcef(alSource[7], AL_GAIN, 1.0f);
+    alSourcef(alSource[7], AL_PITCH, 1.0f);
+    alSourcef(alSource[7], AL_LOOPING, AL_FALSE);
+
+    alSourcef(alSource[8], AL_GAIN, 1.0f);
+    alSourcef(alSource[8], AL_PITCH, 1.0f);
+    alSourcef(alSource[8], AL_LOOPING, AL_FALSE);
+
+    alSourcef(alSource[9], AL_GAIN, 1.0f);
+    alSourcef(alSource[9], AL_PITCH, 1.0f);
+    alSourcef(alSource[9], AL_LOOPING, AL_FALSE);
+
+    alSourcef(alSource[10], AL_GAIN, 1.0f);
+    alSourcef(alSource[10], AL_PITCH, 1.0f);
+    alSourcef(alSource[10], AL_LOOPING, AL_FALSE);
+
+    if (alGetError() != AL_NO_ERROR) {
+	cout << "ERROR: setting source\n";
+	return;
+    }
 }
 void cleanSounds()
 {
-	/*if (music == 0) {
-		music ^= 1;
-		playBackGround(alSource[0]);
-	} else {*/
-		
-	    	alDeleteSources(1, &alSource[0]);
-		alDeleteSources(1, &alSource[1]);
-		alDeleteSources(1, &alSource[2]);
-		alDeleteSources(1, &alSource[3]);
-	    	alDeleteSources(1, &alSource[4]);
-		alDeleteSources(1, &alSource[5]);
-		alDeleteSources(1, &alSource[6]);
-		alDeleteSources(1, &alSource[7]);
-		alDeleteSources(1, &alSource[8]);
-		alDeleteSources(1, &alSource[9]);
-		
-		alDeleteBuffers(1, &alBuffer[0]);
-		alDeleteBuffers(1, &alBuffer[1]);
-		alDeleteBuffers(1, &alBuffer[2]);
-		alDeleteBuffers(1, &alBuffer[3]);
-		alDeleteBuffers(1, &alBuffer[4]);
-		alDeleteBuffers(1, &alBuffer[5]);
-		alDeleteBuffers(1, &alBuffer[6]);
-		alDeleteBuffers(1, &alBuffer[7]);
-		alDeleteBuffers(1, &alBuffer[8]);
-		alDeleteBuffers(1, &alBuffer[9]);
+    /*if (music == 0) {
+      music ^= 1;
+      playBackGround(alSource[0]);
+      } else {*/
 
-		ALCcontext *Context = alcGetCurrentContext();
-		ALCdevice *Device = alcGetContextsDevice(Context);
-		alcMakeContextCurrent(NULL);
-		alcDestroyContext(Context);
-		alcCloseDevice(Device);
-		return;
-	//}
+    alDeleteSources(1, &alSource[0]);
+    alDeleteSources(1, &alSource[1]);
+    alDeleteSources(1, &alSource[2]);
+    alDeleteSources(1, &alSource[3]);
+    alDeleteSources(1, &alSource[4]);
+    alDeleteSources(1, &alSource[5]);
+    alDeleteSources(1, &alSource[6]);
+    alDeleteSources(1, &alSource[7]);
+    alDeleteSources(1, &alSource[8]);
+    alDeleteSources(1, &alSource[9]);
+    alDeleteSources(1, &alSource[10]);
+
+    alDeleteBuffers(1, &alBuffer[0]);
+    alDeleteBuffers(1, &alBuffer[1]);
+    alDeleteBuffers(1, &alBuffer[2]);
+    alDeleteBuffers(1, &alBuffer[3]);
+    alDeleteBuffers(1, &alBuffer[4]);
+    alDeleteBuffers(1, &alBuffer[5]);
+    alDeleteBuffers(1, &alBuffer[6]);
+    alDeleteBuffers(1, &alBuffer[7]);
+    alDeleteBuffers(1, &alBuffer[8]);
+    alDeleteBuffers(1, &alBuffer[9]);
+    alDeleteBuffers(1, &alBuffer[10]);
+
+    ALCcontext *Context = alcGetCurrentContext();
+    ALCdevice *Device = alcGetContextsDevice(Context);
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(Context);
+    alcCloseDevice(Device);
+    return;
+    //}
 }
 
 void playBackGround()
 {	
-	//alSourcef(alSource[0], AL_LOOPING, AL_TRUE);
-	//for (int i=0; i < 15; i++) {
-		alSourcePlay(alSource[0]);
-	//	usleep(20500);
-	//}
-	return;
+    //alSourcef(alSource[0], AL_LOOPING, AL_TRUE);
+    //for (int i=0; i < 15; i++) {
+    alSourcePlay(alSource[0]);
+    //	usleep(20500);
+    //}
+    return;
 }
 
 void stopBackGround()
 {
-	alSourceStop(alSource[0]);
-	//alSourcef(alSource[0], AL_LOOPING, AL_FALSE);
-	return;
+    alSourceStop(alSource[0]);
+    //alSourcef(alSource[0], AL_LOOPING, AL_FALSE);
+    return;
+}
+
+void dangerS()
+{
+    alSourcePlay(alSource[10]);
+    dang = 1;
+    //alSourcef(alSource[0], AL_LOOPING, AL_FALSE);
+    return;
 }
 
 void blaster()
 {
-	alSourcePlay(alSource[1]);
-	return;
+    alSourcePlay(alSource[1]);
+    return;
 }
 
 void explosion()
 {
-	alSourcePlay(alSource[2]);
-	return;
+    alSourcePlay(alSource[2]);
+    return;
 }
 
 void bossMusic()
 {
-	//alSourcef(alSource[3], AL_LOOPING, AL_TRUE);
-	//for (int i=0; i < 3; i++) {
-		alSourcePlay(alSource[3]);
-	//	usleep(20000);
-	//}
-	return;
+    //alSourcef(alSource[3], AL_LOOPING, AL_TRUE);
+    //for (int i=0; i < 3; i++) {
+    alSourcePlay(alSource[3]);
+    //	usleep(20000);
+    //}
+    return;
 }
 
 void bossStop()
@@ -260,81 +302,81 @@ void bossStop()
 
 void deathSound()
 {
-	alSourcePlay(alSource[4]);
-	return;
+    alSourcePlay(alSource[4]);
+    return;
 }
 
 void shieldUp()
 {
-	alSourcePlay(alSource[5]);
-	return;
+    alSourcePlay(alSource[5]);
+    return;
 }
 
 void score100()
 {
-	alSourcePlay(alSource[6]);
-	return;
+    alSourcePlay(alSource[6]);
+    return;
 }
 
 void score250()
 {
-	alSourcePlay(alSource[7]);
-	return;
+    alSourcePlay(alSource[7]);
+    return;
 }
 
 void score500()
 {
-	alSourcePlay(alSource[8]);
-	return;
+    alSourcePlay(alSource[8]);
+    return;
 }
 
 void score1M()
 {
-	alSourcePlay(alSource[9]);
-	return;
+    alSourcePlay(alSource[9]);
+    return;
 }
 
 
 void unzip()
 {
-	system("unzip sounds.zip");
-	return;
+    system("unzip sounds.zip");
+    return;
 }
 
 void delete_sounds()
 {
-	remove("sounds/8BitBack.wav");
-	remove("sounds/blaster.wav");
-	remove("sounds/explosion.wav");
-	remove("sounds/BossMusic.wav");
-	remove("sounds/DeathSound.WAV");
-	remove("sounds/ShieldPickUp.WAV");
-	remove("sounds/100KSound.WAV");
-	remove("sounds/250KSound.WAV");
-	remove("sounds/500KSound.WAV");
-	remove("sounds/1MSound.WAV");
-	remove("sounds/DangerSound.wav");
-	remove("sounds");
-	return;
+    remove("sounds/8BitBack.wav");
+    remove("sounds/blaster.wav");
+    remove("sounds/explosion.wav");
+    remove("sounds/BossMusic.wav");
+    remove("sounds/DeathSound.WAV");
+    remove("sounds/ShieldPickUp.WAV");
+    remove("sounds/100KSound.WAV");
+    remove("sounds/250KSound.WAV");
+    remove("sounds/500KSound.WAV");
+    remove("sounds/1MSound.WAV");
+    remove("sounds/DangerSound.wav");
+    remove("sounds");
+    return;
 }
 #endif
 
-void getHighScores()
-{
-	int i = 0;
-	ifstream fin;
-	fin.open("scores.txt");
-	while (!fin.eof()) {
-		fin.getline(scoresC[i],50);
-		i++;
-		sc = i;
-	}
-	for (int j = 0; j < i; j++) {
-		scoresI[j] = atoi(scoresC[j]);
-	}
-	fin.close();
-	return;
-}
+/*void getHighScores()
+  {
+  int i = 0;
+  ifstream fin;
+  fin.open("scores.txt");
+  while (!fin.eof()) {
+  fin.getline(scoresC[i],50);
+  i++;
+  sc = i;
+  }
+  for (int j = 0; j < i; j++) {
+  scoresI[j] = atoi(scoresC[j]);
+  }
+  fin.close();
+  return;
+  }*/
 
 void showScores()
 {
@@ -355,21 +397,21 @@ void showScores()
     return;
 }
 
-void showHighScores(int yres)
-{
-	Rect re;
-	glEnable(GL_TEXTURE_2D);
+/*void showHighScores(int yres)
+  {
+  Rect re;
+  glEnable(GL_TEXTURE_2D);
 
-	re.bot = yres / 2;
-	re.left = 500;
-	re.center = 0;
+  re.bot = yres / 2;
+  re.left = 500;
+  re.center = 0;
 
-	for (int i = 0; i < sc; i++) {
-	    ggprint16 (&re, 0, 0x00ffffff, scoresC[i]);
-	    re.bot = re.bot - 30;
-	}
-	return;
-}
+  for (int i = 0; i < sc; i++) {
+  ggprint16 (&re, 0, 0x00ffffff, scoresC[i]);
+  re.bot = re.bot - 30;
+  }
+  return;
+  }*/
 
 void bulletToAlien(Game *g)
 {
@@ -462,13 +504,13 @@ void bulletToMoving(Game *g)
 	    if (ma != NULL) {
 		MaverickUpdateAlienONE();
 		if (pierce == 0) {
-			g->barr[i] = g->barr[--g->nbullets];
+		    g->barr[i] = g->barr[--g->nbullets];
 		}
 		if (alienONEHealth == 70) {
-	    		delete ma;
-	    		mov1 = false;
+		    delete ma;
+		    mov1 = false;
 		}
-	    	break;
+		break;
 	    }
 	}
     }
@@ -491,10 +533,10 @@ void bulletToMoving2(Game *g)
 		MaverickUpdateAlienTWO();
 		g->barr[i] = g->barr[--g->nbullets];
 		if (alienTWOHealth == 70) {
-	    		delete ma2;
-	    		mov2 = false;
+		    delete ma2;
+		    mov2 = false;
 		}
-	    	break;
+		break;
 	    }
 	}
     }
@@ -518,10 +560,14 @@ void bulletToBoss(Game *g)
 		g->barr[i] = g->barr[--g->nbullets];
 		if (position4 == 630) {
 		    delete ba;
+		    won = 1;
+#ifdef USE_OPENAL_SOUND
+		    bossStop();
+#endif
 		    baws = false;
 		    deadbaws = true;
 		}
-	    	break;
+		break;
 	    }
 	}
     }
@@ -543,10 +589,10 @@ void bulletToMoving3(Game *g)
 		MaverickUpdateAlienTHREE();
 		g->barr[i] = g->barr[--g->nbullets];
 		if (alienTHREEHealth == 70) {
-	    		delete ma3;
-	    		mov3 = false;
+		    delete ma3;
+		    mov3 = false;
 		}
-	    	break;
+		break;
 	    }
 	}
     }
@@ -735,6 +781,13 @@ void shipCollisionAlien(Game *g)
 	if (dist < (g->ship.radius*g->ship.radius)) {
 	    if (gmode == 0) {
 		MaverickUpdate();
+		if (position2 == 630) {
+		    dth = 1;
+#ifdef USE_OPENAL_SOUND
+		    deathSound();
+#endif
+		    //death();
+		}
 	    }
 	    if (a->prev == NULL && a->next == NULL) {
 		g->alienFalling = NULL;
@@ -760,7 +813,7 @@ void shipCollisionAlien(Game *g)
 	    //a = NULL;
 	    score += 1000;
 
-		    MaverickBossIncomingUpdate();
+	    MaverickBossIncomingUpdate();
 	}
 	a = save;
     }
@@ -772,14 +825,20 @@ void shipCollisionBoss(Game *g)
     Flt d0, d1, dist;
 
     t_Boss *ba = g->bossFalling;
-	d0 = ba->pos[0] - g->ship.pos[0];
-	d1 = ba->pos[1] - g->ship.pos[1];
-	dist = (d0*d0 + d1*d1);
-	if (dist < (g->ship.radius*g->ship.radius)) {
-	    if (gmode == 0) {
-		MaverickUpdate();
+    d0 = ba->pos[0] - g->ship.pos[0];
+    d1 = ba->pos[1] - g->ship.pos[1];
+    dist = (d0*d0 + d1*d1);
+    if (dist < (g->ship.radius*g->ship.radius)) {
+	if (gmode == 0) {
+	    MaverickUpdate();
+	    if (position2 == 630) {
+#ifdef USE_OPENAL_SOUND
+		deathSound();
+#endif
+		dth = 1;
 	    }
 	}
+    }
 
     return;
 }
@@ -789,20 +848,26 @@ void shipCollisionMoving(Game *g)
     Flt d0, d1, dist;
 
     t_alien *ma = g->alienShip;
-	d0 = ma->pos[0] - g->ship.pos[0];
-	d1 = ma->pos[1] - g->ship.pos[1];
-	dist = (d0*d0 + d1*d1);
-	if (dist < (g->ship.radius*g->ship.radius)) {
-	    if (gmode == 0) {
-		MaverickUpdate();
+    d0 = ma->pos[0] - g->ship.pos[0];
+    d1 = ma->pos[1] - g->ship.pos[1];
+    dist = (d0*d0 + d1*d1);
+    if (dist < (g->ship.radius*g->ship.radius)) {
+	if (gmode == 0) {
+	    MaverickUpdate();
+	    if (position2 == 630) {
+		dth = 1;
+#ifdef USE_OPENAL_SOUND
+		deathSound();
+#endif
 	    }
-	    // can delete following block
-	    /*if (ma != NULL) {
-	    	delete ma;
-	    	mov1 = false;
-	    	break;
-	    }*/
 	}
+	// can delete following block
+	/*if (ma != NULL) {
+	  delete ma;
+	  mov1 = false;
+	  break;
+	  }*/
+    }
 
     return;
 }
@@ -812,19 +877,25 @@ void shipCollisionMoving2(Game *g)
     Flt d0, d1, dist;
 
     t_alien2 *ma2 = g->alienShip2;
-	d0 = ma2->pos[0] - g->ship.pos[0];
-	d1 = ma2->pos[1] - g->ship.pos[1];
-	dist = (d0*d0 + d1*d1);
-	if (dist < (g->ship.radius*g->ship.radius)) {
-	    if (gmode == 0) {
-		MaverickUpdate();
+    d0 = ma2->pos[0] - g->ship.pos[0];
+    d1 = ma2->pos[1] - g->ship.pos[1];
+    dist = (d0*d0 + d1*d1);
+    if (dist < (g->ship.radius*g->ship.radius)) {
+	if (gmode == 0) {
+	    MaverickUpdate();
+	    if (position2 == 630) {
+		dth = 1;
+#ifdef USE_OPENAL_SOUND
+		deathSound();
+#endif
 	    }
-	    /*if (ma2 != NULL) {
-	    	delete ma2;
-	    	mov2 = false;
-	    	break;
-	    }*/
 	}
+	/*if (ma2 != NULL) {
+	  delete ma2;
+	  mov2 = false;
+	  break;
+	  }*/
+    }
 
     return;
 }
@@ -834,19 +905,25 @@ void shipCollisionMoving3(Game *g)
     Flt d0, d1, dist;
 
     t_alien3 *ma3 = g->alienShip3;
-	d0 = ma3->pos[0] - g->ship.pos[0];
-	d1 = ma3->pos[1] - g->ship.pos[1];
-	dist = (d0*d0 + d1*d1);
-	if (dist < (g->ship.radius*g->ship.radius)) {
-	    if (gmode == 0) {
-		MaverickUpdate();
+    d0 = ma3->pos[0] - g->ship.pos[0];
+    d1 = ma3->pos[1] - g->ship.pos[1];
+    dist = (d0*d0 + d1*d1);
+    if (dist < (g->ship.radius*g->ship.radius)) {
+	if (gmode == 0) {
+	    MaverickUpdate();
+	    if (position2 == 630) {
+		dth = 1;
+#ifdef USE_OPENAL_SOUND
+		deathSound();
+#endif
 	    }
-	    /*if (ma3 != NULL) {
-	    	delete ma3;
-	    	mov3 = false;
-	    	break;
-	    }*/
 	}
+	/*if (ma3 != NULL) {
+	  delete ma3;
+	  mov3 = false;
+	  break;
+	  }*/
+    }
 
     return;
 }
@@ -865,6 +942,12 @@ void shipCollisionTert(Game *g)
 	if (dist < (g->ship.radius*g->ship.radius)) {
 	    if (gmode == 0) {
 		MaverickUpdate();
+		if (position2 == 630) {
+		    dth = 1;
+#ifdef USE_OPENAL_SOUND
+		    deathSound();
+#endif
+		}
 	    }
 	    if (ta->prev == NULL && ta->next == NULL) {
 		g->alientertiaryFalling = NULL;
@@ -890,7 +973,7 @@ void shipCollisionTert(Game *g)
 	    //ta = NULL;
 	    score += 500;
 
-		    MaverickBossIncomingUpdate();
+	    MaverickBossIncomingUpdate();
 	}
 	ta = save;
     }
@@ -911,6 +994,12 @@ void shipCollisionGold(Game *g)
 	if (dist < (g->ship.radius*g->ship.radius)) {
 	    if (gmode == 0) {
 		MaverickUpdate();
+		if (position2 == 630) {
+		    dth = 1;
+#ifdef USE_OPENAL_SOUND
+		    deathSound();
+#endif
+		}
 	    }
 	    if (ga->prev == NULL && ga->next == NULL) {
 		g->goldalienFalling = NULL;

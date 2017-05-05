@@ -55,8 +55,12 @@ extern GLXContext glc;
 
 extern int xres;
 extern int yres;
+extern int won;
+extern int dth;
+extern int dang;
 extern bool danger;
 extern const int MAX_BULLETS;
+extern int position2;
 extern int position3;
 extern int position4;
 extern int position5;
@@ -416,6 +420,7 @@ extern void explosion();
 extern void bossMusic();
 extern void bossStop();
 extern void deathSound();
+extern void dangerS();
 extern void shieldUp();
 extern void score100();
 extern void score250();
@@ -425,10 +430,11 @@ extern void unzip();
 extern void delete_sounds();
 #endif
 
-extern void help(int);
-extern void getHighScores();
-extern void showHighScores(int);
+//extern void getHighScores();
+//extern void showHighScores(int);
 extern void showScores();
+extern void death();
+extern void winG();
 
 extern void shipCollisionAlien(Game *);
 extern void shipCollisionMoving(Game *);
