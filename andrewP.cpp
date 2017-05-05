@@ -1,7 +1,10 @@
 //Andrew Parker
 //March 2, 2017
 //Group 6
-//
+//***********************************************************************
+//My portion of the project was handling collision between the objects,
+//and implementing the sound functionality for the game.
+//***********************************************************************
 //
 #include <iostream>
 #include <cstdlib>
@@ -62,20 +65,20 @@ void bulletToMoving3(Game);
 void bulletToGold(Game);
 void bulletToTert(Game);
 
-int music = 0;
-int thr = 0;
 int gmode = 0;
 int dth = 0;
 int won = 0;
 int dang = 0;
 int pierce = 0;
-int sc = 0;
+//int sc = 0;
 int score = 0;
-int scoresI[10];
-char scoresC[10][50];
+//int scoresI[10];
+//char scoresC[10][50];
 ALuint alBuffer[11];
 ALuint alSource[11];
 
+
+//This functions diplays the game over text
 void death()
 {
     char text[3][60] = {"GAME OVER.", 
@@ -93,9 +96,9 @@ void death()
 	ggprint16 (&re, 0, 0xff0000, text[i]);
 	re.bot = re.bot - 30;
     }
-    //glDisable(GL_TEXTURE_2D);
 }
 
+//This text is displayed when game victory conditions are met
 void winG()
 {
     char text[3][60] = {"BOSS DEFEATED.", 
@@ -117,6 +120,7 @@ void winG()
 }
 
 #ifdef USE_OPENAL_SOUND
+//This function initializes all sound files for the game
 void initSound()
 {
     unzip();
@@ -207,13 +211,10 @@ void initSound()
 	return;
     }
 }
+
+//This function is used to clean the sound sources and buffers upon exit
 void cleanSounds()
 {
-    /*if (music == 0) {
-      music ^= 1;
-      playBackGround(alSource[0]);
-      } else {*/
-
     alDeleteSources(1, &alSource[0]);
     alDeleteSources(1, &alSource[1]);
     alDeleteSources(1, &alSource[2]);
@@ -244,105 +245,113 @@ void cleanSounds()
     alcDestroyContext(Context);
     alcCloseDevice(Device);
     return;
-    //}
 }
 
+//This function begins playing the main background music for the game
+//in a loop
 void playBackGround()
 {	
-    //alSourcef(alSource[0], AL_LOOPING, AL_TRUE);
-    //for (int i=0; i < 15; i++) {
     alSourcePlay(alSource[0]);
-    //	usleep(20500);
-    //}
     return;
 }
 
+//This function stops the background music from playing for whatever
+//desired reason
 void stopBackGround()
 {
     alSourceStop(alSource[0]);
-    //alSourcef(alSource[0], AL_LOOPING, AL_FALSE);
     return;
 }
 
+//This function plays the sound that alerts the player to the boss' closing
+//distance
 void dangerS()
 {
     alSourcePlay(alSource[10]);
     dang = 1;
-    //alSourcef(alSource[0], AL_LOOPING, AL_FALSE);
     return;
 }
 
+//Thus plas the basic blaster sound effect the the ship projectiles
 void blaster()
 {
     alSourcePlay(alSource[1]);
     return;
 }
 
+//This plays the sound for the death of an enemy alien
 void explosion()
 {
     alSourcePlay(alSource[2]);
     return;
 }
 
+//Thus plays the special music for when the boss enemy appears
 void bossMusic()
 {
-    //alSourcef(alSource[3], AL_LOOPING, AL_TRUE);
-    //for (int i=0; i < 3; i++) {
     alSourcePlay(alSource[3]);
-    //	usleep(20000);
-    //}
     return;
 }
 
+//This function stops the boss music from playing for whatever reason
 void bossStop()
 {
     alSourceStop(alSource[3]);
     return;
 }
 
+//Thus function plays the sound that results from the players death
 void deathSound()
 {
     alSourcePlay(alSource[4]);
     return;
 }
 
+//This function plays the sound alerting the player that they picked up
+//a special item
 void shieldUp()
 {
     alSourcePlay(alSource[5]);
     return;
 }
 
+//basic sound indicating score progression
 void score100()
 {
     alSourcePlay(alSource[6]);
     return;
 }
 
+//basic sound indicating score progression
 void score250()
 {
     alSourcePlay(alSource[7]);
     return;
 }
 
+//basic sound indicating score progression
 void score500()
 {
     alSourcePlay(alSource[8]);
     return;
 }
 
+//basic sound indicating score progression
 void score1M()
 {
     alSourcePlay(alSource[9]);
     return;
 }
 
-
+//Unzips the compressed sound files, readying them for play
 void unzip()
 {
     system("unzip sounds.zip");
     return;
 }
 
+//deletes the unzipped sound files ensuring smalles possible game
+//file size
 void delete_sounds()
 {
     remove("sounds/8BitBack.wav");
@@ -378,6 +387,8 @@ void delete_sounds()
   return;
   }*/
 
+//This function displays the current score to the player
+//as they play
 void showScores()
 {
     char name[20] = {"Score:"};
@@ -413,6 +424,8 @@ void showScores()
   return;
   }*/
 
+//Function implementing the collision of the ship projectile to
+//an enemy type
 void bulletToAlien(Game *g)
 {
     Flt d0, d1, dist;
@@ -431,7 +444,6 @@ void bulletToAlien(Game *g)
 		if (a->prev == NULL && a->next == NULL) {
 		    g->alienFalling = NULL;
 		    delete a;
-		    //a = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -440,11 +452,9 @@ void bulletToAlien(Game *g)
 		    MaverickBossIncomingUpdate();
 		    break;
 		} else if (a->prev == NULL) {
-		    //ta->next->prev = NULL;
 		    g->alienFalling = a->next;
 		    a->next->prev = NULL;
 		    delete a;
-		    //a = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -455,7 +465,6 @@ void bulletToAlien(Game *g)
 		} else if (a->next == NULL) {
 		    a->prev->next = NULL;
 		    delete a;
-		    //a = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -468,7 +477,6 @@ void bulletToAlien(Game *g)
 		    a->prev->next = a->next;
 		    a->next->prev = a->prev;
 		    delete a;
-		    //a = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -478,18 +486,15 @@ void bulletToAlien(Game *g)
 		    MaverickBossIncomingUpdate();
 		    break;
 		}
-		//delete a;
-		//g->barr[i] = g->barr[--g->nbullets];
-		//score += 1000;
 	    }
-	    //a = a->next;
-	    //a = savea;
 	}
 	a = save;
     }
     return;
 }
 
+//Function implementing the collision of the ship projectile to
+//an enemy type
 void bulletToMoving(Game *g)
 {
     Flt d0, d1, dist;
@@ -508,7 +513,8 @@ void bulletToMoving(Game *g)
 		}
 		if (alienONEHealth == 70) {
 		    delete ma;
-		    mov1 = false;
+		    mov1 = false;	//variable indicating the death
+		    			//of a special enemy
 		}
 		break;
 	    }
@@ -518,6 +524,8 @@ void bulletToMoving(Game *g)
     return;
 }
 
+//Function implementing the collision of the ship projectile to
+//an enemy type
 void bulletToMoving2(Game *g)
 {
     Flt d0, d1, dist;
@@ -534,7 +542,8 @@ void bulletToMoving2(Game *g)
 		g->barr[i] = g->barr[--g->nbullets];
 		if (alienTWOHealth == 70) {
 		    delete ma2;
-		    mov2 = false;
+		    mov2 = false;	//variable indicating the death
+		    			//of a special enemy
 		}
 		break;
 	    }
@@ -544,6 +553,8 @@ void bulletToMoving2(Game *g)
     return;
 }
 
+//Function implementing the collision of the ship projectile to
+//the boss enemy type
 void bulletToBoss(Game *g)
 {
     Flt d0, d1, dist;
@@ -564,8 +575,8 @@ void bulletToBoss(Game *g)
 #ifdef USE_OPENAL_SOUND
 		    bossStop();
 #endif
-		    baws = false;
-		    deadbaws = true;
+		    baws = false;	//variable indicating boss is active
+		    deadbaws = true;	//variable indicating boss death
 		}
 		break;
 	    }
@@ -574,6 +585,8 @@ void bulletToBoss(Game *g)
     return;
 }
 
+//Function implementing the collision of the ship projectile to
+//an enemy type
 void bulletToMoving3(Game *g)
 {
     Flt d0, d1, dist;
@@ -590,7 +603,8 @@ void bulletToMoving3(Game *g)
 		g->barr[i] = g->barr[--g->nbullets];
 		if (alienTHREEHealth == 70) {
 		    delete ma3;
-		    mov3 = false;
+		    mov3 = false;	//variable used to indicate
+		    			//death of special enemy
 		}
 		break;
 	    }
@@ -600,6 +614,8 @@ void bulletToMoving3(Game *g)
     return;
 }
 
+//Function implementing the collision of the ship projectile to
+//an enemy type
 void bulletToTert(Game *g)
 {
     Flt d0, d1, dist;
@@ -620,7 +636,6 @@ void bulletToTert(Game *g)
 		if (ta->prev == NULL && ta->next == NULL) {
 		    g->alientertiaryFalling = NULL;
 		    delete ta;
-		    //ta = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -630,11 +645,9 @@ void bulletToTert(Game *g)
 		    MaverickBossIncomingUpdate();
 		    break;
 		} else if (ta->prev == NULL) {
-		    //ta->next->prev = NULL;
 		    g->alientertiaryFalling = ta->next;
 		    ta->next->prev = NULL;
 		    delete ta;
-		    //ta = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -646,7 +659,6 @@ void bulletToTert(Game *g)
 		} else if (ta->next == NULL) {
 		    ta->prev->next = NULL;
 		    delete ta;
-		    //ta = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -660,7 +672,6 @@ void bulletToTert(Game *g)
 		    ta->prev->next = ta->next;
 		    ta->next->prev = ta->prev;
 		    delete ta;
-		    //ta = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -670,26 +681,20 @@ void bulletToTert(Game *g)
 		    MaverickBossIncomingUpdate();
 		    break;
 		}
-		//delete ta;
-		//ta = NULL;
-		//g->barr[i] = g->barr[--g->nbullets];
-		//score += 500;
 	    }
-	    //a = a->next;
-	    //ta = savea;
-
 	}
 	ta = save;
     }
     return;
 }
 
+//Function implementing the collision of the ship projectile to
+//an enemy type
 void bulletToGold(Game *g)
 {
     Flt d0, d1, dist;
 
     t_GoldAlienEnemy *ga = g->goldalienFalling;
-    //t_GoldAlienEnemy *save = ga->next;
     while (ga) {
 	t_GoldAlienEnemy *save = ga->next;
 	for (int i = 0; i < g->nbullets; i++) {
@@ -704,7 +709,6 @@ void bulletToGold(Game *g)
 		if (ga->prev == NULL && ga->next == NULL) {
 		    g->goldalienFalling = NULL;
 		    delete ga;
-		    //ga = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -714,11 +718,9 @@ void bulletToGold(Game *g)
 		    MaverickBossIncomingUpdate();
 		    break;
 		} else if (ga->prev == NULL) {
-		    //ta->next->prev = NULL;
 		    g->goldalienFalling = ga->next;
 		    ga->next->prev = NULL;
 		    delete ga;
-		    //ga = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -730,7 +732,6 @@ void bulletToGold(Game *g)
 		} else if (ga->next == NULL) {
 		    ga->prev->next = NULL;
 		    delete ga;
-		    //ga = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -744,7 +745,6 @@ void bulletToGold(Game *g)
 		    ga->prev->next = ga->next;
 		    ga->next->prev = ga->prev;
 		    delete ga;
-		    //ga = NULL;
 		    if (pierce == 0) {
 			g->barr[i] = 
 			    g->barr[--g->nbullets];
@@ -754,25 +754,20 @@ void bulletToGold(Game *g)
 		    MaverickBossIncomingUpdate();
 		    break;
 		}
-		//delete ga;
-		//ga = NULL;
-		//g->barr[i] = g->barr[--g->nbullets];
-		//score += 10000;
 	    }
-	    //a = a->next;
-	    //ga = savea;
 	}
 	ga = save;
     }
     return;
 }
 
+//Function implementing collision between the player ship and
+//an enemy type
 void shipCollisionAlien(Game *g)
 {
     Flt d0, d1, dist;
-    //cout << "in collision" << endl;
+
     t_AlienEnemy *a = g->alienFalling;
-    //t_AlienEnemy *save = a->next;
     while (a) {
 	t_AlienEnemy *save = a->next;
 	d0 = a->pos[0] - g->ship.pos[0];
@@ -782,35 +777,27 @@ void shipCollisionAlien(Game *g)
 	    if (gmode == 0) {
 		MaverickUpdate();
 		if (position2 == 630) {
-		    dth = 1;
+		    dth = 1;	//variable used to trigger death flag
 #ifdef USE_OPENAL_SOUND
 		    deathSound();
 #endif
-		    //death();
 		}
 	    }
 	    if (a->prev == NULL && a->next == NULL) {
 		g->alienFalling = NULL;
 		delete a;
-		//a = NULL;
 	    } else if (a->prev == NULL) {
-		//ta->next->prev = NULL;
 		g->alienFalling = a->next;
 		a->next->prev = NULL;
 		delete a;
-		//a = NULL;
 	    } else if (a->next == NULL) {
 		a->prev->next = NULL;
 		delete a;
-		//a = NULL;
 	    } else if (a->prev != NULL && a->next != NULL) {
 		a->prev->next = a->next;
 		a->next->prev = a->prev;
 		delete a;
-		//a = NULL;
 	    }
-	    //delete a;
-	    //a = NULL;
 	    score += 1000;
 
 	    MaverickBossIncomingUpdate();
@@ -820,6 +807,8 @@ void shipCollisionAlien(Game *g)
     return;
 }
 
+//Function implementing collision between the player ship and
+//the boss enemy type
 void shipCollisionBoss(Game *g)
 {
     Flt d0, d1, dist;
@@ -835,7 +824,7 @@ void shipCollisionBoss(Game *g)
 #ifdef USE_OPENAL_SOUND
 		deathSound();
 #endif
-		dth = 1;
+		dth = 1;	//variable used to trigger death flag
 	    }
 	}
     }
@@ -843,6 +832,8 @@ void shipCollisionBoss(Game *g)
     return;
 }
 
+//Function implementing collision between the player ship and
+//an enemy type
 void shipCollisionMoving(Game *g)
 {
     Flt d0, d1, dist;
@@ -855,23 +846,19 @@ void shipCollisionMoving(Game *g)
 	if (gmode == 0) {
 	    MaverickUpdate();
 	    if (position2 == 630) {
-		dth = 1;
+		dth = 1;	//variable used to trigger death flag
 #ifdef USE_OPENAL_SOUND
 		deathSound();
 #endif
 	    }
 	}
-	// can delete following block
-	/*if (ma != NULL) {
-	  delete ma;
-	  mov1 = false;
-	  break;
-	  }*/
     }
 
     return;
 }
 
+//Function implementing collision between the player ship and
+//an enemy type
 void shipCollisionMoving2(Game *g)
 {
     Flt d0, d1, dist;
@@ -884,22 +871,19 @@ void shipCollisionMoving2(Game *g)
 	if (gmode == 0) {
 	    MaverickUpdate();
 	    if (position2 == 630) {
-		dth = 1;
+		dth = 1;	//variable used to trigger death flag
 #ifdef USE_OPENAL_SOUND
 		deathSound();
 #endif
 	    }
 	}
-	/*if (ma2 != NULL) {
-	  delete ma2;
-	  mov2 = false;
-	  break;
-	  }*/
     }
 
     return;
 }
 
+//Function implementing collision between the player ship and
+//an enemy type
 void shipCollisionMoving3(Game *g)
 {
     Flt d0, d1, dist;
@@ -912,28 +896,24 @@ void shipCollisionMoving3(Game *g)
 	if (gmode == 0) {
 	    MaverickUpdate();
 	    if (position2 == 630) {
-		dth = 1;
+		dth = 1;	//variable used to trigger death flag
 #ifdef USE_OPENAL_SOUND
 		deathSound();
 #endif
 	    }
 	}
-	/*if (ma3 != NULL) {
-	  delete ma3;
-	  mov3 = false;
-	  break;
-	  }*/
     }
 
     return;
 }
 
+//Function implementing collision between the player ship and
+//an enemy type
 void shipCollisionTert(Game *g)
 {
     Flt d0, d1, dist;
 
     t_AlienTertiary *ta = g->alientertiaryFalling;
-    //t_AlienTertiary *save = ta->next;
     while (ta) {
 	t_AlienTertiary *save = ta->next;
 	d0 = ta->pos[0] - g->ship.pos[0];
@@ -952,25 +932,18 @@ void shipCollisionTert(Game *g)
 	    if (ta->prev == NULL && ta->next == NULL) {
 		g->alientertiaryFalling = NULL;
 		delete ta; 
-		//ta = NULL;
 	    } else if (ta->prev == NULL) {
-		//ta->next->prev = NULL;
 		g->alientertiaryFalling = ta->next;
 		ta->next->prev = NULL;
 		delete ta;
-		//ta = NULL;
 	    } else if (ta->next == NULL) {
 		ta->prev->next = NULL;
 		delete ta;
-		//ta = NULL;
 	    } else if (ta->prev != NULL && ta->next != NULL) {
 		ta->prev->next = ta->next;
 		ta->next->prev = ta->prev;
 		delete ta;
-		//ta = NULL;
 	    }
-	    //delete ta;
-	    //ta = NULL;
 	    score += 500;
 
 	    MaverickBossIncomingUpdate();
@@ -980,12 +953,13 @@ void shipCollisionTert(Game *g)
     return;
 }
 
+//Function implementing collision between the player ship and
+//an enemy type
 void shipCollisionGold(Game *g)
 {
     Flt d0, d1, dist;
 
     t_GoldAlienEnemy *ga = g->goldalienFalling;
-    //t_GoldAlienEnemy *save = ga->next;
     while (ga) {
 	t_GoldAlienEnemy *save = ga->next;
 	d0 = ga->pos[0] - g->ship.pos[0];
@@ -1004,25 +978,18 @@ void shipCollisionGold(Game *g)
 	    if (ga->prev == NULL && ga->next == NULL) {
 		g->goldalienFalling = NULL;
 		delete ga;
-		//ga = NULL;
 	    } else if (ga->prev == NULL) {
-		//ga->next->prev = NULL;
 		g->goldalienFalling = ga->next;
 		ga->next->prev = NULL;
 		delete ga;
-		//ga = NULL;
 	    } else if (ga->next == NULL) {
 		ga->prev->next = NULL;
 		delete ga;
-		//ga = NULL;
 	    } else if (ga->next != NULL && ga->prev != NULL) {
 		ga->prev->next = ga->next;
 		ga->next->prev = ga->prev;
 		delete ga;
-		//ga = NULL;
 	    }
-	    //delete a;
-	    //ga = NULL;
 	    score += 100000;
 	    MaverickBossIncomingUpdate();
 	}
@@ -1031,6 +998,8 @@ void shipCollisionGold(Game *g)
     return;
 }
 
+//Function implementing collision between the player ship and
+//an enemy type
 void shipCollisionShields(Game *g)
 {
     Flt d0, d1, dist;
@@ -1061,13 +1030,14 @@ void shipCollisionShields(Game *g)
 		}
 	    }
 	    delete s;
-	    //s = NULL;
 	}
 	s = s->next;
     }
     return;
 }
 
+//Function implementing collision between the player ship and
+//an enemy type
 void shipCollisionBoost(Game *g)
 {
     Flt d0, d1, dist;
@@ -1095,7 +1065,6 @@ void shipCollisionBoost(Game *g)
 		}
 	    }
 	    delete b;
-	    //b = NULL;
 	}
 	b = b->next;
     }
