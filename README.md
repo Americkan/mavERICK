@@ -17,10 +17,12 @@ Images:
 * Defining
 * Implemntation 
 
-UI:
+HUD:
 * Health Bar
 * Boost Bar
 * Shields Bar
+* Alien Health
+* Boss Health
 
 Additional:
 * Functionality that supports and works with Andrew's collision functions. 
@@ -28,10 +30,8 @@ Additional:
 * Create Enemies/Powerups/Secondary Enemies
 * Draw Enemies/Powerups/Secondary Enemies
 * Update Health/Shields on enemy contact.
-* Progress Level Forward
 * Boss Level
-* Score System
-* Update Score as needed
+* Update HUD as needed. 
 
 Andrew P.
 --------------
