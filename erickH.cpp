@@ -559,7 +559,7 @@ void MaverickMakeBoss(Game *g)
 	}
 	baws = true;
 	
-	node->radius = 400.0f;
+	node->radius = 160.0f;
 	node->sound=0;
 	node->pos[0] = xres - 500;
 	node->pos[1] = yres - 400;
@@ -1001,22 +1001,22 @@ void MaverickUpdateShields()
 
 void MaverickUpdateAlienONE()
 {
-    if(alienONEHealth >= 90) {
-	alienONEHealth = alienONEHealth - 20;
+    if(alienONEHealth >= 80) {
+	alienONEHealth = alienONEHealth - 10;
     }
 }
 
 void MaverickUpdateAlienTWO() 
 {
-    if(alienTWOHealth >= 90) {
-	alienTWOHealth = alienTWOHealth - 20;
+    if(alienTWOHealth >= 80) {
+	alienTWOHealth = alienTWOHealth - 10;
     }
 }
 
 void MaverickUpdateAlienTHREE()
 {
-    if(alienTHREEHealth >= 90) {
-	alienTHREEHealth = alienTHREEHealth - 20;
+    if(alienTHREEHealth >= 80) {
+	alienTHREEHealth = alienTHREEHealth - 10;
     }
 }
 

@@ -605,7 +605,7 @@ void physics(Game *g)
 		//How long has bullet been alive?
 		double ts = timeDiff(&b->time, &bt);
 		if (ts > 2.5f) {
-		    std::cout << "max time passed" << std::endl;
+		    //std::cout << "max time passed" << std::endl;
 		    g->barr[i] = g->barr[--g->nbullets];
 		
 			//Delete bullet here.
@@ -1000,8 +1000,8 @@ void render(Game *g)
 
 
 	ggprint8b(&r, 16, 0x00ff0000, "Space mavERICK (Tom Cruise Simulator)");
-	ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g->nbullets);
-	ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g->nasteroids);
+	//ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g->nbullets);
+	//ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g->nasteroids);
 	//-------------------------------------------------------------------------
 	//Draw the ship
 	glColor3fv(g->ship.color);
