@@ -35,6 +35,8 @@ Additional:
 
 Andrew P.
 --------------
+Email: aparker13@csub.edu
+
 Sound:
 * Implementation
 
