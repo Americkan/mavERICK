@@ -11,6 +11,10 @@ Ericks++:
 * Andrew P.
 * Erick T.
 
+No more changes are allowed on the game as of 6:25pm on May 5 as agreed upon by the team. 
+Final game is ready for presentation.
+
+
 Erick H.
 --------------
 Images:
