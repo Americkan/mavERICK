@@ -24,13 +24,13 @@ extern void playBackGround(ALuint);
 extern void backGround();
 
 class Input {
-  public:
-    char text[100];
-    int size;
-    Input() {
-      text[0] = '\0';
-      size = 8;
-    }
+    public:
+        char text[100];
+        int size;
+        Input() {
+            text[0] = '\0';
+            size = 8;
+        }
 }input;
 
 int overSett1 = 0;
@@ -49,15 +49,16 @@ Ppmimage *shipImage3 = NULL;
 GLuint shipTexture3;
 GLuint silhouetteShip3;
 
-void frameMenu() {
-   // int cx = xres / 2;
-   // int cy = yres / 2;
+void frameMenu()
+{
+    // int cx = xres / 2;
+    // int cy = yres / 2;
 
     glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glLineWidth(1);
-  
+
     glBegin(GL_POLYGON);  
     glColor3f(0.0, 0.0, 0.0); 
     glVertex2i(2, 852); //i
@@ -67,7 +68,7 @@ void frameMenu() {
     glVertex2i(124, 691);
     glVertex2i(177, 766);
     glEnd();
-    
+
     glBegin(GL_POLYGON);  
     glColor3f(0.0, 0.0, 0.0); 
     glVertex2i(729, 852);//i
@@ -100,7 +101,7 @@ void frameMenu() {
     glVertex2i(1126, 137);
     glVertex2i(1027, 56);
     glEnd();
-    
+
     glBegin(GL_POLYGON);  
     glColor3f(0.0, 0.0, 0.0); 
     glVertex2i(2, 7);//i
@@ -109,7 +110,7 @@ void frameMenu() {
     glVertex2i(1027, 56);
     glVertex2i(177, 56);
     glEnd();
-    
+
     glBegin(GL_POLYGON);  
     glColor3f(0.0, 0.0, 0.0); 
     glVertex2i(4, 131);//i
@@ -118,7 +119,7 @@ void frameMenu() {
     glVertex2i(177, 56);
     glVertex2i(124, 137);
     glEnd();
-    
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_BLEND);
 }
@@ -133,292 +134,296 @@ void mainMenu(int xres, int yres, Game *g)
     glBindTexture(GL_TEXTURE_2D, 0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-  
-/*======>> Buttons <<======*/
-  //glColor3f(0.0,0.0,1.0); 
-//===>Menu title
-  glBegin(GL_POLYGON);  
-   glColor3f(0.0, 0.0, 0.0); 
-   glVertex2i(cx + 20 ,   cy + 110);
-   glVertex2i(cx + 113,   cy + 110);  //right 
-   glVertex2i(cx + 115,   cy + 110);  //right top
-   glColor3f(1.0, 1.0, 1.0); 
-   glVertex2i(cx + 115,   cy + 80);   //right bottom
-   glVertex2i(cx - 20 ,   cy + 80);    //down-right " ''\,, "
-   glVertex2i(cx - 40 ,   cy + 90);    //down-left " ''\,, "
-   glVertex2i(cx - 130,   cy + 90);   //left bottom
-   glColor3f(0.0, 0.1, 0.7); 
-   glVertex2i(cx - 135,   cy + 80);   //left pick
-   glVertex2i(cx - 135,   cy + 120);  //left top
-   glVertex2i(cx    ,   cy + 120);      //top " ``\,, "
-  glEnd();
-//===>New game ]]===
-  //  glBindTexture(GL_TEXTURE_2D, 0);
-   // glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-  glBegin(GL_POLYGON);
-     glVertex2i(cx - 20 , cy + 70);  
-     glVertex2i(cx - 40 , cy + 80);  
-     glVertex2i(cx - 130, cy + 80); //left up
-     glVertex2i(cx - 130, cy + 60); //left down  
-     glVertex2i(cx - 120, cy + 50); //left down  
-     glVertex2i(cx - 40 , cy + 50);  
-     glVertex2i(cx - 20 , cy + 60);  
-     glVertex2i(cx + 115, cy + 60);  
-     glVertex2i(cx + 115, cy + 70);  
-  glEnd();
-  
-  if (g->button[0].over == 1){
-  glLineWidth(2);
-    glColor3f(0.1, 0.0, 0.8); 
-    glBegin(GL_POLYGON);
-     glVertex2i(cx - 20 -2, cy + 70+2);  
-     glVertex2i(cx - 40 -2, cy + 80+2);  
-     glVertex2i(cx - 130-2, cy + 80+2); //left up
-     glVertex2i(cx - 130-2, cy + 60+2); //left down  
-     glVertex2i(cx - 120-2, cy + 50+2); //left down  
-     glVertex2i(cx - 40 -2, cy + 50+2);  
-     glVertex2i(cx - 20 -2, cy + 60+2);  
-     glVertex2i(cx + 115+2, cy + 60+2);  
-     glVertex2i(cx + 115+2, cy + 70+2);  
-  glEnd();
-  glLineWidth(1);
-   glColor3f(0.0, 0.1, 0.7); 
-}
 
-//===>Settings ===[[
-  glBegin(GL_POLYGON);
-     glVertex2i(cx - 40 , cy + 40);  
-     glVertex2i(cx - 20 , cy + 50);  
-     glVertex2i(cx + 115, cy + 50); //right-up 
-     glVertex2i(cx + 115, cy + 30); //right-down
-     glVertex2i(cx + 105, cy + 20);  
-     glVertex2i(cx - 20 , cy + 20);  
-     glVertex2i(cx - 40 , cy + 30);  
-     glVertex2i(cx - 130, cy + 30);  
-     glVertex2i(cx - 130, cy + 40);  
-  glEnd();
-
-  if (g->button[1].over == 1){
-    glColor3f(0.0, 0.0, 0.8); 
-    glBegin(GL_POLYGON);
-     glVertex2i(cx - 40-2 , cy + 40+2);  
-     glVertex2i(cx - 20-2 , cy + 50+2);  
-     glVertex2i(cx + 115+2, cy + 50+2); //right-up 
-     glVertex2i(cx + 115+2, cy + 30+2); //right-down
-     glVertex2i(cx + 105+2, cy + 20+2);  
-     glVertex2i(cx - 20-2 , cy + 20+2);  
-     glVertex2i(cx - 40-2 , cy + 30+2);  
-     glVertex2i(cx - 130-2, cy + 30+2);  
-     glVertex2i(cx - 130-2, cy + 40+2);  
+    /*======>> Buttons <<======*/
+    //glColor3f(0.0,0.0,1.0); 
+    //===>Menu title
+    glBegin(GL_POLYGON);  
+    glColor3f(0.0, 0.0, 0.0); 
+    glVertex2i(cx + 20 ,   cy + 110);
+    glVertex2i(cx + 113,   cy + 110);  //right 
+    glVertex2i(cx + 115,   cy + 110);  //right top
+    glColor3f(1.0, 1.0, 1.0); 
+    glVertex2i(cx + 115,   cy + 80);   //right bottom
+    glVertex2i(cx - 20 ,   cy + 80);    //down-right " ''\,, "
+    glVertex2i(cx - 40 ,   cy + 90);    //down-left " ''\,, "
+    glVertex2i(cx - 130,   cy + 90);   //left bottom
+    glColor3f(0.0, 0.1, 0.7); 
+    glVertex2i(cx - 135,   cy + 80);   //left pick
+    glVertex2i(cx - 135,   cy + 120);  //left top
+    glVertex2i(cx    ,   cy + 120);      //top " ``\,, "
     glEnd();
-   glColor3f(0.0, 0.1, 0.7); 
+    //===>New game ]]===
+    //  glBindTexture(GL_TEXTURE_2D, 0);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glBegin(GL_POLYGON);
+    glVertex2i(cx - 20 , cy + 70);  
+    glVertex2i(cx - 40 , cy + 80);  
+    glVertex2i(cx - 130, cy + 80); //left up
+    glVertex2i(cx - 130, cy + 60); //left down  
+    glVertex2i(cx - 120, cy + 50); //left down  
+    glVertex2i(cx - 40 , cy + 50);  
+    glVertex2i(cx - 20 , cy + 60);  
+    glVertex2i(cx + 115, cy + 60);  
+    glVertex2i(cx + 115, cy + 70);  
+    glEnd();
+
+    if (g->button[0].over == 1) {
+        glLineWidth(2);
+        glColor3f(0.1, 0.0, 0.8); 
+        glBegin(GL_POLYGON);
+        glVertex2i(cx - 20 -2, cy + 70+2);  
+        glVertex2i(cx - 40 -2, cy + 80+2);  
+        glVertex2i(cx - 130-2, cy + 80+2); //left up
+        glVertex2i(cx - 130-2, cy + 60+2); //left down  
+        glVertex2i(cx - 120-2, cy + 50+2); //left down  
+        glVertex2i(cx - 40 -2, cy + 50+2);  
+        glVertex2i(cx - 20 -2, cy + 60+2);  
+        glVertex2i(cx + 115+2, cy + 60+2);  
+        glVertex2i(cx + 115+2, cy + 70+2);  
+        glEnd();
+        glLineWidth(1);
+        glColor3f(0.0, 0.1, 0.7); 
     }
-//===>High Scores ]]===
-  glBegin(GL_POLYGON);
-     glVertex2i(cx - 20 , cy + 10);  
-     glVertex2i(cx - 40 , cy + 20);  
-     glVertex2i(cx - 130, cy + 20); //left up
-     glVertex2i(cx - 130, cy + 0); //left down  
-     glVertex2i(cx - 120, cy - 10); //left down  
-     glVertex2i(cx - 40 , cy - 10);  
-     glVertex2i(cx - 20 , cy + 0);  
-     glVertex2i(cx + 115, cy + 0);  
-     glVertex2i(cx + 115, cy + 10);  
-  glEnd();
 
-  if (g->button[2].over == 1){
-    glColor3f(0.0, 0.0, 0.8); 
-  glBegin(GL_POLYGON);
-     glVertex2i(cx - 20-2 , cy + 10+2);  
-     glVertex2i(cx - 40-2 , cy + 20+2);  
-     glVertex2i(cx - 130-2, cy + 20+2); //left up
-     glVertex2i(cx - 130-2, cy + 0+2); //left down  
-     glVertex2i(cx - 120-2, cy - 10-2); //left down  
-     glVertex2i(cx - 40-2, cy - 10-2);  
-     glVertex2i(cx - 20-2 , cy + 0+2);  
-     glVertex2i(cx + 115+2, cy + 0+2);  
-     glVertex2i(cx + 115+2, cy + 10+2);  
-  glEnd();
-   glColor3f(0.0, 0.1, 0.7); 
-  }
-//===>Credits ===[[
-  glBegin(GL_POLYGON);
-     glVertex2i(cx - 40 , cy - 20);  
-     glVertex2i(cx - 20 , cy - 10);  
-     glVertex2i(cx + 115, cy - 10); //right-up 
-     glVertex2i(cx + 115, cy - 30); //right-down
-     glVertex2i(cx + 105, cy - 40);  
-     glVertex2i(cx - 20 , cy - 40);  
-     glVertex2i(cx - 40 , cy - 30);  
-     glVertex2i(cx - 130, cy - 30);  
-     glVertex2i(cx - 130, cy - 20);  
-  glEnd();
+    //===>Settings ===[[
+    glBegin(GL_POLYGON);
+    glVertex2i(cx - 40 , cy + 40);  
+    glVertex2i(cx - 20 , cy + 50);  
+    glVertex2i(cx + 115, cy + 50); //right-up 
+    glVertex2i(cx + 115, cy + 30); //right-down
+    glVertex2i(cx + 105, cy + 20);  
+    glVertex2i(cx - 20 , cy + 20);  
+    glVertex2i(cx - 40 , cy + 30);  
+    glVertex2i(cx - 130, cy + 30);  
+    glVertex2i(cx - 130, cy + 40);  
+    glEnd();
 
-  if (g->button[3].over == 1){
-    glColor3f(0.0, 0.0, 0.8); 
-  glBegin(GL_POLYGON);
-     glVertex2i(cx - 40-2 , cy - 20-2);  
-     glVertex2i(cx - 20-2 , cy - 10-2);  
-     glVertex2i(cx + 115+2, cy - 10-2); //right-up 
-     glVertex2i(cx + 115+2, cy - 30-2); //right-down
-     glVertex2i(cx + 105+2, cy - 40-2);  
-     glVertex2i(cx - 20-2 , cy - 40-2);  
-     glVertex2i(cx - 40-2 , cy - 30-2);  
-     glVertex2i(cx - 130-2, cy - 30-2);  
-     glVertex2i(cx - 130-2, cy - 20-2);  
-  glEnd();
-   glColor3f(0.0, 0.1, 0.7); 
-  }
-  //===>End-Menu title
-  glBegin(GL_POLYGON);  
-   glColor3f(0.0, 0.0, 0.0); 
-   glVertex2i(cx-20 ,   cy-50);
-   glVertex2i(cx+115,   cy-50);  //right top
-   glColor3f(1.0, 1.0, 1.0); 
-   glVertex2i(cx+115,   cy-70);  //right bottom
-   glVertex2i(cx-50 ,   cy-70);  //down-right " ''\,, "
-   glColor3f(0.0, 0.1, 0.7); 
-   glVertex2i(cx-70 ,   cy-60);  //down-left " ''\,, "
-   glVertex2i(cx-130,   cy-60);  //left bottom
-   glVertex2i(cx-135,   cy-70);  //left pick
-   glVertex2i(cx-135,   cy-40);  //left top
-   glVertex2i(cx-40 ,   cy-40);  //top " ``\,, "
-  glEnd();
+    if (g->button[1].over == 1) {
+        glColor3f(0.0, 0.0, 0.8); 
+        glBegin(GL_POLYGON);
+        glVertex2i(cx - 40-2 , cy + 40+2);  
+        glVertex2i(cx - 20-2 , cy + 50+2);  
+        glVertex2i(cx + 115+2, cy + 50+2); //right-up 
+        glVertex2i(cx + 115+2, cy + 30+2); //right-down
+        glVertex2i(cx + 105+2, cy + 20+2);  
+        glVertex2i(cx - 20-2 , cy + 20+2);  
+        glVertex2i(cx - 40-2 , cy + 30+2);  
+        glVertex2i(cx - 130-2, cy + 30+2);  
+        glVertex2i(cx - 130-2, cy + 40+2);  
+        glEnd();
+        glColor3f(0.0, 0.1, 0.7); 
+    }
+    //===>High Scores ]]===
+    glBegin(GL_POLYGON);
+    glVertex2i(cx - 20 , cy + 10);  
+    glVertex2i(cx - 40 , cy + 20);  
+    glVertex2i(cx - 130, cy + 20); //left up
+    glVertex2i(cx - 130, cy + 0); //left down  
+    glVertex2i(cx - 120, cy - 10); //left down  
+    glVertex2i(cx - 40 , cy - 10);  
+    glVertex2i(cx - 20 , cy + 0);  
+    glVertex2i(cx + 115, cy + 0);  
+    glVertex2i(cx + 115, cy + 10);  
+    glEnd();
 
-  //==>>Exit button
-  glLineWidth(4);
-  glBegin(GL_LINE_LOOP);
-  for (int i=0; i <=300; i++){
-    double angle = 2*PI*i/300;
-    double x = 20* cos(angle);
-    double y = 20* sin(angle);
-    glVertex2i(50+x, 50+y);
-  }
-  glEnd();
-  if (g->button[4].over == 1){
-      glColor3f(1.0, 0.0, 0.0); 
-      glBegin(GL_LINE_LOOP);
-      for (int i=0; i <=300; i++){
-          double angle = 2*PI*i/300;
-          double x = 20* cos(angle);
-          double y = 20* sin(angle);
-          glVertex2i(50+x, 50+y);
-      }
-      glEnd();
-  }
+    if (g->button[2].over == 1) {
+        glColor3f(0.0, 0.0, 0.8); 
+        glBegin(GL_POLYGON);
+        glVertex2i(cx - 20-2 , cy + 10+2);  
+        glVertex2i(cx - 40-2 , cy + 20+2);  
+        glVertex2i(cx - 130-2, cy + 20+2); //left up
+        glVertex2i(cx - 130-2, cy + 0+2); //left down  
+        glVertex2i(cx - 120-2, cy - 10-2); //left down  
+        glVertex2i(cx - 40-2, cy - 10-2);  
+        glVertex2i(cx - 20-2 , cy + 0+2);  
+        glVertex2i(cx + 115+2, cy + 0+2);  
+        glVertex2i(cx + 115+2, cy + 10+2);  
+        glEnd();
+        glColor3f(0.0, 0.1, 0.7); 
+    }
+    //===>Credits ===[[
+    glBegin(GL_POLYGON);
+    glVertex2i(cx - 40 , cy - 20);  
+    glVertex2i(cx - 20 , cy - 10);  
+    glVertex2i(cx + 115, cy - 10); //right-up 
+    glVertex2i(cx + 115, cy - 30); //right-down
+    glVertex2i(cx + 105, cy - 40);  
+    glVertex2i(cx - 20 , cy - 40);  
+    glVertex2i(cx - 40 , cy - 30);  
+    glVertex2i(cx - 130, cy - 30);  
+    glVertex2i(cx - 130, cy - 20);  
+    glEnd();
 
-  glLineWidth(1);
+    if (g->button[3].over == 1) {
+        glColor3f(0.0, 0.0, 0.8); 
+        glBegin(GL_POLYGON);
+        glVertex2i(cx - 40-2 , cy - 20-2);  
+        glVertex2i(cx - 20-2 , cy - 10-2);  
+        glVertex2i(cx + 115+2, cy - 10-2); //right-up 
+        glVertex2i(cx + 115+2, cy - 30-2); //right-down
+        glVertex2i(cx + 105+2, cy - 40-2);  
+        glVertex2i(cx - 20-2 , cy - 40-2);  
+        glVertex2i(cx - 40-2 , cy - 30-2);  
+        glVertex2i(cx - 130-2, cy - 30-2);  
+        glVertex2i(cx - 130-2, cy - 20-2);  
+        glEnd();
+        glColor3f(0.0, 0.1, 0.7); 
+    }
+    //===>End-Menu title
+    glBegin(GL_POLYGON);  
+    glColor3f(0.0, 0.0, 0.0); 
+    glVertex2i(cx-20 ,   cy-50);
+    glVertex2i(cx+115,   cy-50);  //right top
+    glColor3f(1.0, 1.0, 1.0); 
+    glVertex2i(cx+115,   cy-70);  //right bottom
+    glVertex2i(cx-50 ,   cy-70);  //down-right " ''\,, "
+    glColor3f(0.0, 0.1, 0.7); 
+    glVertex2i(cx-70 ,   cy-60);  //down-left " ''\,, "
+    glVertex2i(cx-130,   cy-60);  //left bottom
+    glVertex2i(cx-135,   cy-70);  //left pick
+    glVertex2i(cx-135,   cy-40);  //left top
+    glVertex2i(cx-40 ,   cy-40);  //top " ``\,, "
+    glEnd();
 
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glDisable(GL_BLEND);
+    //==>>Exit button
+    glLineWidth(4);
+    glBegin(GL_LINE_LOOP);
+    for (int i=0; i <=300; i++) {
+        double angle = 2*PI*i/300;
+        double x = 20* cos(angle);
+        double y = 20* sin(angle);
+        glVertex2i(50+x, 50+y);
+    }
+    glEnd();
+    if (g->button[4].over == 1) {
+        glColor3f(1.0, 0.0, 0.0); 
+        glBegin(GL_LINE_LOOP);
+        for (int i=0; i <=300; i++) {
+            double angle = 2*PI*i/300;
+            double x = 20* cos(angle);
+            double y = 20* sin(angle);
+            glVertex2i(50+x, 50+y);
+        }
+        glEnd();
+    }
 
-  glEnable(GL_TEXTURE_2D);
-  m.bot = cy + 77;
-  m.left = cx-20;
-  m.center = 0;
-  ggprint17(&m, 0,  0x0000000, "MAIN MENU");
-  
-  m.bot = cy + 47;
-  m.left = cx-110;
-  m.center = 0;
-  ggprint17(&m, 0,  0x0000000, "NEW");
+    glLineWidth(1);
 
-  m.bot = cy + 17;
-  m.left = cx-20;
-  m.center = 0;
-  ggprint17(&m, 0,  0x0000000, "SETTINGS");
-  
-  m.bot = cy - 13;
-  m.left = cx-121;
-  m.center = 0;
-  ggprint17(&m, 0,  0x0000000, "SCORES");
-  
-  m.bot = cy - 43;
-  m.left = cx-20;
-  m.center = 0;
-  ggprint17(&m, 0,  0x0000000, "CREDITS");
-  
-  glDisable(GL_TEXTURE_2D);
-//======>>End Menu 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_BLEND);
+
+    glEnable(GL_TEXTURE_2D);
+    m.bot = cy + 77;
+    m.left = cx-20;
+    m.center = 0;
+    ggprint17(&m, 0,  0x0000000, "MAIN MENU");
+
+    m.bot = cy + 47;
+    m.left = cx-110;
+    m.center = 0;
+    ggprint17(&m, 0,  0x0000000, "NEW");
+
+    m.bot = cy + 17;
+    m.left = cx-20;
+    m.center = 0;
+    ggprint17(&m, 0,  0x0000000, "SETTINGS");
+
+    m.bot = cy - 13;
+    m.left = cx-121;
+    m.center = 0;
+    ggprint17(&m, 0,  0x0000000, "SCORES");
+
+    m.bot = cy - 43;
+    m.left = cx-20;
+    m.center = 0;
+    ggprint17(&m, 0,  0x0000000, "CREDITS");
+
+    glDisable(GL_TEXTURE_2D);
+    //======>>End Menu 
 }
 
-int init_ButtonsMain(Game *g){
-  int buttons = 0;
-  //size and positions of every clickable button
-  //new
-  g->button[buttons].r.left = 497;
-  g->button[buttons].r.right = 600;
-  g->button[buttons].r.bot = 477;
-  g->button[buttons].r.top = 504;
- //settings
-  buttons++;
-  g->button[buttons].r.left = 600;
-  g->button[buttons].r.right = 740;
-  g->button[buttons].r.bot = 447;
-  g->button[buttons].r.top = 475;
- //scores
-  buttons++;
-  g->button[buttons].r.left = 497;
-  g->button[buttons].r.right = 600;
-  g->button[buttons].r.bot = 418;
-  g->button[buttons].r.top = 443;
- //credits
-  buttons++;
-  g->button[buttons].r.left = 600;
-  g->button[buttons].r.right = 740;
-  g->button[buttons].r.bot = 387;
-  g->button[buttons].r.top = 414;
- //exit
-  buttons++;
-  g->button[buttons].r.left = 31;
-  g->button[buttons].r.right = 70;
-  g->button[buttons].r.bot = 30;
-  g->button[buttons].r.top = 67;
-  buttons++;
-  return buttons;
+int init_ButtonsMain(Game *g)
+{
+    int buttons = 0;
+    //size and positions of every clickable button
+    //new
+    g->button[buttons].r.left = 497;
+    g->button[buttons].r.right = 600;
+    g->button[buttons].r.bot = 477;
+    g->button[buttons].r.top = 504;
+    //settings
+    buttons++;
+    g->button[buttons].r.left = 600;
+    g->button[buttons].r.right = 740;
+    g->button[buttons].r.bot = 447;
+    g->button[buttons].r.top = 475;
+    //scores
+    buttons++;
+    g->button[buttons].r.left = 497;
+    g->button[buttons].r.right = 600;
+    g->button[buttons].r.bot = 418;
+    g->button[buttons].r.top = 443;
+    //credits
+    buttons++;
+    g->button[buttons].r.left = 600;
+    g->button[buttons].r.right = 740;
+    g->button[buttons].r.bot = 387;
+    g->button[buttons].r.top = 414;
+    //exit
+    buttons++;
+    g->button[buttons].r.left = 31;
+    g->button[buttons].r.right = 70;
+    g->button[buttons].r.bot = 30;
+    g->button[buttons].r.top = 67;
+    buttons++;
+    return buttons;
 }
 
-int init_ButtonsNewG(Game *g){
-  int buttons = 0;
-  //ship1
-  g->button[buttons].r.left = 503;
-  g->button[buttons].r.right = 568;
-  g->button[buttons].r.bot = 355;
-  g->button[buttons].r.top = 418;
- //ship2
-  buttons++;
-  g->button[buttons].r.left = 582;
-  g->button[buttons].r.right = 647;
-  g->button[buttons].r.bot = 355;
-  g->button[buttons].r.top = 418;
- //ship3
-  buttons++;
-  g->button[buttons].r.left = 664;
-  g->button[buttons].r.right = 727;
-  g->button[buttons].r.bot = 355;
-  g->button[buttons].r.top = 418;
-  buttons++;
-  return buttons;
+int init_ButtonsNewG(Game *g)
+{
+    int buttons = 0;
+    //ship1
+    g->button[buttons].r.left = 503;
+    g->button[buttons].r.right = 568;
+    g->button[buttons].r.bot = 355;
+    g->button[buttons].r.top = 418;
+    //ship2
+    buttons++;
+    g->button[buttons].r.left = 582;
+    g->button[buttons].r.right = 647;
+    g->button[buttons].r.bot = 355;
+    g->button[buttons].r.top = 418;
+    //ship3
+    buttons++;
+    g->button[buttons].r.left = 664;
+    g->button[buttons].r.right = 727;
+    g->button[buttons].r.bot = 355;
+    g->button[buttons].r.top = 418;
+    buttons++;
+    return buttons;
 }
 
-int init_ButtonsSett(Game *g){
-  int buttons = 0;
-  //music?
-  g->button[buttons].r.left = 515;
-  g->button[buttons].r.right = 530;
-  g->button[buttons].r.bot = 420;
-  g->button[buttons].r.top = 435;
- //mouse?
-  buttons++;
-  g->button[buttons].r.left = 515;
-  g->button[buttons].r.right = 530;
-  g->button[buttons].r.bot = 390;
-  g->button[buttons].r.top = 405;
-  buttons++;
-  return buttons;
+int init_ButtonsSett(Game *g)
+{
+    int buttons = 0;
+    //music?
+    g->button[buttons].r.left = 515;
+    g->button[buttons].r.right = 530;
+    g->button[buttons].r.bot = 420;
+    g->button[buttons].r.top = 435;
+    //mouse?
+    buttons++;
+    g->button[buttons].r.left = 515;
+    g->button[buttons].r.right = 530;
+    g->button[buttons].r.bot = 390;
+    g->button[buttons].r.top = 405;
+    buttons++;
+    return buttons;
 }
 
-int userName (int key){
+int userName (int key)
+{
 
     if ((key >= XK_a && key <= XK_z) || key == XK_space) {
         char k[2];
@@ -463,11 +468,11 @@ void newGame(int xres, int yres)
     glVertex2i(cx + 115, cy - 80);  
     glVertex2i(cx + 115, cy + 70);  //right up
     glEnd();
-  
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_BLEND);
-  
-  //input box
+
+    //input box
     glColor3f(1.0,1.0,1.0);
     glBegin(GL_QUADS);
     glVertex2i(cx-10, cy+47);              //1 lower left corner
@@ -513,9 +518,9 @@ void drawShipsOptions(int xres, int yres)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, shipW, shipH, 0, GL_RGBA,\
-                GL_UNSIGNED_BYTE, silhouetteData);
+            GL_UNSIGNED_BYTE, silhouetteData);
     free(silhouetteData);
-    
+
     //ship2
     glGenTextures(1, &silhouetteShip2);
     glGenTextures(1, &shipTexture2);
@@ -528,7 +533,7 @@ void drawShipsOptions(int xres, int yres)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, shipW2, shipH2, 0, GL_RGBA,\
-                GL_UNSIGNED_BYTE, silhouetteData);
+            GL_UNSIGNED_BYTE, silhouetteData);
     free(silhouetteData);
 
     //ship3
@@ -543,9 +548,9 @@ void drawShipsOptions(int xres, int yres)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, shipW3, shipH3, 0, GL_RGBA,\
-                GL_UNSIGNED_BYTE, silhouetteData);
+            GL_UNSIGNED_BYTE, silhouetteData);
     free(silhouetteData);
-    
+
     //ship1
     float wid = 35.0f;
     glPushMatrix();
@@ -621,7 +626,7 @@ void gameSettings(int xres, int yres, Game *g)
     glVertex2i(530, 435); 
     glEnd();
 
-    if (g->button[0].over == 1 || overSett1){
+    if (g->button[0].over == 1 || overSett1) {
         glColor3f(1.0, 0.0, 0.0); 
         glBegin(GL_POLYGON);
         glVertex2i(530, 420); 
@@ -631,7 +636,7 @@ void gameSettings(int xres, int yres, Game *g)
         glEnd();
         glColor3f(0.0, 0.1, 0.7); 
     }
-    
+
     //mouse?
     glBegin(GL_POLYGON);
     glVertex2i(530, 390); 
@@ -640,7 +645,7 @@ void gameSettings(int xres, int yres, Game *g)
     glVertex2i(530, 405); 
     glEnd();
 
-    if (g->button[1].over == 1 || overSett2){
+    if (g->button[1].over == 1 || overSett2) {
         glColor3f(1.0, 0.0, 0.0); 
         glBegin(GL_POLYGON);
         glVertex2i(530, 390); 
@@ -653,7 +658,7 @@ void gameSettings(int xres, int yres, Game *g)
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_BLEND);
-    
+
     glEnable(GL_TEXTURE_2D);
     m.bot = cy + 17;
     m.left = cx-20;
@@ -664,7 +669,7 @@ void gameSettings(int xres, int yres, Game *g)
     m.left = cx-85;
     m.center = 0;
     ggprint13(&m, 0,  0x0000000, "Music on/off");
-    
+
     m.bot = cy - 40;
     m.left = cx-85;
     m.center = 0;
@@ -673,8 +678,8 @@ void gameSettings(int xres, int yres, Game *g)
 }
 void gameScores(int xres, int yres) 
 {
-  int sum = xres + yres;
-  if(sum){}
+    int sum = xres + yres;
+    if(sum){}
 }
 void gameCredits(int xres, int yres)
 {
@@ -701,13 +706,13 @@ void gameCredits(int xres, int yres)
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_BLEND);
-    
+
     glEnable(GL_TEXTURE_2D);
     m.bot = cy-43;
     m.left = cx-20;
     m.center = 0;
     ggprint17(&m, 0,  0x0000000, "CREDITS");
-  
+
     m.bot = cy-70;
     m.left = cx-115;
     m.center = 0;
@@ -716,17 +721,17 @@ void gameCredits(int xres, int yres)
     m.left = cx-115;
     m.center = 0;
     ggprint13(&m, 0,  0x0000000, "_____________________");
-    
+
     m.bot = cy - 92;
     m.left = cx-57;
     m.center = 0;
     ggprint13(&m, 0,  0x0000000, "Herrera, Erick");
-    
+
     m.bot = cy - 112;
     m.left = cx-63;
     m.center = 0;
     ggprint13(&m, 0,  0x0000000, "Parker, Andrew");
-    
+
     m.bot = cy - 132;
     m.left = cx-62;
     m.center = 0;
@@ -744,40 +749,40 @@ int check_MainButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
 
     g->nbuttons = init_ButtonsMain(g);
 
-    for(i=0; i < g->nbuttons; i++) {
-      g->button[i].over=0;
-      if(x >= g->button[i].r.left && //left
-         x <= g->button[i].r.right && //right
-         y >= g->button[i].r.bot && //bot
-         y <= g->button[i].r.top) { //top
-        g->button[i].over = 1;
-        if(g->button[i].over) {
-          if (lbutton) {
-            switch (i) {
-              case 0:
-                //cout << "NEW()\n";
-                g->state_newG = 1;
-                //g->state_menu = 0;
-                break;
-              case 1:
-                g->state_sett = 1;
-                //cout << "SETT()\n";
-                break;
-              case 2:
-                cout << "SCORES()\n";
-                break;
-              case 3:
-                g->state_cred = 1;
-                //cout << "CREDITS()\n";
-                break;
-              case 4:
-                cout << "EXIT\n";
-                return 1;
-                break;
+    for (i=0; i < g->nbuttons; i++) {
+        g->button[i].over=0;
+        if (x >= g->button[i].r.left && //left
+                x <= g->button[i].r.right && //right
+                y >= g->button[i].r.bot && //bot
+                y <= g->button[i].r.top) { //top
+            g->button[i].over = 1;
+            if (g->button[i].over) {
+                if (lbutton) {
+                    switch (i) {
+                        case 0:
+                            //cout << "NEW()\n";
+                            g->state_newG = 1;
+                            //g->state_menu = 0;
+                            break;
+                        case 1:
+                            g->state_sett = 1;
+                            //cout << "SETT()\n";
+                            break;
+                        case 2:
+                            cout << "SCORES()\n";
+                            break;
+                        case 3:
+                            g->state_cred = 1;
+                            //cout << "CREDITS()\n";
+                            break;
+                        case 4:
+                            cout << "EXIT\n";
+                            return 1;
+                            break;
+                    }
+                }
             }
-          }
         }
-      }
     }
     return 0;
 }
@@ -788,40 +793,43 @@ void check_NewGButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
     x = e->xbutton.x;
     y = e->xbutton.y;
     y = yres - y;
-    if (xres){}
+    if (xres) {}
 
     g->nbuttons = init_ButtonsNewG(g);
 
-    for(i=0; i < g->nbuttons; i++) {
-      g->button[i].over=0;
-      if(x >= g->button[i].r.left && //left
-         x <= g->button[i].r.right && //right
-         y >= g->button[i].r.bot && //bot
-         y <= g->button[i].r.top) { //top
-        g->button[i].over = 1;
-        if(g->button[i].over) {
-          if (lbutton) {
-            switch (i) {
-              case 0:
-                system(" cp ./assets/ship11.ppm ./assets/ship.ppm");
-                g->state_newG = 0;
-                //g->state_menu = 0;
-                //return 1;
-                break;
-              case 1:
-                system("convert ./assets/ship2.png ./assets/ship.ppm");
-                g->state_newG = 0;
-                //return 0;
-                break;
-              case 2:
-                system("convert ./assets/ship3.png ./assets/ship.ppm");
-                g->state_newG = 0;
-                //return 0;
-                break;
+    for (i=0; i < g->nbuttons; i++) {
+        g->button[i].over=0;
+        if (x >= g->button[i].r.left && //left
+                x <= g->button[i].r.right && //right
+                y >= g->button[i].r.bot && //bot
+                y <= g->button[i].r.top) { //top
+            g->button[i].over = 1;
+            if (g->button[i].over) {
+                if (lbutton) {
+                    switch (i) {
+                        case 0:
+                            system(" cp ./assets/ship11.ppm ./assets/\
+                                    ship.ppm");
+                            g->state_newG = 0;
+                            //g->state_menu = 0;
+                            //return 1;
+                            break;
+                        case 1:
+                            system("convert ./assets/ship2.png ./assets/\
+                                    ship.ppm");
+                            g->state_newG = 0;
+                            //return 0;
+                            break;
+                        case 2:
+                            system("convert ./assets/ship3.png ./assets/\
+                                    ship.ppm");
+                            g->state_newG = 0;
+                            //return 0;
+                            break;
+                    }
+                }
             }
-          }
         }
-      }
     }
     //return 0;
 }
@@ -838,11 +846,11 @@ void check_SettButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
 
     alBuffer1[0] = alutCreateBufferFromFile("sounds/8bitBack.wav");
     alBuffer1[1] = alutCreateBufferFromFile("");
-    
+
     alGenSources(2, alSource1);
     alSourcei(alSource1[0], AL_BUFFER, alBuffer1[0]);
     alSourcei(alSource1[1], AL_BUFFER, alBuffer1[1]);
-    
+
     alSourcef(alSource1[0], AL_GAIN, 1.0f);
     alSourcef(alSource1[0], AL_PITCH, 1.0f);
     alSourcef(alSource1[0], AL_LOOPING, AL_TRUE);
@@ -850,46 +858,46 @@ void check_SettButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
     alSourcef(alSource1[1], AL_GAIN, 1.0f);
     alSourcef(alSource1[1], AL_PITCH, 1.0f);
     alSourcef(alSource1[1], AL_LOOPING, AL_FALSE);
-    
-    if (xres){}
+
+    if (xres) {}
     g->nbuttons = init_ButtonsSett(g);
 
-    for(i=0; i < g->nbuttons; i++) {
-      g->button[i].over=0;
-      if(x >= g->button[i].r.left && //left
-         x <= g->button[i].r.right && //right
-         y >= g->button[i].r.bot && //bot
-         y <= g->button[i].r.top) { //top
-        g->button[i].over = 1;
-        if(g->button[i].over) {
-          if (lbutton) {
-            switch (i) {
-              case 0:
-                overSett1 ^= 1;
-                if (overSett1){
-                    //backGround();
-                    //playBackGround(alSource1[1]);
-                    /*for (int i=0; i < 15; i++){
-                        alSourcePlay(alSource1[1]);
-                        usleep(20500);
-                    }*/
-                }else{
-                  /*  for (int i=0; i < 15; i++){
-                        alSourcePlay(alSource1[0]);
-                        usleep(20500);
-                    }*/
+    for (i=0; i < g->nbuttons; i++) {
+        g->button[i].over=0;
+        if (x >= g->button[i].r.left && //left
+                x <= g->button[i].r.right && //right
+                y >= g->button[i].r.bot && //bot
+                y <= g->button[i].r.top) { //top
+            g->button[i].over = 1;
+            if (g->button[i].over) {
+                if (lbutton) {
+                    switch (i) {
+                        case 0:
+                            overSett1 ^= 1;
+                            if (overSett1) {
+                                //backGround();
+                                //playBackGround(alSource1[1]);
+                                /*for (int i=0; i < 15; i++){
+                                  alSourcePlay(alSource1[1]);
+                                  usleep(20500);
+                                  }*/
+                            }else{
+                                /*  for (int i=0; i < 15; i++){
+                                    alSourcePlay(alSource1[0]);
+                                    usleep(20500);
+                                    }*/
+                            }
+                            // playBackGround(alSource1[0]);
+                            //g->state_newG = 0;
+                            break;
+                        case 1:
+                            overSett2 ^= 1;
+                            g->mouseControl ^= 1;
+                            g->state_sett = 0;
+                            break;
+                    }
                 }
-                    // playBackGround(alSource1[0]);
-                    //g->state_newG = 0;
-                break;
-              case 1:
-                overSett2 ^= 1;
-                g->mouseControl ^= 1;
-                g->state_sett = 0;
-                break;
             }
-          }
         }
-      }
     }
 }
