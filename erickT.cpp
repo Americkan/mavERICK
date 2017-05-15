@@ -881,7 +881,7 @@ void check_SettButtons(XEvent *e, Game *g, int xres, int yres, int lbutton)
                                   alSourcePlay(alSource1[1]);
                                   usleep(20500);
                                   }*/
-                            }else{
+                            } else {
                                 /*  for (int i=0; i < 15; i++){
                                     alSourcePlay(alSource1[0]);
                                     usleep(20500);
